@@ -1,0 +1,128 @@
+import "server-only";
+import { prisma } from "@rallly/database";
+import { createLogger } from "@rallly/logger";
+import * as Sentry from "@sentry/nextjs";
+import { effectiveSpaceMemberWhere } from "@/features/space/member/utils";
+import { posthog } from "@/lib/posthog";
+
+const logger = createLogger("auth/merge-user");
+
+const getActiveSpaceForUser = async ({ userId }: { userId: string }) => {
+  const spaceMember = await prisma.spaceMember.findFirst({
+    where: effectiveSpaceMemberWhere({ userId }),
+    select: {
+      spaceId: true,
+    },
+    orderBy: {
+      lastSelectedAt: "desc",
+    },
+  });
+
+  return spaceMember?.spaceId;
+};
+
+export const linkAnonymousUser = async (
+  authenticatedUserId: string,
+  anonymousUserId: string,
+) => {
+  try {
+    // Claim event registrations made with the account's own email. A
+    // registration's email is its identity (the host's record), so it must
+    // not be reassigned to an account that doesn't control that address —
+    // only the ones whose email matches follow the user. This is scoped
+    // independently of the space because a freshly created account may not
+    // have its space provisioned yet.
+    const authenticatedUser = await prisma.user.findUnique({
+      where: { id: authenticatedUserId },
+      select: { email: true },
+    });
+
+    if (authenticatedUser?.email) {
+      await prisma.scheduledEventInvite.updateMany({
+        where: {
+          inviteeId: anonymousUserId,
+          inviteeEmail: authenticatedUser.email,
+        },
+        data: {
+          inviteeId: authenticatedUserId,
+        },
+      });
+    }
+
+    const spaceId = await getActiveSpaceForUser({
+      userId: authenticatedUserId,
+    });
+
+    if (!spaceId) {
+      // Reached when the guest links into a brand-new account that hasn't
+      // been through /setup yet (setup creates the space and adopts these
+      // orphaned polls), or when the user's only memberships are
+      // ineffective (non-owner rows in hobby spaces). Transfer ownership
+      // anyway — the anonymous user is deleted right after linking and
+      // polls cascade with it — and leave spaceId null.
+      logger.info(
+        { userId: authenticatedUserId },
+        "User has no effective space; migrating guest content without a space",
+      );
+    }
+
+    await prisma.$transaction(async (tx) => {
+      // Transfer space-scoped data from anonymous user to authenticated user
+      await Promise.all([
+        // Transfer polls
+        tx.poll.updateMany({
+          where: {
+            userId: anonymousUserId,
+          },
+          data: {
+            userId: authenticatedUserId,
+            ...(spaceId ? { spaceId } : {}),
+          },
+        }),
+
+        // Transfer participants
+        tx.participant.updateMany({
+          where: {
+            userId: anonymousUserId,
+          },
+          data: {
+            userId: authenticatedUserId,
+          },
+        }),
+
+        // Transfer comments
+        tx.comment.updateMany({
+          where: {
+            userId: anonymousUserId,
+          },
+          data: {
+            userId: authenticatedUserId,
+          },
+        }),
+
+        // Transfer poll activity actor refs. They are soft references (no
+        // FK), so nothing else migrates them; without this the guest's
+        // events would point at the anonymous user forever, which is
+        // deleted after linking. Account deletion leaves refs inert on
+        // purpose — linking is the opposite case: the person still exists.
+        tx.pollActivity.updateMany({
+          where: {
+            userId: anonymousUserId,
+          },
+          data: {
+            userId: authenticatedUserId,
+          },
+        }),
+      ]);
+    });
+
+    // Merge user identities in PostHog
+    posthog()?.capture({
+      distinctId: authenticatedUserId,
+      event: "$merge_dangerously",
+      properties: { alias: anonymousUserId },
+    });
+  } catch (error) {
+    Sentry.captureException(error);
+  }
+};

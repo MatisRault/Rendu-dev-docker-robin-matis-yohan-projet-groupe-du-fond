@@ -1,0 +1,146 @@
+import "server-only";
+
+import { notFound, redirect } from "next/navigation";
+import { cache } from "react";
+
+import { getUpcomingEventCount } from "@/features/scheduled-event/data";
+import {
+  getActiveSpaceForUser,
+  getOwnedSpace,
+  getSpaceSeatCount,
+  getTotalSeatsForSpace,
+} from "@/features/space/data";
+import type { SpaceContentScope } from "@/features/space/types";
+import { createSpaceContentScope } from "@/features/space/utils";
+import { requireUser } from "@/features/user/loaders";
+import { getSessionState } from "@/lib/auth";
+import { getDeviceTimeZone } from "@/lib/datetime/server";
+import { normalizeTimeZone } from "@/lib/datetime/utils";
+import { InvalidSessionError } from "@/lib/errors/invalid-session-error";
+import { getPathname } from "@/lib/pathname";
+import { buildSafeRedirectUrl } from "@/lib/utils/redirect";
+
+/**
+ * The active space for the signed-in user, gated for server rendering:
+ * redirects to /login when unauthenticated or a guest, redirects to /setup
+ * when the user has no name, timezone, time format, or space at all, and
+ * throws InvalidSessionError when banned.
+ * React cached, so every page and layout that needs the space in a request
+ * shares one gate and one query. Server component/page use only — the
+ * redirects make it unsuitable for route handlers and tRPC procedures.
+ */
+export const getActiveSpace = cache(async () => {
+  const state = await getSessionState();
+
+  // An unreadable session (store unreachable, transient failure) is not
+  // "logged out" — redirecting to /login on it is one leg of a redirect
+  // loop. Fail the render instead so the user gets the error boundary's
+  // retry page.
+  if (state.status === "error") {
+    throw new Error("Failed to read session");
+  }
+
+  const user =
+    state.status === "authenticated" ? state.session.user : undefined;
+
+  if (!user || user.isGuest) {
+    redirect(
+      buildSafeRedirectUrl({
+        destination: "/login",
+        returnUrl: await getPathname(),
+      }),
+    );
+  }
+
+  if (user.banned) {
+    throw new InvalidSessionError();
+  }
+
+  // Accounts created through the OTP registration flow start without a
+  // name; /setup collects one before they can use the app. Timezone and
+  // time format are deliberately NOT gated on: both resolve without a
+  // stored value (zone from the per-visit cookie, format from
+  // getLocaleDefaults), and gating on them dragged long-standing accounts
+  // that predate those columns back through onboarding.
+  if (!user.name) {
+    redirect(
+      buildSafeRedirectUrl({
+        destination: "/setup",
+        returnUrl: await getPathname(),
+      }),
+    );
+  }
+
+  const space = await getActiveSpaceForUser(user.id);
+
+  if (!space) {
+    // Only send them to onboarding when they genuinely have no space.
+    // A user can resolve to no *active* space while still owning one
+    // (their only other memberships are ineffective, or their own
+    // membership row is gone) — /setup would bounce them straight back,
+    // so render the not-found page instead of looping. notFound() rather
+    // than a thrown AppError: nothing adapts AppError for server
+    // components, so it would reach the error boundary as an unexpected
+    // error, showing "Something went wrong" and reporting to Sentry.
+    if (await getOwnedSpace(user.id)) {
+      notFound();
+    }
+
+    redirect(
+      buildSafeRedirectUrl({
+        destination: "/setup",
+        returnUrl: await getPathname(),
+      }),
+    );
+  }
+
+  return space;
+});
+
+/**
+ * The visibility scope space-scoped content reads must apply for the
+ * signed-in user in their active space. Same gating as getActiveSpace;
+ * server component/page use only.
+ */
+export const getActiveSpaceContentScope = cache(
+  async (): Promise<SpaceContentScope> => {
+    const [space, user] = await Promise.all([getActiveSpace(), requireUser()]);
+    return createSpaceContentScope({ space, userId: user.id });
+  },
+);
+
+/**
+ * Upcoming event count for the signed-in user's active space. Lives here
+ * rather than in scheduled-event/loaders.ts because account-deletion (user)
+ * imports scheduled-event, so a scheduled-event → space/user loader would
+ * close a feature import cycle; space → scheduled-event is a forward edge.
+ */
+export const loadUpcomingEventCount = cache(async () => {
+  const [user, scope, deviceTimeZone] = await Promise.all([
+    requireUser(),
+    getActiveSpaceContentScope(),
+    getDeviceTimeZone(),
+  ]);
+
+  // Upcoming is measured against the viewer's present, so the device zone
+  // wins; the stored preference is a fallback for devices whose zone cookie
+  // hasn't been set yet.
+  const timeZone = deviceTimeZone ?? normalizeTimeZone(user.timeZone) ?? "UTC";
+
+  return getUpcomingEventCount({ scope, timeZone });
+});
+
+/**
+ * Seat usage for the signed-in user's active space. Session scoped —
+ * server component/page use only, per getActiveSpace.
+ */
+export const getSeatUsage = cache(async () => {
+  const space = await getActiveSpace();
+
+  const [total, used] = await Promise.all([
+    getTotalSeatsForSpace(space.id),
+    getSpaceSeatCount(space.id),
+  ]);
+
+  return { total, used };
+});

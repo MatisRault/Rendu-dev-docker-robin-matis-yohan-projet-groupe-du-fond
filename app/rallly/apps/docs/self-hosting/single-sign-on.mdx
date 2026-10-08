@@ -1,0 +1,124 @@
+---
+icon: cloud
+title: Single Sign-On (SSO)
+description: Sign in with Google, Microsoft, or any OpenID Connect provider.
+---
+
+<Info>Available in v3.4.0 and later.</Info>
+
+Rallly supports three SSO options: Google, Microsoft (Entra ID), and any provider that speaks OpenID Connect (OIDC). You can enable more than one at a time.
+
+<Warning>
+  Accounts using the same email address are linked together. This assumes your identity provider only issues verified email addresses.
+</Warning>
+
+## Google
+
+<Accordion title="Setup">
+1. Open the Google Cloud Credentials tab: https://console.developers.google.com/apis/credentials
+
+2. Create an OAuth client ID. This gives you a `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`.
+
+3. Set **Authorized redirect URIs** to include your full domain and the callback path:
+
+```
+https://<YOUR_DOMAIN>/api/auth/callback/google
+```
+</Accordion>
+
+<ParamField path="GOOGLE_CLIENT_ID">
+  The client ID of your Google application.
+</ParamField>
+
+<ParamField path="GOOGLE_CLIENT_SECRET">
+  The client secret of your Google application.
+</ParamField>
+
+## Microsoft
+
+<Accordion title="Setup">
+Follow the [Microsoft Entra ID quickstart](https://docs.microsoft.com/en-us/entra/identity-platform/quickstart-register-app) to register an application.
+
+After creating the application, set the redirect URI to:
+
+```
+https://<YOUR_DOMAIN>/api/auth/callback/microsoft-entra-id
+```
+
+On a multi-tenant endpoint (`MICROSOFT_TENANT_ID` set to `common`, `organizations` or `consumers`) any tenant can assert any email address, so Rallly needs Microsoft to confirm the address before it creates an account from it. Microsoft does not include that information unless the app registration asks for it. While the claims are missing, Rallly still creates the account and logs a warning at sign-in; a later release will refuse these sign-ins. Add the `verified_primary_email` and `verified_secondary_email` optional claims to the ID token: in the app registration open **Manifest** and add these two entries to the `optionalClaims.idToken` array, keeping any claims already there:
+
+```json
+{ "name": "verified_primary_email", "source": null, "essential": false, "additionalProperties": [] },
+{ "name": "verified_secondary_email", "source": null, "essential": false, "additionalProperties": [] }
+```
+
+If `optionalClaims` is `null`, replace it with `{ "idToken": [ ...the two entries... ] }`.
+
+Once the claims are present, a Microsoft sign-in whose address is not among the verified ones fails with "Your email address is not verified". Existing users are not affected. Single-tenant registrations do not need this.
+</Accordion>
+
+<ParamField path="MICROSOFT_TENANT_ID">
+  The tenant ID of your Microsoft application.
+</ParamField>
+
+<ParamField path="MICROSOFT_CLIENT_ID">
+  The client ID of your Microsoft application.
+</ParamField>
+
+<ParamField path="MICROSOFT_CLIENT_SECRET">
+  The client secret of your Microsoft application.
+</ParamField>
+
+## OpenID Connect (OIDC)
+
+If your identity provider supports OAuth 2.0 with OpenID Connect, you can use it to authenticate users on your Rallly instance.
+
+### Required scopes
+
+Your OAuth 2.0 application needs these scopes:
+
+- `openid` — perform authentication (required).
+- `profile` — access name and picture.
+- `email` — access the user's email address.
+
+### Callback URL
+
+Your identity provider should redirect the user back to:
+
+```
+https://<YOUR_DOMAIN>/api/auth/callback/oidc
+```
+
+### Configuration
+
+All required fields must be set for OIDC to be enabled.
+
+<ParamField path="OIDC_NAME" default="OpenID Connect">
+  Display name of your provider as shown on the login page.
+</ParamField>
+
+<ParamField path="OIDC_DISCOVERY_URL" required>
+  URL of the `.well-known/openid-configuration` endpoint for your OIDC provider.
+</ParamField>
+
+<ParamField path="OIDC_CLIENT_ID" required>
+  The client ID of your OIDC application.
+</ParamField>
+
+<ParamField path="OIDC_CLIENT_SECRET" required>
+  The client secret of your OIDC application.
+</ParamField>
+
+<ParamField path="OIDC_NAME_CLAIM_PATH" default="name">
+  Path to the claim that contains the user's name.
+</ParamField>
+
+<ParamField path="OIDC_EMAIL_CLAIM_PATH" default="email">
+  Path to the claim that contains the user's email address.
+</ParamField>
+
+<ParamField path="OIDC_PICTURE_CLAIM_PATH" default="picture">
+  Path to the claim that contains the user's profile picture.
+</ParamField>
+
+<Info>Use dot notation in `_CLAIM_PATH` fields to access nested objects.</Info>
