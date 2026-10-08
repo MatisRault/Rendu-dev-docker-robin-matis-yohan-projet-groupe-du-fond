@@ -106,6 +106,61 @@ enregistrements AAAA renvoyés par le DNS sont donc sans effet, toutes les conne
 sortantes partent en IPv4. Aucun correctif n'a été nécessaire — point vérifié
 explicitement parce que c'est une cause classique de `docker pull` lent sur les VM.
 
-<!-- Sections 4.3 (paquets), 4.4 (Docker), 4.5 (ufw), 4.6 (MTU), 5 (déploiement),
-     6 (écarts local/VM), 7 (accès formateur) : en cours de rédaction au fil du
-     déploiement. -->
+### 4.3 Mise à jour des paquets
+
+`git` (2.43.0), `curl` et `ufw` sont **déjà présents** dans le template #36 : rien à
+installer, contrairement à ce que prévoyait le plan.
+
+```bash
+apt update
+DEBIAN_FRONTEND=noninteractive apt -y upgrade
+```
+
+190 des 193 paquets proposés ont été mis à jour. Les 3 restants
+(`libbluetooth3`, `libopeniscsiusr`, `open-iscsi`) sont retenus par le mécanisme de
+**phased updates** d'Ubuntu — un déploiement progressif, pas un échec. Aucun des
+trois ne concerne la stack.
+
+⚠️ **Piège rencontré** : la mise à jour d'`openssh-server` arrête `ssh.socket` le
+temps de son post-installation. Pendant environ une minute, **toute nouvelle
+connexion SSH est refusée** (`Connection refused`) alors que la VM répond au ping.
+Les sessions déjà ouvertes, elles, survivent — c'est ce qui a permis à l'`apt
+upgrade` d'aller au bout. `ssh.socket` est relancé automatiquement ensuite.
+
+Leçon : lancer les mises à jour longues **détachées de la session SSH**
+(`setsid nohup … &`) plutôt que dans le terminal interactif, pour qu'une coupure du
+canal n'emporte pas `dpkg` au milieu d'une transaction.
+
+Un redémarrage est requis à l'issue de l'upgrade (`libc6`, `apparmor`, noyau
+**6.8.0-146** alors que la VM tourne encore sur 6.8.0-117). Il est volontairement
+**reporté à la fin du déploiement**, où il sert de test de résilience : après reboot,
+toute la stack doit remonter seule grâce à `restart: unless-stopped`, au swap déclaré
+dans `/etc/fstab` et au drop-in DNS de §4.1.
+
+### 4.4 Swap de 2 Go — écart assumé
+
+Le plan ne demande du swap que si la VM est plus petite que la cible ; la nôtre est
+pile à la cible (2 vCPU / 4 Go). Il a quand même été ajouté, parce que la marge est
+courte : Authentik réclame 2 Go à lui seul, auxquels s'ajoutent deux Postgres,
+Rallly, Garage, Caddy et Mailpit sur 3,9 Go utilisables.
+
+```bash
+fallocate -l 2G /swapfile
+chmod 600 /swapfile          # mkswap refuse un fichier aux permissions trop larges
+mkswap /swapfile
+swapon /swapfile
+printf '/swapfile none swap sw 0 0\n' >> /etc/fstab
+printf 'vm.swappiness=10\n' > /etc/sysctl.d/99-swappiness.conf
+sysctl --system
+```
+
+`vm.swappiness=10` au lieu du défaut 60 : sur une machine qui héberge des bases de
+données, on ne veut swapper qu'en cas de **vraie** pression mémoire, pas par
+anticipation. Réversible en deux commandes (`swapoff /swapfile && rm /swapfile`,
+plus le retrait de la ligne de `fstab`).
+
+Vérifié : `swapon --show` → 2 Go actifs, `swappiness=10`, consommation de 474 Mo au
+repos avant déploiement.
+
+<!-- Sections 4.5 (Docker), 4.6 (ufw), 4.7 (MTU), 5 (déploiement),
+     6 (écarts local/VM), 7 (accès formateur) : en cours. -->
