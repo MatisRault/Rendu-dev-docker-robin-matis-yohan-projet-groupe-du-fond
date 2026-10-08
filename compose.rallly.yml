@@ -1,1 +1,85 @@
-services: {}
+# compose.rallly.yml — application Rallly et ses dépendances (P3)
+# Réseaux et volumes déclarés dans compose.yml (socle P1).
+services:
+  rallly-db:
+    image: postgres:18-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: rallly
+      POSTGRES_USER: rallly
+      POSTGRES_PASSWORD: ${RALLLY_DB_PASSWORD}
+    volumes:
+      # Postgres ≥ 18 attend le volume sur /var/lib/postgresql (pas .../data)
+      - rallly_db:/var/lib/postgresql
+    networks: [rallly_backend]
+    security_opt: ["no-new-privileges:true"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d rallly -U rallly"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # Stockage S3 interne (avatars, fichiers), config officielle rallly-selfhosted
+  garage:
+    image: dxflrs/garage:v2.3.0
+    restart: unless-stopped
+    command: /garage server --single-node --default-bucket
+    environment:
+      GARAGE_RPC_SECRET: ${GARAGE_RPC_SECRET}
+      GARAGE_DEFAULT_ACCESS_KEY: ${S3_ACCESS_KEY_ID}
+      GARAGE_DEFAULT_SECRET_KEY: ${S3_SECRET_ACCESS_KEY}
+      GARAGE_DEFAULT_BUCKET: rallly
+    volumes:
+      - ./config/garage.toml:/etc/garage.toml:ro
+      - garage_meta:/var/lib/garage/meta
+      - garage_data:/var/lib/garage/data
+    networks: [rallly_backend]
+    security_opt: ["no-new-privileges:true"]
+
+  rallly:
+    image: ${RALLLY_IMAGE}
+    restart: unless-stopped
+    environment:
+      NEXT_PUBLIC_BASE_URL: https://rallly.${BASE_DOMAIN}
+      DATABASE_URL: postgres://rallly:${RALLLY_DB_PASSWORD}@rallly-db:5432/rallly
+      SECRET_PASSWORD: ${RALLLY_SECRET_PASSWORD}
+      SUPPORT_EMAIL: ${SUPPORT_EMAIL}
+      NOREPLY_EMAIL: ${MAIL_FROM}
+      INITIAL_ADMIN_EMAIL: ${RALLLY_ADMIN_EMAIL}
+      # SMTP de lab (Mailpit accepte n'importe quels identifiants)
+      SMTP_HOST: mailpit
+      SMTP_PORT: "1025"
+      SMTP_SECURE: "false"
+      SMTP_USER: lab
+      SMTP_PWD: lab
+      # SSO Authentik (contrat avec P2)
+      OIDC_NAME: Authentik
+      OIDC_DISCOVERY_URL: https://auth.${BASE_DOMAIN}/application/o/rallly/.well-known/openid-configuration
+      OIDC_CLIENT_ID: ${RALLLY_OIDC_CLIENT_ID}
+      OIDC_CLIENT_SECRET: ${RALLLY_OIDC_CLIENT_SECRET}
+      # Stockage S3 interne
+      S3_ENDPOINT: http://garage:3900
+      S3_BUCKET_NAME: rallly
+      S3_REGION: garage
+      S3_ACCESS_KEY_ID: ${S3_ACCESS_KEY_ID}
+      S3_SECRET_ACCESS_KEY: ${S3_SECRET_ACCESS_KEY}
+      # Confiance dans la CA interne de Caddy (exportée par ca-export)
+      NODE_EXTRA_CA_CERTS: /ca/root.crt
+    volumes:
+      - ca_public:/ca:ro
+    depends_on:
+      rallly-db:
+        condition: service_healthy
+      garage:
+        condition: service_started
+      ca-export:
+        condition: service_completed_successfully
+    networks: [edge, rallly_backend, mail]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000').then(r=>process.exit(r.status<500?0:1)).catch(()=>process.exit(1))"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 60s
