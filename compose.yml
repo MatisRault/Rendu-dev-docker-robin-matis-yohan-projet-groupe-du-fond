@@ -1,0 +1,91 @@
+# compose.yml — socle : réseaux, volumes, reverse proxy, mail de lab
+# Les services Authentik (P2) et Rallly (P3) sont dans leurs propres fichiers,
+# chargés via COMPOSE_FILE dans .env.
+
+services:
+  caddy:
+    image: caddy:2.10-alpine
+    restart: unless-stopped
+    ports:
+      - "${HTTP_BIND:-127.0.0.1}:80:80"
+      - "${HTTP_BIND:-127.0.0.1}:443:443"
+    environment:
+      BASE_DOMAIN: ${BASE_DOMAIN}
+    volumes:
+      - ./proxy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      edge:
+        # Permet aux conteneurs (Rallly) de joindre les URL publiques via Caddy
+        aliases:
+          - auth.${BASE_DOMAIN}
+          - rallly.${BASE_DOMAIN}
+          - mail.${BASE_DOMAIN}
+    read_only: true
+    tmpfs: [/tmp]
+    cap_drop: [ALL]
+    cap_add: [NET_BIND_SERVICE]
+    security_opt: ["no-new-privileges:true"]
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:2019/config/"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+
+  # Copie UNIQUEMENT le certificat public de la CA Caddy dans un volume dédié,
+  # pour que Rallly lui fasse confiance sans accéder à la clé privée de la CA.
+  ca-export:
+    image: busybox:1.37
+    restart: "no"
+    depends_on:
+      caddy:
+        condition: service_started
+    command:
+      - sh
+      - -c
+      - |
+        i=0
+        until [ -f /data/caddy/pki/authorities/local/root.crt ]; do
+          i=$$((i+1)); [ $$i -gt 60 ] && echo "CA introuvable" && exit 1; sleep 1
+        done
+        cp /data/caddy/pki/authorities/local/root.crt /ca/root.crt
+        chmod 444 /ca/root.crt
+        echo "CA exportée"
+    volumes:
+      - caddy_data:/data:ro
+      - ca_public:/ca
+    network_mode: none
+    security_opt: ["no-new-privileges:true"]
+
+  mailpit:
+    image: axllent/mailpit:v1.27
+    restart: unless-stopped
+    user: "65534:65534"
+    environment:
+      MP_SMTP_AUTH_ACCEPT_ANY: "true"      # SMTP de lab : accepte n'importe quel login
+      MP_SMTP_AUTH_ALLOW_INSECURE: "true"
+      MP_MAX_MESSAGES: "500"
+    networks: [edge, mail]
+    read_only: true
+    tmpfs: [/tmp]
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+
+networks:
+  edge: {}
+  mail:
+    internal: true
+  authentik_backend:
+    internal: true
+  rallly_backend:
+    internal: true
+
+volumes:
+  caddy_data:
+  caddy_config:
+  ca_public:
+  authentik_db:
+  rallly_db:
+  garage_meta:
+  garage_data:

@@ -1,0 +1,32 @@
+{
+	# Toute la stack utilise la CA interne de Caddy (VM non publique → pas de Let's Encrypt)
+	local_certs
+	skip_install_trust
+	admin 127.0.0.1:2019
+}
+
+(security_headers) {
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		-Server
+	}
+}
+
+auth.{$BASE_DOMAIN} {
+	import security_headers
+	reverse_proxy authentik-server:9000
+}
+
+rallly.{$BASE_DOMAIN} {
+	import security_headers
+	reverse_proxy rallly:3000
+}
+
+# Bloc géré par P2 : forward-auth Authentik (réservé au groupe rallly-admins).
+# En attendant, Mailpit est accessible sans auth.
+mail.{$BASE_DOMAIN} {
+	import security_headers
+	reverse_proxy mailpit:8025
+}
