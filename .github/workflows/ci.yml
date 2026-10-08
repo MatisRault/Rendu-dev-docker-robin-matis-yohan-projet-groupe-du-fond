@@ -1,0 +1,160 @@
+name: ci
+
+# lint ─┬─> app-quality (Biome + types de app/rallly)
+#       ├─> image : build ─> scan Trivy ─> smoke test stack complète ─> push GHCR (main)
+#       └─> scan-stack : Trivy des images tierces
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - name: Secrets dans l'historique (gitleaks)
+        run: docker run --rm -v "$PWD:/repo" zricethezav/gitleaks:latest detect --source /repo --config /repo/.gitleaks.toml -v --redact
+      - run: bash scripts/gen-env.sh
+      - name: Compose valide
+        run: docker compose config -q
+      - name: Caddyfile valide
+        run: bash stack.sh validate-caddy
+      - name: Fins de ligne LF (anti-CRLF Windows)
+        run: |
+          if git ls-files --eol | grep -q 'i/crlf'; then
+            git ls-files --eol | grep 'i/crlf'; echo "❌ fichiers en CRLF dans le dépôt"; exit 1
+          fi
+      - name: Scripts shell
+        run: docker run --rm -v "$PWD:/mnt" -w /mnt koalaman/shellcheck:stable stack.sh scripts/*.sh
+
+  app-quality:
+    needs: lint
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app/rallly
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          package_json_file: app/rallly/package.json   # lit "packageManager"
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: app/rallly/.nvmrc
+          cache: pnpm
+          cache-dependency-path: app/rallly/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - name: Lint et format (Biome)
+        run: pnpm check
+      - name: Client Prisma (requis par le type-check)
+        run: pnpm db:generate
+      - name: Types TypeScript
+        run: pnpm type-check
+
+  image:
+    needs: lint
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      security-events: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Nom d'image en minuscules et version Rallly
+        run: |
+          echo "IMAGE=ghcr.io/${GITHUB_REPOSITORY,,}/rallly" >> "$GITHUB_ENV"
+          v="$(cat app/rallly/UPSTREAM_VERSION)"; echo "APP_VERSION=${v#v}" >> "$GITHUB_ENV"
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/metadata-action@v5
+        id: meta
+        with:
+          images: ${{ env.IMAGE }}
+          tags: |
+            type=raw,value=main,enable={{is_default_branch}}
+            type=sha,format=short
+            type=ref,event=pr
+
+      - name: Build
+        uses: docker/build-push-action@v6
+        with:
+          context: app/rallly
+          file: app/rallly/apps/web/Dockerfile
+          load: true
+          push: false
+          tags: |
+            ${{ steps.meta.outputs.tags }}
+            rallly-ci:${{ github.sha }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          # Mêmes build args que le workflow de release upstream (docker-image.yml)
+          build-args: |
+            APP_VERSION=${{ env.APP_VERSION }}
+            SELF_HOSTED=true
+
+      - name: Scan Trivy de l'image (SARIF)
+        run: |
+          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v "$PWD:/out" \
+            aquasec/trivy:latest image --scanners vuln --severity HIGH,CRITICAL \
+            --format sarif -o /out/trivy.sarif "rallly-ci:${GITHUB_SHA}"
+
+      - uses: github/codeql-action/upload-sarif@v3
+        if: always() && hashFiles('trivy.sarif') != ''
+        with:
+          sarif_file: trivy.sarif
+
+      - name: Smoke test de toute la stack avec CETTE image
+        run: |
+          bash scripts/gen-env.sh
+          sed -i "s|^RALLLY_IMAGE=.*|RALLLY_IMAGE=rallly-ci:${GITHUB_SHA}|" .env
+          docker compose up -d
+          bash scripts/smoke-test.sh localhost
+
+      - name: Logs en cas d'échec
+        if: failure()
+        run: docker compose logs --tail=200
+
+      - name: Login GHCR
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Publiée seulement si le smoke test est passé : jamais d'image qui casse la stack
+      - name: Push
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: docker push --all-tags "${IMAGE}"
+
+      - if: always()
+        run: docker compose down -v || true
+
+  scan-stack:
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash scripts/gen-env.sh
+      - name: Trivy sur les images tierces de la stack
+        run: |
+          for img in $(docker compose config --images | sort -u); do
+            echo "::group::$img"
+            docker run --rm aquasec/trivy:latest image --scanners vuln \
+              --severity HIGH,CRITICAL --ignore-unfixed "$img" || true
+            echo "::endgroup::"
+          done
