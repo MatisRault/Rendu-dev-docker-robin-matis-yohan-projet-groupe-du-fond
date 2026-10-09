@@ -1,0 +1,20 @@
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll.biome": "explicit",
+    "source.organizeImports.biome": "explicit"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.preferences.importModuleSpecifier": "non-relative",
+  "vitest.filesWatcherInclude": "**/*.test.ts",
+  "editor.formatOnSave": true,
+  "typescript.preferences.preferTypeOnlyAutoImports": true,
+  "typescript.tsserver.log": "verbose",
+  "references.preferredLocation": "view",
+  "editor.defaultFormatter": "biomejs.biome"
+}

@@ -1,0 +1,189 @@
+// This file sets a custom webpack configuration to use your Next.js app
+// with Sentry.
+// https://nextjs.org/docs/api-reference/next.config.js/introduction
+// https://docs.sentry.io/platforms/javascript/guides/nextjs/
+
+import path from "node:path";
+import createBundleAnalyzer from "@next/bundle-analyzer";
+import { withSentryConfig } from "@sentry/nextjs";
+import type { NextConfig } from "next";
+
+const withBundleAnalyzer = createBundleAnalyzer({
+  enabled: process.env.ANALYZE === "true",
+});
+
+const nextConfig: NextConfig = {
+  allowedDevOrigins: [process.env.DEV_DOMAIN ?? "web.rallly.test"],
+  experimental: {
+    staleTimes: {
+      dynamic: 60,
+    },
+  },
+  output:
+    process.env.NEXT_PUBLIC_SELF_HOSTED === "true" ? "standalone" : undefined,
+  productionBrowserSourceMaps: true,
+  transpilePackages: [
+    "@rallly/database",
+    "@rallly/ui",
+    "@rallly/tailwind-config",
+    "@rallly/posthog",
+    "@rallly/emails",
+  ],
+  assetPrefix: process.env.NEXT_PUBLIC_BASE_URL,
+  webpack(config) {
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ["@svgr/webpack"],
+    });
+
+    return config;
+  },
+  turbopack: {
+    root: path.join(__dirname, "../.."),
+    rules: {
+      "*.svg": {
+        loaders: ["@svgr/webpack"],
+        as: "*.js",
+      },
+    },
+  },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  async rewrites() {
+    if (!process.env.API_BASE_URL) return [];
+    const host = new URL(process.env.API_BASE_URL).host;
+    return [
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: host }],
+        destination: "/api/:path*",
+      },
+    ];
+  },
+  async redirects() {
+    return [
+      {
+        source: "/support",
+        destination: "https://support.rallly.co",
+        permanent: true,
+      },
+      {
+        source: "/profile",
+        destination: "/settings/profile",
+        permanent: true,
+      },
+      // Login and registration are a single flow on /login: entering an
+      // unknown email creates an account on OTP verification. redirectTo
+      // and other query params are passed through automatically.
+      {
+        source: "/register",
+        destination: "/login",
+        permanent: false,
+      },
+      // Old email unsubscribe links pointed to these routes — redirect to the new settings page
+      {
+        source: "/auth/disable-notifications",
+        destination: "/settings/notifications",
+        permanent: true,
+      },
+      {
+        source: "/api/notifications/unsubscribe",
+        destination: "/settings/notifications",
+        permanent: true,
+      },
+      {
+        source: "/api/auth/callback/oidc",
+        destination: "/api/better-auth/oauth2/callback/oidc",
+        permanent: false,
+      },
+      {
+        source: "/api/auth/callback/google",
+        destination: "/api/better-auth/callback/google",
+        permanent: false,
+      },
+      {
+        source: "/api/auth/callback/microsoft-entra-id",
+        destination: "/api/better-auth/callback/microsoft",
+        permanent: false,
+      },
+    ];
+  },
+  async headers() {
+    return [
+      {
+        // /api/storage sets its own CSP (sandbox + frame-ancestors) per
+        // response; a config header for the same key would override it
+        source: "/((?!api/storage).*)",
+        headers: [
+          {
+            key: "Content-Security-Policy",
+            value: "frame-ancestors 'none'",
+          },
+        ],
+      },
+      // Browser-cache the manifest and root icons; without this they default to
+      // `max-age=0, must-revalidate` and are revalidated on every page load.
+      {
+        source: "/manifest.json",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=86400, stale-while-revalidate=604800",
+          },
+        ],
+      },
+      {
+        // Single-segment root files only, so content-hashed `/_next/static/*`
+        // assets keep their immutable headers.
+        source: "/:file([^/]+\\.(?:ico|png|svg|webp))",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=604800, stale-while-revalidate=86400",
+          },
+        ],
+      },
+    ];
+  },
+  devIndicators:
+    process.env.HIDE_DEV_INDICATOR === "true"
+      ? false
+      : {
+          position: "bottom-right",
+        },
+};
+
+const sentryWebpackPluginOptions = {
+  // For all available options, see:
+  // https://github.com/getsentry/sentry-webpack-plugin#options
+
+  org: process.env.SENTRY_ORG,
+  project: process.env.SENTRY_PROJECT,
+
+  // Only print logs for uploading source maps in CI
+  silent: !process.env.CI,
+
+  // For all available options, see:
+  // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
+
+  // Upload a larger set of source maps for prettier stack traces (increases build time)
+  widenClientFileUpload: true,
+
+  // Uncomment to route browser requests to Sentry through a Next.js rewrite to circumvent ad-blockers.
+  // This can increase your server load as well as your hosting bill.
+  // Note: Check that the configured route will not match with your Next.js middleware, otherwise reporting of client-
+  // side errors will fail.
+  // tunnelRoute: "/monitoring",
+
+  // Hides source maps from generated client bundles
+  hideSourceMaps: true,
+};
+
+const withBundleAnalyzerConfig = withBundleAnalyzer(nextConfig);
+
+// Make sure adding Sentry options is the last code to run before exporting, to
+// ensure that your source maps include changes from all other Webpack plugins
+export default process.env.NEXT_PUBLIC_SELF_HOSTED === "true"
+  ? withBundleAnalyzerConfig
+  : withSentryConfig(withBundleAnalyzerConfig, sentryWebpackPluginOptions);

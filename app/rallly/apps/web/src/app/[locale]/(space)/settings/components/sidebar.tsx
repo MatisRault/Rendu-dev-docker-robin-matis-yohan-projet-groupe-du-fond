@@ -1,0 +1,222 @@
+"use client";
+
+import { posthog, useFeatureFlagEnabled } from "@rallly/posthog/client";
+import {
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+} from "@rallly/ui/sidebar";
+import {
+  ArrowUpRightIcon,
+  BellIcon,
+  BoltIcon,
+  CalendarIcon,
+  CreditCardIcon,
+  KeyIcon,
+  LockIcon,
+  PanelsTopLeftIcon,
+  Settings2Icon,
+  ShapesIcon,
+  UserIcon,
+  UsersIcon,
+} from "lucide-react";
+import { usePathname } from "next/navigation";
+import type React from "react";
+import { HoverPrefetchLink } from "@/components/hover-prefetch-link";
+import { useSpace } from "@/features/space/client";
+import { useAuthedUser } from "@/features/user/client";
+import { Trans, useTranslation } from "@/i18n/client";
+import { useFeatureFlag } from "@/lib/feature-flags/client";
+
+export function AccountSidebarMenu() {
+  const { t } = useTranslation();
+  const pathname = usePathname();
+  const menuItems = [
+    {
+      id: "profile",
+      label: t("profile", { defaultValue: "Profile" }),
+      icon: <UserIcon />,
+      href: "/settings/profile",
+    },
+    {
+      id: "preferences",
+      label: t("preferences", { defaultValue: "Preferences" }),
+      icon: <Settings2Icon />,
+      href: "/settings/preferences",
+    },
+    {
+      id: "security",
+      label: t("security", { defaultValue: "Security" }),
+      icon: <LockIcon />,
+      href: "/settings/security",
+    },
+    {
+      id: "notifications",
+      label: t("notifications", { defaultValue: "Notifications" }),
+      icon: <BellIcon />,
+      href: "/settings/notifications",
+    },
+    {
+      id: "spaces",
+      label: t("spaces", { defaultValue: "Spaces" }),
+      icon: <PanelsTopLeftIcon />,
+      href: "/settings/spaces",
+    },
+  ];
+
+  const isCalendarsEnabled = useFeatureFlag("calendars");
+
+  if (isCalendarsEnabled) {
+    menuItems.push({
+      id: "calendars",
+      label: t("calendars", { defaultValue: "Calendars" }),
+      icon: <CalendarIcon />,
+      href: "/settings/calendars",
+    });
+  }
+
+  return (
+    <SidebarMenu>
+      {menuItems.map((item) => (
+        <SidebarMenuItem key={item.id}>
+          <SidebarMenuButton
+            render={
+              <HoverPrefetchLink
+                href={item.href}
+                className="flex items-center gap-x-2"
+              />
+            }
+            isActive={pathname.startsWith(item.href)}
+          >
+            {item.icon}
+            {item.label}
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+      ))}
+    </SidebarMenu>
+  );
+}
+
+export function SpaceSidebarMenu() {
+  const { t } = useTranslation();
+  const pathname = usePathname();
+  const { data: space } = useSpace();
+  const isAdmin = space.role === "admin";
+  const isBillingEnabled = useFeatureFlag("billing");
+  const isEventTypesEnabled = useFeatureFlag("eventTypes");
+  const menuItems: {
+    id: string;
+    label: string;
+    icon: React.ReactNode;
+    href: string;
+    suffix?: React.ReactNode;
+    onClick?: () => void;
+  }[] = [
+    {
+      id: "general",
+      label: t("general", { defaultValue: "General" }),
+      icon: <BoltIcon />,
+      href: "/settings/general",
+    },
+    // The members page is a management surface; members meet the roster
+    // through in-context pickers instead.
+    ...(isAdmin
+      ? [
+          {
+            id: "members",
+            label: t("members", { defaultValue: "Members" }),
+            icon: <UsersIcon />,
+            href: "/members",
+            suffix: <ArrowUpRightIcon className="ml-auto" />,
+            onClick: () => {
+              posthog?.capture("space_settings:members_link_click");
+            },
+          },
+        ]
+      : []),
+    ...(isEventTypesEnabled
+      ? [
+          {
+            id: "event-types",
+            label: t("eventTypes", { defaultValue: "Event Types" }),
+            icon: <ShapesIcon />,
+            href: "/settings/event-types",
+          },
+        ]
+      : []),
+    ...(isBillingEnabled
+      ? [
+          {
+            id: "billing",
+            label: t("billing", { defaultValue: "Billing" }),
+            icon: <CreditCardIcon />,
+            href: "/settings/billing",
+          },
+        ]
+      : []),
+  ];
+
+  return (
+    <SidebarMenu>
+      {menuItems.map((item) => (
+        <SidebarMenuItem key={item.id}>
+          <SidebarMenuButton
+            render={
+              <HoverPrefetchLink
+                href={item.href}
+                className="flex items-center gap-x-2"
+                onClick={item.onClick}
+              />
+            }
+            isActive={pathname.startsWith(item.href)}
+          >
+            {item.icon}
+            {item.label}
+            {item.suffix}
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+      ))}
+    </SidebarMenu>
+  );
+}
+
+export function DeveloperSidebarMenu() {
+  const { data: space } = useSpace();
+  const user = useAuthedUser();
+  const isSpaceOwner = space.ownerId === user.id;
+  const pathname = usePathname();
+  const isDeveloperToolsEnabled = useFeatureFlagEnabled("developer-tools");
+
+  if (!isSpaceOwner || !isDeveloperToolsEnabled) {
+    return null;
+  }
+
+  return (
+    <SidebarGroup>
+      <SidebarGroupLabel>
+        <Trans i18nKey="developer" defaults="Developer" />
+      </SidebarGroupLabel>
+      <SidebarGroupContent>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              render={
+                <HoverPrefetchLink
+                  href="/settings/api-keys"
+                  className="flex items-center gap-x-2"
+                />
+              }
+              isActive={pathname.startsWith("/settings/api-keys")}
+            >
+              <KeyIcon />
+              <Trans i18nKey="apiKeys" defaults="API keys" />
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarGroupContent>
+    </SidebarGroup>
+  );
+}
