@@ -232,4 +232,104 @@ figent au milieu d'un transfert, typique d'une *Path MTU Discovery* cassée — 
 correctif serait `ip link set eth0 mtu 1450` plus une clé `driver_opts:
 com.docker.network.driver.mtu: 1450` sur chaque réseau de `compose.yml`.
 
-<!-- Sections 5 (déploiement), 6 (écarts local/VM), 7 (accès formateur) : en cours. -->
+## 5. Déploiement
+
+```bash
+git clone https://github.com/MatisRault/Rendu-dev-docker-robin-matis-yohan-projet-groupe-du-fond.git /root/rallly-stack
+cd /root/rallly-stack
+bash scripts/gen-env.sh
+sed -i 's/^BASE_DOMAIN=.*/BASE_DOMAIN=10-2-192-3.sslip.io/' .env
+sed -i 's/^HTTP_BIND=.*/HTTP_BIND=0.0.0.0/'               .env
+docker compose config -q      # valide avant de démarrer
+docker compose pull           # séparé du up : distingue une erreur de pull d'une erreur de démarrage
+docker compose up -d
+```
+
+Le `.env` est généré **sur la VM**, avec ses propres secrets : rien n'est copié
+depuis le poste de développement, et aucun secret ne transite par le dépôt. Il est
+créé en permissions `600` par `gen-env.sh`.
+
+Note : séparer `pull` et `up` n'est pas cosmétique. Les images pèsent 2,1 Go au total
+(dont 1,4 Go pour Rallly) ; en cas de problème réseau, on sait immédiatement s'il
+s'agit du téléchargement ou de la configuration.
+
+### 5.1 État obtenu
+
+| Service | Statut | Ports publiés |
+|---|---|---|
+| `caddy` | Up (healthy) | **0.0.0.0:80, 0.0.0.0:443** |
+| `rallly` | Up (healthy) | aucun (3000 interne) |
+| `rallly-db` | Up (healthy) | aucun (5432 interne) |
+| `garage` | Up | aucun |
+| `mailpit` | Up (healthy) | aucun (8025 et 1025 internes) |
+| `ca-export` | Exited (0) | aucun — `network_mode: none` |
+
+Caddy est bien le **seul** service à publier des ports, conformément au contrat §3 de
+`00-COMMUN.md`. La CA a été exportée dans le volume `ca_public` (`root.crt`, 627
+octets, en lecture seule).
+
+### 5.2 Vérifications depuis le poste client, à travers le VPN
+
+| Test | Résultat |
+|---|---|
+| `https://rallly.10-2-192-3.sslip.io` | **200** en 0,67 s |
+| `https://mail.10-2-192-3.sslip.io` | **200** |
+| `https://auth.10-2-192-3.sslip.io` | **502** — attendu, Authentik pas encore livré par P2 |
+| `http://` → `https://` | **308** |
+| Résolution `rallly.10-2-192-3.sslip.io` | `10.2.192.3` — aucun filtrage anti-rebinding à contourner |
+| Émetteur du certificat | `CN=Caddy Local Authority - ECC Intermediate` |
+| Page Rallly complète via le VPN | 85 276 octets en 0,40 s |
+
+Ce dernier test confirme le §4.7 **du côté VPN** aussi : un transfert de plusieurs
+dizaines de kilo-octets passe sans blocage, donc la *Path MTU Discovery* fonctionne
+sur tout le chemin poste → NetBird → VXLAN Énov → conteneur.
+
+### 5.3 Consommation mémoire mesurée
+
+961 Mo utilisés et **0 octet de swap** avec cinq services actifs. Le swap de §4.4
+reste donc une assurance non consommée — mais Authentik, qui réclame 2 Go à lui seul,
+n'est pas encore déployé. C'est précisément à ce moment-là que la marge sera utile ;
+la mesure sera à refaire après la livraison de P2.
+
+## 6. Écarts local / VM
+
+| Élément | Local (poste de P1) | VM Énov | Pourquoi |
+|---|---|---|---|
+| `BASE_DOMAIN` | `localhost` | `10-2-192-3.sslip.io` | Pas de DNS public sur le réseau campus ; `sslip.io` encode l'IP dans le nom |
+| `HTTP_BIND` | `127.0.0.1` | `0.0.0.0` | Accès nécessaire depuis le VPN, pas seulement depuis la machine |
+| **Architecture CPU** | **arm64** (Apple Silicon) | **x86_64** | Écart non prévu par le plan, qui supposait tout le monde sous Windows/amd64. Toutes les images utilisées sont multi-arch, donc transparent — **mais** l'image GHCR produite par la CI (`ubuntu-latest`, donc amd64) ne tournera pas sur le Mac de P1 sans émulation. À anticiper avec P3 : soit un build multi-arch (`docker/build-push-action` + `platforms: linux/amd64,linux/arm64`), soit P1 teste en local avec `RALLLY_IMAGE=rallly-local:dev` |
+| Runtime Docker | Rancher Desktop (moby) | Docker Engine 29.8.2 | Imposé par le poste de P1 ; Compose v2+ des deux côtés, aucune différence de comportement constatée |
+| Swap | géré par macOS | **2 Go explicites** | 4 Go de RAM seulement sur la VM |
+| `RALLLY_IMAGE` | `lukevella/rallly:4` | `lukevella/rallly:4` pour l'instant → image GHCR dès que P3 l'a publiée | Produite par la CI |
+| TLS | CA interne Caddy | CA interne Caddy | **Aucun écart** : identique en local et sur la VM |
+| Fichiers Compose | identiques | identiques | Seul le `.env` diffère |
+| Pare-feu | aucun | `ufw` actif (22, 80, 443) | Machine exposée sur le VLAN |
+
+## 7. Accès pour le formateur
+
+1. Être connecté au **VPN NetBird Énov** (`netbird.enov.icu`) — sans lui, les trois
+   URL sont injoignables.
+2. Ouvrir l'une des adresses :
+   - Rallly — `https://rallly.10-2-192-3.sslip.io`
+   - Authentik — `https://auth.10-2-192-3.sslip.io`
+   - Mailpit — `https://mail.10-2-192-3.sslip.io` (réservé aux admins)
+3. **Accepter l'avertissement de certificat**, ou importer la CA interne pour le faire
+   disparaître : `./stack.sh ca` produit `certs/caddy-root.crt`.
+   - macOS : `./stack.sh ca-trust` (ajoute la CA au trousseau).
+   - Windows : double-clic → *Installer le certificat* → *Utilisateur actuel* →
+     **Autorités de certification racines de confiance**. Firefox a son propre
+     magasin (Paramètres → Vie privée et sécurité → Certificats → Importer).
+4. Comptes de démo : voir `00-COMMUN.md` §7. **Les mots de passe sont transmis hors
+   dépôt** (ils sont générés aléatoirement par `gen-env.sh` sur la VM).
+
+## 8. Reste à faire
+
+- [ ] **Reboot de validation** : le noyau 6.8.0-146 attend un redémarrage (§4.3).
+      Il servira de test de résilience — après reboot, la stack doit remonter seule
+      (`restart: unless-stopped`), le swap être réactivé par `fstab` et le DNS tenir
+      grâce au drop-in de §4.1. À faire avec l'accord de l'équipe, pas en pleine
+      séance de travail de P2 ou P3.
+- [ ] Repasser `RALLLY_IMAGE` sur l'image GHCR dès que P3 l'a publiée en public.
+- [ ] Refaire la mesure mémoire de §5.3 après le déploiement d'Authentik par P2.
+- [ ] Tester l'accès depuis le poste d'une personne extérieure au groupe
+      (*Definition of done* de l'étape 6).
