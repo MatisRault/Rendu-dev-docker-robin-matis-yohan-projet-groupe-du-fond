@@ -162,5 +162,74 @@ plus le retrait de la ligne de `fstab`).
 Vérifié : `swapon --show` → 2 Go actifs, `swappiness=10`, consommation de 474 Mo au
 repos avant déploiement.
 
-<!-- Sections 4.5 (Docker), 4.6 (ufw), 4.7 (MTU), 5 (déploiement),
-     6 (écarts local/VM), 7 (accès formateur) : en cours. -->
+### 4.5 Docker
+
+```bash
+curl -fsSL https://get.docker.com -o /root/get-docker.sh
+sh /root/get-docker.sh
+```
+
+Résultat : Docker Engine **29.8.2** et Compose **5.6.0** (le plan exige v2.20+).
+
+**Pas de `usermod -aG docker`**, contrairement au plan : le template Énov ne fournit
+que le compte `root`, qui est déjà le propriétaire du socket Docker. Cela nous évite
+au passage la limite que le plan demandait de documenter — « appartenir au groupe
+`docker` équivaut à être root », puisqu'il n'y a pas de compte non privilégié à qui
+accorder cet accès. La contrepartie, à assumer en soutenance : **toute la stack est
+pilotée en root sur la VM**, alors qu'un utilisateur dédié serait préférable en
+production.
+
+### 4.6 Pare-feu ufw
+
+`ufw` est préinstallé mais **inactif**. L'ordre des trois commandes est **critique** :
+activer le pare-feu avant d'avoir autorisé SSH coupe la session en cours et rend la
+VM inaccessible (seule la console VNC de Sunstone permettrait alors de la récupérer).
+
+```bash
+ufw allow OpenSSH        # 1. D'ABORD, sinon lock-out
+ufw allow 80,443/tcp     # 2. Caddy
+ufw --force enable       # 3. Seulement maintenant
+```
+
+⚠️ **Limite à mentionner en soutenance** : Docker insère ses propres règles dans la
+chaîne `DOCKER-USER` d'iptables, **en amont** de celles d'ufw. Les ports publiés par
+un conteneur sont donc joignables **même si ufw les refuse**. Ici c'est sans
+conséquence — seul Caddy publie des ports, et ce sont précisément 80 et 443 qu'on
+veut ouvrir — mais ufw ne doit pas être présenté comme la protection des conteneurs.
+Ce qui protège réellement, c'est l'absence de `ports:` sur tous les autres services
+et les réseaux `internal: true`.
+
+### 4.7 MTU : le 1450 de la doc Énov ne s'applique pas — mesuré
+
+La doc Énov impose MTU 1450 à cause de l'encapsulation VXLAN. **Testé, et ce n'est
+pas nécessaire sur notre chemin réseau.**
+
+Le test doit se faire **depuis l'intérieur d'un conteneur**, pas depuis l'hôte : un
+`docker pull` est exécuté par le daemon via `eth0` et ne traverse jamais le bridge
+`docker0`. Il ne prouve donc rien sur le réseau des conteneurs — c'est le piège de
+cette vérification.
+
+```bash
+docker run --rm alpine:3.22 sh -c '
+  apk add --no-cache iputils curl
+  ping -M do -s 1472 -c 2 1.1.1.1          # 1472 + 28 d en-tetes = trames de 1500
+  curl -o /dev/null https://speed.cloudflare.com/__down?bytes=10000000'
+```
+
+| Mesure | Résultat |
+|---|---|
+| `eth0` / `docker0` | MTU 1500 tous les deux (défaut) |
+| ping *Don't Fragment*, trames de 1500 octets | **0 % de perte**, RTT 16 ms |
+| Téléchargement de 10 Mo en HTTPS depuis le conteneur | **10 000 000 octets en 0,48 s** |
+
+Conclusion : l'encapsulation VXLAN est absorbée par le réseau sous-jacent (jumbo
+frames sur l'*underlay*), le système invité peut rester à 1500. **Aucun `mtu:` n'a
+été ajouté aux réseaux Compose**, ce qui évite un écart de configuration entre le
+local et la VM.
+
+Si un jour le symptôme apparaissait — connexions TCP qui s'établissent puis se
+figent au milieu d'un transfert, typique d'une *Path MTU Discovery* cassée — le
+correctif serait `ip link set eth0 mtu 1450` plus une clé `driver_opts:
+com.docker.network.driver.mtu: 1450` sur chaque réseau de `compose.yml`.
+
+<!-- Sections 5 (déploiement), 6 (écarts local/VM), 7 (accès formateur) : en cours. -->
