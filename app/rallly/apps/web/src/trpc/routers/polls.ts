@@ -11,6 +11,8 @@ import { getInstanceBranding, getSpaceBranding } from "@/emails/branding";
 import { getInstancePolicy } from "@/features/instance-policy/data";
 import { moderateContent } from "@/features/moderation/mutations";
 import { recordPollActivities } from "@/features/poll/activity/mutations";
+import { customFieldsSchema } from "@/features/poll/custom-fields/schema";
+import { parseCustomFields } from "@/features/poll/custom-fields/utils";
 import {
   canUserManagePoll,
   getPolls,
@@ -109,6 +111,7 @@ export const polls = router({
         hideScores: z.boolean().optional(),
         disableComments: z.boolean().optional(),
         requireParticipantEmail: z.boolean().optional(),
+        customFields: customFieldsSchema.optional(),
         options: z
           .object({
             startDate: z.string(),
@@ -217,6 +220,7 @@ export const polls = router({
             disableComments: input.disableComments,
             hideScores: input.hideScores,
             requireParticipantEmail: input.requireParticipantEmail,
+            customFields: input.customFields ?? [],
             spaceId,
           },
         });
@@ -321,6 +325,7 @@ export const polls = router({
         disableComments: z.boolean().optional(),
         hideScores: z.boolean().optional(),
         requireParticipantEmail: z.boolean().optional(),
+        customFields: customFieldsSchema.optional(),
       }),
     )
     .use(requireUserMiddleware)
@@ -494,6 +499,7 @@ export const polls = router({
             hideParticipants: input.hideParticipants,
             disableComments: input.disableComments,
             requireParticipantEmail: input.requireParticipantEmail,
+            customFields: input.customFields,
             kind,
           },
         });
@@ -729,6 +735,7 @@ export const polls = router({
           disableComments: true,
           hideScores: true,
           requireParticipantEmail: true,
+          customFields: true,
           options: {
             select: {
               id: true,
@@ -816,6 +823,9 @@ export const polls = router({
 
       return {
         ...pollFields,
+        // [projet] Field definitions are public (voters must see them), the
+        // answers are not: see participants.list.
+        customFields: parseCustomFields(res.customFields),
         space: res.space
           ? {
               ...res.space,
@@ -1363,6 +1373,7 @@ export const polls = router({
           hideParticipants: true,
           hideScores: true,
           requireParticipantEmail: true,
+          customFields: true,
           disableComments: true,
           spaceId: true,
           kind: true,
@@ -1392,6 +1403,7 @@ export const polls = router({
             location: poll.location,
             spaceId: poll.spaceId,
             requireParticipantEmail: poll.requireParticipantEmail,
+            customFields: parseCustomFields(poll.customFields),
             description: poll.description,
             hideParticipants: poll.hideParticipants,
             hideScores: poll.hideScores,

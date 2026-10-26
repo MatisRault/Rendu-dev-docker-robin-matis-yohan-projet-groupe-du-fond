@@ -50,6 +50,8 @@ model Poll {
   hideScores              Boolean           @default(false) @map("hide_scores")
   disableComments         Boolean           @default(true) @map("disable_comments")
   requireParticipantEmail Boolean           @default(false) @map("require_participant_email")
+  /// [projet] Champs personnalisés demandés aux votants (discussion #201). Liste courte (≤ 5) toujours lue avec le sondage : validée par zod dans features/poll/custom-fields, pas par un modèle relationnel
+  customFields            Json              @default("[]") @map("custom_fields")
   muted                   Boolean           @default(false)
 
   user           User?           @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -79,6 +81,8 @@ model Participant {
   pollId    String    @map("poll_id")
   locale    String?
   timeZone  String?   @map("time_zone")
+  /// [projet] Réponses aux champs personnalisés, indexées par id de champ. Visibles par l'organisateur seulement (filtrées dans participants.list)
+  customAnswers Json   @default("{}") @map("custom_answers")
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime? @updatedAt @map("updated_at")
 

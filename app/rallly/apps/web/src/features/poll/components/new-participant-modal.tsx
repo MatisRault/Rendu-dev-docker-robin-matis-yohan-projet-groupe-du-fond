@@ -21,6 +21,13 @@ import {
 import { Input } from "@rallly/ui/input";
 import { Label } from "@rallly/ui/label";
 import { MaxCharLength } from "@rallly/ui/max-char-length";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@rallly/ui/select";
 import { Textarea } from "@rallly/ui/textarea";
 import { TRPCClientError } from "@trpc/client";
 import { CircleCheckIcon, PlusIcon } from "lucide-react";
@@ -35,6 +42,8 @@ import {
   useEditToken,
 } from "@/features/poll/components/mutations";
 import VoteIcon from "@/features/poll/components/vote-icon";
+import type { CustomAnswerError } from "@/features/poll/custom-fields/utils";
+import { validateCustomAnswers } from "@/features/poll/custom-fields/utils";
 import { MAX_RESPONSE_NOTE_LENGTH } from "@/features/poll/schema";
 import { useUser } from "@/features/user/client";
 import { Trans, useTranslation } from "@/i18n/client";
@@ -45,6 +54,8 @@ const requiredEmailSchema = z.object({
   name: z.string().trim().min(1).max(100),
   email: z.email(),
   note: z.string().max(MAX_RESPONSE_NOTE_LENGTH).optional(),
+  // [projet] answers to the poll's custom fields, checked in onSubmit
+  customAnswers: z.record(z.string(), z.string()).optional(),
 });
 
 const optionalEmailSchema = z.object({
@@ -52,6 +63,8 @@ const optionalEmailSchema = z.object({
   name: z.string().trim().min(1).max(100),
   email: z.email().or(z.literal("")),
   note: z.string().max(MAX_RESPONSE_NOTE_LENGTH).optional(),
+  // [projet] answers to the poll's custom fields, checked in onSubmit
+  customAnswers: z.record(z.string(), z.string()).optional(),
 });
 
 const schema = z.union([requiredEmailSchema, optionalEmailSchema]);
@@ -138,6 +151,7 @@ export const NewParticipantForm = (props: NewParticipantModalProps) => {
     defaultValues: {
       requireEmail: isEmailRequired,
       note: "",
+      customAnswers: {},
       ...(isLoggedIn
         ? { name: user.name, email: user.email ?? "" }
         : {
@@ -173,6 +187,18 @@ export const NewParticipantForm = (props: NewParticipantModalProps) => {
       defaultValue:
         "Your response could not be saved. Please check your connection and try again.",
     });
+  };
+  const getCustomAnswerErrorMessage = (error: CustomAnswerError) => {
+    switch (error.reason) {
+      case "invalidEmail":
+        return t("customFieldErrorEmail", {
+          defaultValue: "Please enter a valid email address.",
+        });
+      default:
+        return t("customFieldErrorRequired", {
+          defaultValue: "This field is required.",
+        });
+    }
   };
   const noteLength = watch("note")?.length ?? 0;
   const [showNote, setShowNote] = React.useState(false);
@@ -264,6 +290,17 @@ export const NewParticipantForm = (props: NewParticipantModalProps) => {
         <form
           id="new-participant-form"
           onSubmit={handleSubmit(async (data) => {
+            // [projet] Same check as the server, for an inline error message
+            const answersCheck = validateCustomAnswers(
+              poll.customFields,
+              data.customAnswers,
+            );
+            if (!answersCheck.ok) {
+              setError(`customAnswers.${answersCheck.error.fieldId}`, {
+                message: getCustomAnswerErrorMessage(answersCheck.error),
+              });
+              return;
+            }
             try {
               await createGuestIfNeeded();
               const newParticipant = await addParticipant.mutateAsync({
@@ -271,6 +308,7 @@ export const NewParticipantForm = (props: NewParticipantModalProps) => {
                 votes: props.votes,
                 email: data.email,
                 note: data.note,
+                customAnswers: answersCheck.answers,
                 pollId: poll.id,
                 timeZone,
                 token,
@@ -326,6 +364,62 @@ export const NewParticipantForm = (props: NewParticipantModalProps) => {
               </FormItem>
             )}
           />
+
+          {poll.customFields.map((customField) => (
+            <FormField
+              key={customField.id}
+              control={form.control}
+              name={`customAnswers.${customField.id}`}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    {customField.label}
+                    {!customField.required
+                      ? ` ${t("optional", { defaultValue: "(optional)" })}`
+                      : null}
+                  </FormLabel>
+                  <FormControl>
+                    {customField.type === "select" ? (
+                      <Select
+                        items={customField.choices.map((choice) => ({
+                          value: choice,
+                          label: choice,
+                        }))}
+                        value={field.value ?? null}
+                        onValueChange={(value) => field.onChange(value ?? "")}
+                        disabled={formState.isSubmitting}
+                      >
+                        <SelectTrigger className="w-full">
+                          <SelectValue
+                            placeholder={t("customFieldSelectPlaceholder", {
+                              defaultValue: "Select an option",
+                            })}
+                          />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {customField.choices.map((choice) => (
+                            <SelectItem key={choice} value={choice}>
+                              {choice}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    ) : (
+                      <Input
+                        className="w-full"
+                        {...passwordManagerIgnoreProps}
+                        type={customField.type === "email" ? "email" : "text"}
+                        disabled={formState.isSubmitting}
+                        {...field}
+                        value={field.value ?? ""}
+                      />
+                    )}
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          ))}
 
           <div className="flex flex-col gap-2">
             <Label>{t("response", { defaultValue: "Response" })}</Label>

@@ -23,6 +23,7 @@ import { showPayWall, useIsFree } from "@/features/billing/client";
 import { ProBadge } from "@/features/billing/components/pro-badge";
 import type { PollSettingsFormData } from "@/features/poll/components/forms/types";
 import { Trans } from "@/i18n/client";
+import { CustomFieldsEditor } from "./custom-fields-editor";
 
 export const PollSettingsForm = ({ children }: React.PropsWithChildren) => {
   const form = useFormContext<PollSettingsFormData>();
@@ -186,6 +187,7 @@ export const PollSettingsForm = ({ children }: React.PropsWithChildren) => {
               </Field>
             )}
           />
+          <CustomFieldsEditor />
         </FieldGroup>
       </CardContent>
       {children}
