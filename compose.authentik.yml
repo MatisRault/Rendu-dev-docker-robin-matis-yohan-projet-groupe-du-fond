@@ -1,1 +1,87 @@
-services: {}
+# compose.authentik.yml — IdP (P2)
+# Réseaux déclarés dans compose.yml (socle P1). Écarts avec le compose officiel :
+# voir docs/authentik.md.
+x-authentik-env: &authentik-env
+  AUTHENTIK_SECRET_KEY: ${AUTHENTIK_SECRET_KEY}
+  AUTHENTIK_POSTGRESQL__HOST: authentik-db
+  AUTHENTIK_POSTGRESQL__NAME: authentik
+  AUTHENTIK_POSTGRESQL__USER: authentik
+  AUTHENTIK_POSTGRESQL__PASSWORD: ${AUTHENTIK_DB_PASSWORD}
+  # SMTP de lab
+  AUTHENTIK_EMAIL__HOST: mailpit
+  AUTHENTIK_EMAIL__PORT: "1025"
+  AUTHENTIK_EMAIL__USE_TLS: "false"
+  AUTHENTIK_EMAIL__USE_SSL: "false"
+  AUTHENTIK_EMAIL__FROM: ${MAIL_FROM}
+  # Compte admin initial (akadmin)
+  AUTHENTIK_BOOTSTRAP_EMAIL: ${AUTHENTIK_BOOTSTRAP_EMAIL}
+  AUTHENTIK_BOOTSTRAP_PASSWORD: ${AUTHENTIK_BOOTSTRAP_PASSWORD}
+  # Pas de télémétrie
+  AUTHENTIK_ERROR_REPORTING__ENABLED: "false"
+  AUTHENTIK_DISABLE_STARTUP_ANALYTICS: "true"
+  AUTHENTIK_DISABLE_UPDATE_CHECK: "true"
+
+services:
+  authentik-db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: authentik
+      POSTGRES_USER: authentik
+      POSTGRES_PASSWORD: ${AUTHENTIK_DB_PASSWORD}
+    volumes:
+      - authentik_db:/var/lib/postgresql/data
+    networks: [authentik_backend]
+    security_opt: ["no-new-privileges:true"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d authentik -U authentik"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+  authentik-server:
+    image: ghcr.io/goauthentik/server:${AUTHENTIK_TAG}
+    restart: unless-stopped
+    command: server
+    shm_size: 512mb
+    environment:
+      <<: *authentik-env
+    volumes:
+      - authentik_data:/data
+    depends_on:
+      authentik-db:
+        condition: service_healthy
+    # Pas de port publié : uniquement joignable via Caddy (réseau edge)
+    networks: [edge, authentik_backend, mail]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+
+  authentik-worker:
+    image: ghcr.io/goauthentik/server:${AUTHENTIK_TAG}
+    restart: unless-stopped
+    command: worker
+    shm_size: 512mb
+    # PAS de "user: root" ni de socket Docker (contrairement au compose officiel) :
+    # on n'utilise pas les outposts gérés par Docker → moins de privilèges.
+    environment:
+      <<: *authentik-env
+      # Variables lues par les blueprints (!Env)
+      BASE_DOMAIN: ${BASE_DOMAIN}
+      RALLLY_OIDC_CLIENT_ID: ${RALLLY_OIDC_CLIENT_ID}
+      RALLLY_OIDC_CLIENT_SECRET: ${RALLLY_OIDC_CLIENT_SECRET}
+      DEMO_PASSWORD: ${DEMO_PASSWORD}
+      RALLLY_ADMIN_EMAIL: ${RALLLY_ADMIN_EMAIL}
+    volumes:
+      - authentik_data:/data
+      - ./authentik/blueprints:/blueprints/custom:ro
+    depends_on:
+      authentik-db:
+        condition: service_healthy
+    networks: [authentik_backend, mail]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+
+volumes:
+  # Médias Authentik (icônes d'applications…), partagés server/worker
+  authentik_data:
