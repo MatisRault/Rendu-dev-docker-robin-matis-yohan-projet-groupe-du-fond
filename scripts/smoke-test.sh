@@ -30,6 +30,13 @@ if [ "$AUTH" = 1 ]; then
   # Rallly joint Authentik depuis l'intérieur (alias réseau + CA)
   docker compose exec -T rallly node -e \
     "fetch('https://auth.$D/application/o/rallly/.well-known/openid-configuration').then(r=>{if(!r.ok)process.exit(1);console.log('✅ Rallly → Authentik OK')}).catch(e=>{console.error(e);process.exit(1)})"
+
+  # SSO obligatoire : la connexion par code e-mail ne doit pas contourner Authentik
+  CODE="$(curl -sk "${RES[@]}" -X POST -H "Origin: https://rallly.$D" -H "Content-Type: application/json" \
+    -d '{"email":"smoke@example.com","type":"sign-in"}' -w '\n%{http_code}' \
+    "https://rallly.$D/api/better-auth/email-otp/send-verification-otp" | tail -n 1)"
+  if [ "$CODE" = 403 ]; then echo "✅ Connexion par e-mail refusée (SSO obligatoire)"
+  else echo "❌ Connexion par e-mail possible (HTTP $CODE) : contournement du SSO"; exit 1; fi
 fi
 
 # Aucune BDD exposée sur l'hôte

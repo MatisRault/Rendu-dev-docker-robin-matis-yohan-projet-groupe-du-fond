@@ -492,7 +492,7 @@ git status               # .env et certs/ NE doivent PAS apparaître
 |---|---|---|---|---|
 | Catalogue A | # | P1 | `feat/…` | |
 | Catalogue B | # | P2 | `feat/…` | |
-| Libre : champs personnalisés pour les votants ([discussion #201](https://github.com/lukevella/rallly/discussions/201)) | — | P3 | `feat/champs-personnalises` | en cours |
+| Libre : champs personnalisés pour les votants ([discussion #201](https://github.com/lukevella/rallly/discussions/201)) | — | P3 | `feat/champs-personnalises` | mergée (PR #5) |
 
 Bonus upstream (+1 point par feature mergée chez `lukevella/rallly`) : **facultatif**, hors barème de base. On ne le vise pas par défaut. Si une feature s'y prête vraiment et qu'il reste du temps à la fin, on en reparle.
 

@@ -359,6 +359,21 @@ export const authLib = betterAuth({
   },
   hooks: {
     before: createAuthMiddleware(async (ctx) => {
+      // [projet] With EMAIL_LOGIN_ENABLED=false the login page only hides the
+      // email form: these OTP endpoints would still sign anyone in, bypassing
+      // the SSO and its policies. Email change (signed-in users) stays allowed.
+      if (
+        env.EMAIL_LOGIN_ENABLED === "false" &&
+        (ctx.path === "/email-otp/send-verification-otp" ||
+          ctx.path === "/sign-in/email-otp" ||
+          ctx.path === "/email-otp/verify-email")
+      ) {
+        throw new APIError("FORBIDDEN", {
+          code: "EMAIL_LOGIN_DISABLED",
+          message: "Email login is disabled on this instance.",
+        });
+      }
+
       if (
         ctx.path.startsWith("/sign-in") ||
         ctx.path.startsWith("/email-otp")
