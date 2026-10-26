@@ -12,6 +12,12 @@ import { env } from "@/env";
 import { getNotificationRecipient } from "@/features/notifications/data";
 import { createUnsubscribeToken } from "@/features/notifications/utils";
 import { recordPollActivities } from "@/features/poll/activity/mutations";
+import { customAnswersInput } from "@/features/poll/custom-fields/schema";
+import {
+  parseCustomAnswers,
+  parseCustomFields,
+  validateCustomAnswers,
+} from "@/features/poll/custom-fields/utils";
 import {
   hasPollAdminAccess,
   listParticipantIdsByToken,
@@ -47,6 +53,7 @@ function createParticipantFullDTO(
   const { votes, user, token: _token, ...rest } = participant;
   return {
     ...rest,
+    customAnswers: parseCustomAnswers(rest.customAnswers),
     image: user?.image ?? null,
     votes,
     hidden: false,
@@ -182,10 +189,13 @@ export const participants = router({
         const editUrl = isAdmin
           ? shortUrl(getPollInvitePath({ pollId, token: participant.token }))
           : null;
+        // [projet] Custom field answers go to the host only, not even back
+        // to their author: stripped here so the API never leaks them.
+        const customAnswers = isAdmin ? dto.customAnswers : {};
         if (isAdmin || isOwn(participant)) {
-          return { ...dto, editUrl };
+          return { ...dto, customAnswers, editUrl };
         }
-        return { ...dto, note: null, editUrl };
+        return { ...dto, customAnswers, note: null, editUrl };
       });
 
       // Hide participants if the poll has hideParticipants enabled
@@ -296,6 +306,7 @@ export const participants = router({
         note: responseNoteInput,
         timeZone: z.string().optional(),
         token: z.string().optional(),
+        customAnswers: customAnswersInput.optional(),
         votes: z
           .object({
             optionId: z.string(),
@@ -307,11 +318,25 @@ export const participants = router({
     .mutation(
       async ({
         ctx,
-        input: { pollId, votes, name, email, note, timeZone, token },
+        input: {
+          pollId,
+          votes,
+          name,
+          email,
+          note,
+          timeZone,
+          token,
+          customAnswers,
+        },
       }) => {
         const poll = await prisma.poll.findUnique({
           where: { id: pollId },
-          select: { status: true, deleted: true },
+          select: {
+            status: true,
+            deleted: true,
+            requireParticipantEmail: true,
+            customFields: true,
+          },
         });
 
         // A deleted poll never accepts responses.
@@ -329,6 +354,30 @@ export const participants = router({
           throw new TRPCError({
             code: "BAD_REQUEST",
             message: "This poll is no longer accepting responses",
+          });
+        }
+
+        // [projet] The "require email" setting was only enforced by the
+        // voting form; a direct API call could skip it.
+        if (
+          poll.requireParticipantEmail &&
+          !z.email().safeParse(email?.trim()).success
+        ) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "A valid email is required to respond to this poll",
+          });
+        }
+
+        // [projet] Custom fields are checked here, not only in the form.
+        const answersCheck = validateCustomAnswers(
+          parseCustomFields(poll.customFields),
+          customAnswers,
+        );
+        if (!answersCheck.ok) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: `Invalid answer to custom field "${answersCheck.error.fieldId}": ${answersCheck.error.reason}`,
           });
         }
 
@@ -380,6 +429,7 @@ export const participants = router({
                 email,
                 note,
                 timeZone,
+                customAnswers: answersCheck.answers,
                 token: editToken,
                 userId: ctx.user.id,
                 locale: ctx.locale,
