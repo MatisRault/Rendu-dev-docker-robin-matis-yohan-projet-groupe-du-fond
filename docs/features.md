@@ -54,3 +54,13 @@ Inspirée de la discussion Rallly [#134](https://github.com/lukevella/rallly/dis
 4. Appel API forgé (le vote rejoué depuis l'onglet Réseau du navigateur) : refusé par le
    serveur (`This poll has expired and no longer accepts responses`).
 5. Dans les réglages, repousser la date : le sondage accepte de nouveau les votes.
+
+### Captures (stack locale, image `rallly:main`)
+
+| Réglage | Avant l'échéance | Après l'échéance |
+|---|---|---|
+| ![Champ date limite](captures/expiration-reglage.jpg) | ![Réponses acceptées jusqu'au…](captures/expiration-ouvert.jpg) | ![Sondage expiré et fermé](captures/expiration-expire.jpg) |
+
+Vérifié dans le navigateur : vote accepté avant l'échéance ; après, vote forgé par l'API
+refusé (HTTP 400 `This poll has expired and no longer accepts responses`), modification du
+vote refusée même pour la créatrice ; date repoussée → sondage rouvert.
