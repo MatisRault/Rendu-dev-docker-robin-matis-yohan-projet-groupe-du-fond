@@ -24,9 +24,18 @@ rallly.{$BASE_DOMAIN} {
 	reverse_proxy rallly:3000
 }
 
-# Bloc géré par P2 : forward-auth Authentik (réservé au groupe rallly-admins).
-# En attendant, Mailpit est accessible sans auth.
+# Bloc géré par P2 : forward-auth Authentik (réservé au groupe rallly-admins,
+# cf. authentik/blueprints/10-rallly-stack.yaml).
 mail.{$BASE_DOMAIN} {
 	import security_headers
-	reverse_proxy mailpit:8025
+	route {
+		# Callbacks de l'outpost embarqué (login / déconnexion)
+		reverse_proxy /outpost.goauthentik.io/* authentik-server:9000
+		forward_auth authentik-server:9000 {
+			uri /outpost.goauthentik.io/auth/caddy
+			copy_headers X-Authentik-Username X-Authentik-Groups X-Authentik-Email
+			trusted_proxies private_ranges
+		}
+		reverse_proxy mailpit:8025
+	}
 }
