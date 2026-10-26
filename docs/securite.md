@@ -241,13 +241,21 @@ certificat **public**).
   OS et de bibliothèques Go sont identiques, puisqu'issues des mêmes sources et des
   mêmes versions de paquets ; les conclusions se transposent. À refaire sur la VM si
   l'on veut une preuve stricto sensu pour l'architecture déployée.
-- **Le scan de la CI et celui-ci sont complémentaires, pas redondants.** La CI
-  (`.github/workflows/ci.yml`) scanne **uniquement** l'image Rallly que nous
-  construisons, au format SARIF remonté dans l'onglet *Security* de GitHub, et à
-  chaque commit. Le scan de ce document couvre les **7 images de la stack**, y
-  compris celles que nous ne construisons pas, et il est commenté. L'un surveille
-  notre code dans le temps, l'autre évalue la surface d'attaque complète à un
-  instant donné.
+- **Le scan de la CI et celui-ci sont complémentaires, et la différence n'est pas
+  celle qu'on croit.** La CI (`.github/workflows/ci.yml`, écrite par P3) fait déjà
+  deux scans : le job `image` scanne l'image Rallly que nous construisons, au format
+  SARIF remonté dans l'onglet *Security* de GitHub ; le job `scan-stack` scanne,
+  lui aussi, **toutes** les images de la stack. Ce document ne comble donc pas un
+  trou de couverture. Deux écarts le justifient quand même :
+  1. la CI passe `--ignore-unfixed`, donc elle **masque les CVE sans correctif
+     disponible**. C'est exactement le cas de `CVE-2023-45853` (zlib,
+     `will_not_fix`) commentée en §5.2 : elle n'apparaît jamais dans la CI, alors
+     qu'elle est bien présente dans l'image que nous déployons ;
+  2. la CI termine ses scans par `|| true` et n'écrit que dans les journaux du job,
+     qui expirent. Ici les sorties brutes sont **commitées** dans `docs/scan/` et
+     **commentées**, ce qui est ce que le sujet demande d'évaluer.
+  Autrement dit : la CI surveille en continu ce qui est corrigeable, ce document
+  évalue et explique la surface d'attaque réelle à un instant donné.
 
 ## 6. Vérifications fonctionnelles après durcissement
 
