@@ -23,6 +23,7 @@ export type PollSettingsFormData = {
   hideScores: boolean;
   enableComments: boolean;
   customFields: CustomField[]; // [projet] champs personnalisés (#201)
+  deadline: string; // [projet] expiration (#134), datetime-local, "" = aucune
 };
 
 export type NewEventData = PollDetailsData &

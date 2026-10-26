@@ -11,6 +11,7 @@ import {
   EventMetaList,
   EventMetaTitle,
 } from "@/features/poll/components/event-meta";
+import { PollDeadline } from "@/features/poll/components/poll-deadline";
 import TruncatedLinkify from "@/features/poll/components/truncated-linkify";
 import VoteIcon from "@/features/poll/components/vote-icon";
 import { SpaceIcon } from "@/features/space/components/space-icon";
@@ -99,6 +100,7 @@ export function EventCard() {
               <TruncatedLinkify>{poll.location}</TruncatedLinkify>
             </EventMetaItem>
           ) : null}
+          <PollDeadline />
         </EventMetaList>
         <h2 className="mt-4 mb-1.5 font-medium text-sm">
           <Trans i18nKey="responseOptions" defaults="Response options" />

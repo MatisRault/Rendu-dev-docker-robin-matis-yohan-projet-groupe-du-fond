@@ -10,9 +10,11 @@ import {
   FieldLabel,
 } from "@rallly/ui/field";
 import { FormField } from "@rallly/ui/form";
+import { Input } from "@rallly/ui/input";
 import { Switch } from "@rallly/ui/switch";
 import {
   BarChart2Icon,
+  HourglassIcon,
   MailIcon,
   MessageCircleIcon,
   VenetianMaskIcon,
@@ -183,6 +185,36 @@ export const PollSettingsForm = ({ children }: React.PropsWithChildren) => {
                       enabled: checked,
                     });
                   }}
+                />
+              </Field>
+            )}
+          />
+          {/* [projet] Expiration (#134) */}
+          <FormField
+            control={form.control}
+            name="deadline"
+            render={({ field }) => (
+              <Field orientation="horizontal">
+                <SettingIcon>
+                  <HourglassIcon />
+                </SettingIcon>
+                <FieldContent>
+                  <FieldLabel htmlFor="poll-deadline">
+                    <Trans i18nKey="pollDeadlineTitle" defaults="Deadline" />
+                  </FieldLabel>
+                  <FieldDescription>
+                    <Trans
+                      i18nKey="pollDeadlineDescription"
+                      defaults="Stop accepting responses after this date. Leave empty to keep the poll open."
+                    />
+                  </FieldDescription>
+                </FieldContent>
+                <Input
+                  id="poll-deadline"
+                  type="datetime-local"
+                  className="w-auto"
+                  value={field.value ?? ""}
+                  onChange={(e) => field.onChange(e.target.value)}
                 />
               </Field>
             )}

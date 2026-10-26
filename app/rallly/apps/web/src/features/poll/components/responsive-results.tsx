@@ -16,6 +16,7 @@ import { AddToCalendarButton } from "@/features/calendars/components/add-to-cale
 import { usePoll } from "@/features/poll/client";
 import DesktopPoll from "@/features/poll/components/desktop-poll";
 import MobilePoll from "@/features/poll/components/mobile-poll";
+import { isPollExpired } from "@/features/poll/utils";
 import {
   EventDate,
   EventTimeRange,
@@ -89,7 +90,14 @@ export function ResponsiveResults() {
     );
   }
 
-  if (!dismissed && poll.status === "closed") {
+  // [projet] An expired poll (#134) reads as closed even before the cron
+  // job flips its status.
+  const expired = isPollExpired(poll);
+
+  if (
+    !dismissed &&
+    (poll.status === "closed" || (poll.status === "open" && expired))
+  ) {
     return (
       <Card>
         <EmptyState>
@@ -100,7 +108,12 @@ export function ResponsiveResults() {
             <Trans i18nKey="pollStatusClosed" defaults="Closed" />
           </EmptyStateTitle>
           <EmptyStateDescription>
-            {poll.closedReason === "auto" ? (
+            {expired ? (
+              <Trans
+                i18nKey="pollExpiredDescription"
+                defaults="This poll has passed its deadline. No more responses are being accepted."
+              />
+            ) : poll.closedReason === "auto" ? (
               <Trans
                 i18nKey="pollAutoClosedDescription"
                 defaults="This poll was closed automatically because all of its dates have passed. No more responses are being accepted."
