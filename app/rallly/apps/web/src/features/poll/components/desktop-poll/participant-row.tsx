@@ -13,6 +13,7 @@ import {
   Participant,
   ParticipantName,
 } from "@/features/poll/components/participant";
+import { ParticipantAnswers } from "@/features/poll/components/participant-answers";
 import { ParticipantDropdown } from "@/features/poll/components/participant-dropdown";
 import { ParticipantNote } from "@/features/poll/components/participant-note";
 import { usePoll } from "@/features/poll/components/poll-context";
@@ -31,6 +32,7 @@ export interface ParticipantRowProps {
     email?: string;
     editUrl?: string | null;
     note?: string | null;
+    customAnswers?: Record<string, string>;
     createdAt: Date;
     image?: string | null;
     votes: Vote[];
@@ -145,14 +147,23 @@ const ParticipantRow: React.FunctionComponent<ParticipantRowProps> = ({
       })}
       participantId={participant.id}
       note={
-        // The server only includes notes the viewer may see (host or author).
-        participant.note ? (
-          <ParticipantNote
-            note={participant.note}
+        <>
+          {
+            // The server only includes notes the viewer may see (host or author).
+            participant.note ? (
+              <ParticipantNote
+                note={participant.note}
+                participantName={participant.name}
+                createdAt={participant.createdAt}
+              />
+            ) : null
+          }
+          {/* [projet] custom field answers, sent to the host only */}
+          <ParticipantAnswers
+            answers={participant.customAnswers ?? {}}
             participantName={participant.name}
-            createdAt={participant.createdAt}
           />
-        ) : null
+        </>
       }
       action={
         canEdit ? (

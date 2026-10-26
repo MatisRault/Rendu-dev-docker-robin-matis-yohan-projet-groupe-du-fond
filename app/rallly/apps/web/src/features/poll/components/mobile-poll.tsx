@@ -22,6 +22,7 @@ import {
   Participant,
   ParticipantName,
 } from "@/features/poll/components/participant";
+import { ParticipantAnswers } from "@/features/poll/components/participant-answers";
 import { ParticipantDropdown } from "@/features/poll/components/participant-dropdown";
 import { ParticipantNote } from "@/features/poll/components/participant-note";
 import { useOptions, usePoll } from "@/features/poll/components/poll-context";
@@ -179,6 +180,11 @@ const MobilePoll: React.FunctionComponent = () => {
                   size="icon"
                 />
               ) : null}
+              <ParticipantAnswers
+                answers={selectedParticipant.customAnswers ?? {}}
+                participantName={selectedParticipant.name}
+                size="icon"
+              />
               <ParticipantDropdown
                 align="end"
                 disabled={!canEditParticipant(selectedParticipant.id)}

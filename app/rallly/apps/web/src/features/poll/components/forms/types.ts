@@ -1,3 +1,4 @@
+import type { CustomField } from "@/features/poll/custom-fields/schema";
 import type { DateTimeOption } from "./poll-options-form/types";
 
 export interface PollDetailsData {
@@ -21,6 +22,7 @@ export type PollSettingsFormData = {
   hideParticipants: boolean;
   hideScores: boolean;
   enableComments: boolean;
+  customFields: CustomField[]; // [projet] champs personnalisés (#201)
 };
 
 export type NewEventData = PollDetailsData &

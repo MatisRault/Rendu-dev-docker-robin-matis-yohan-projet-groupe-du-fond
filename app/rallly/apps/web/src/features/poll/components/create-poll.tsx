@@ -23,6 +23,7 @@ import PollOptionsForm from "@/features/poll/components/forms/poll-options-form/
 import { PollSettingsForm } from "@/features/poll/components/forms/poll-settings";
 import type { NewEventData } from "@/features/poll/components/forms/types";
 import { SHARE_POLL_FLASH_KEY } from "@/features/poll/constants";
+import { cleanCustomFields } from "@/features/poll/custom-fields/utils";
 import { useUser } from "@/features/user/client";
 import { UserDropdown } from "@/features/user/components/user-dropdown";
 import { Trans, useTranslation } from "@/i18n/client";
@@ -158,6 +159,7 @@ export const CreatePoll = ({ nav }: { nav?: React.ReactNode }) => {
       hideScores: false,
       hideParticipants: false,
       enableComments: false,
+      customFields: [],
       duration: 60,
       lockTimeZone: false,
       allDay: false,
@@ -225,6 +227,7 @@ export const CreatePoll = ({ nav }: { nav?: React.ReactNode }) => {
               disableComments: !formData?.enableComments,
               hideScores: formData?.hideScores,
               requireParticipantEmail: formData?.requireParticipantEmail,
+              customFields: cleanCustomFields(formData?.customFields ?? []),
               options: required(formData?.options).map((option) => ({
                 startDate: option.type === "date" ? option.date : option.start,
                 endDate: option.type === "timeSlot" ? option.end : undefined,

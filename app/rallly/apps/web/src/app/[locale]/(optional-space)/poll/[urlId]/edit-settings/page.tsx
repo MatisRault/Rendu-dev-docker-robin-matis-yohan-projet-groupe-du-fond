@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 import { usePoll } from "@/features/poll/client";
 import { PollSettingsForm } from "@/features/poll/components/forms/poll-settings";
 import { useUpdatePollMutation } from "@/features/poll/components/mutations";
+import { cleanCustomFields } from "@/features/poll/custom-fields/utils";
 import { Trans } from "@/i18n/client";
 
 const Page = () => {
@@ -30,22 +31,26 @@ const Page = () => {
       hideScores: poll.hideScores,
       enableComments: !poll.disableComments,
       requireParticipantEmail: poll.requireParticipantEmail,
+      customFields: poll.customFields,
     },
   });
 
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(async ({ enableComments, ...data }) => {
-          const res = await update.mutateAsync({
-            pollId: poll.id,
-            ...data,
-            disableComments: !enableComments,
-          });
-          if (res.ok) {
-            redirectBackToPoll();
-          }
-        })}
+        onSubmit={form.handleSubmit(
+          async ({ enableComments, customFields, ...data }) => {
+            const res = await update.mutateAsync({
+              pollId: poll.id,
+              ...data,
+              disableComments: !enableComments,
+              customFields: cleanCustomFields(customFields),
+            });
+            if (res.ok) {
+              redirectBackToPoll();
+            }
+          },
+        )}
       >
         <PollSettingsForm>
           <CardFooter className="justify-between">
