@@ -1,0 +1,12 @@
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Faux positifs dans les sources Rallly importées"
+paths = [
+  '''app/rallly/.*\.(test|spec)\.tsx?''',
+  '''app/rallly/.*sample\.env''',
+  # données factices vérifiées : clé de licence d'aperçu d'e-mail, noms de fuseaux horaires
+  '''app/rallly/packages/emails/src/templates/license-key\.tsx''',
+  '''app/rallly/apps/web/src/components/time-zone-picker/timezone-data\.ts''',
+]

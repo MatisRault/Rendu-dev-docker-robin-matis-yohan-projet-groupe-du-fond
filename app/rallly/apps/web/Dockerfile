@@ -1,9 +1,11 @@
-FROM node:24 AS base
+# [projet] version de Node épinglée (upstream : node:24, qui bouge à chaque release)
+FROM node:24.21.0 AS base
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
 
-FROM node:24-slim AS base-slim
+# [projet] idem, image d'exécution slim épinglée
+FROM node:24.21.0-slim AS base-slim
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 
@@ -28,10 +30,12 @@ COPY --from=builder /app/out/full/ .
 COPY turbo.json turbo.json
 RUN pnpm db:generate
 
-ARG APP_VERSION
+# [projet] valeur par défaut = version importée (UPSTREAM_VERSION), même sans build-arg
+ARG APP_VERSION=4.15.4
 ENV NEXT_PUBLIC_APP_VERSION=$APP_VERSION
 
-ARG SELF_HOSTED
+# [projet] self-hosted par défaut (comme l'image officielle) : pas d'image « cloud » avec facturation
+ARG SELF_HOSTED=true
 ENV NEXT_PUBLIC_SELF_HOSTED=$SELF_HOSTED
 
 RUN SKIP_ENV_VALIDATION=1 pnpm build
@@ -82,10 +86,13 @@ ENV LOG_LEVEL=warn
 # local dev and cloud builds leave it unset and skip outbound calls entirely.
 ENV API_BASE_URL=https://api.rallly.co
 
-ARG SELF_HOSTED
+ARG SELF_HOSTED=true
 ENV NEXT_PUBLIC_SELF_HOSTED=$SELF_HOSTED
 
 EXPOSE 3000
+
+# [projet] relie le package GHCR à notre dépôt (la CI ajoute aussi les autres labels OCI)
+LABEL org.opencontainers.image.source="https://github.com/MatisRault/Rendu-dev-docker-robin-matis-yohan-projet-groupe-du-fond"
 
 # --noproxy '*': curl honors http_proxy/no_proxy env, and a probe of our own
 # loopback must never depend on the host's proxy policy.
