@@ -1,0 +1,134 @@
+# yaml-language-server: $schema=https://goauthentik.io/blueprints/schema.json
+# Enrôlement d'un externe sur invitation (P2).
+# Dérivé de /blueprints/example/flows-invitation-enrollment.yaml (flow "external"
+# uniquement) : sans jeton d'invitation valide, pas d'inscription ; l'invité
+# arrive directement dans le groupe "externes", qui a accès à Rallly.
+version: 1
+metadata:
+  name: Rallly - invitation externe
+  labels:
+    blueprints.goauthentik.io/description: Flow d'enrôlement sur invitation vers le groupe externes
+entries:
+  # Le groupe "externes" est créé par le blueprint principal
+  - model: authentik_blueprints.metaapplyblueprint
+    attrs:
+      identifiers:
+        name: Rallly stack
+      required: true
+
+  # ─── Flow ───────────────────────────────────────────────────
+  - model: authentik_flows.flow
+    id: flow
+    identifiers: { slug: rallly-invitation }   # → /if/flow/rallly-invitation/?itoken=…
+    attrs:
+      name: Rallly - invitation externe
+      title: Bienvenue ! Créez votre compte
+      designation: enrollment
+      authentication: require_unauthenticated
+
+  # ─── Stages ─────────────────────────────────────────────────
+  - model: authentik_stages_invitation.invitationstage
+    id: invitation-stage
+    identifiers: { name: rallly-invitation-invitation }
+    attrs:
+      continue_flow_without_invitation: false   # sans jeton = pas d'inscription
+
+  - model: authentik_stages_prompt.prompt
+    id: field-username
+    identifiers: { name: rallly-invitation-field-username }
+    attrs:
+      field_key: username
+      label: Nom d'utilisateur
+      type: username
+      required: true
+      placeholder: Nom d'utilisateur
+      order: 0
+  - model: authentik_stages_prompt.prompt
+    id: field-password
+    identifiers: { name: rallly-invitation-field-password }
+    attrs:
+      field_key: password
+      label: Mot de passe
+      type: password
+      required: true
+      placeholder: Mot de passe
+      order: 1
+  - model: authentik_stages_prompt.prompt
+    id: field-password-repeat
+    identifiers: { name: rallly-invitation-field-password-repeat }
+    attrs:
+      field_key: password_repeat
+      label: Mot de passe (confirmation)
+      type: password
+      required: true
+      placeholder: Mot de passe (confirmation)
+      order: 2
+  - model: authentik_stages_prompt.prompt
+    id: field-name
+    identifiers: { name: rallly-invitation-field-name }
+    attrs:
+      field_key: name
+      label: Nom complet
+      type: text
+      required: true
+      placeholder: Nom complet
+      order: 3
+  - model: authentik_stages_prompt.prompt
+    id: field-email
+    identifiers: { name: rallly-invitation-field-email }
+    attrs:
+      field_key: email
+      label: E-mail
+      type: email
+      required: true
+      placeholder: E-mail
+      order: 4
+
+  - model: authentik_stages_prompt.promptstage
+    id: prompt-stage
+    identifiers: { name: rallly-invitation-prompt }
+    attrs:
+      fields:
+        - !KeyOf field-username
+        - !KeyOf field-password
+        - !KeyOf field-password-repeat
+        - !KeyOf field-name
+        - !KeyOf field-email
+
+  - model: authentik_stages_user_write.userwritestage
+    id: user-write-stage
+    identifiers: { name: rallly-invitation-user-write }
+    attrs:
+      user_creation_mode: always_create
+      user_type: external
+      user_path_template: users/externes
+      create_users_group: !Find [authentik_core.group, [name, externes]]
+
+  - model: authentik_stages_user_login.userloginstage
+    id: user-login-stage
+    identifiers: { name: rallly-invitation-user-login }
+
+  # ─── Enchaînement des stages ────────────────────────────────
+  - model: authentik_flows.flowstagebinding
+    identifiers:
+      target: !KeyOf flow
+      stage: !KeyOf invitation-stage
+      order: 0
+    attrs:
+      evaluate_on_plan: true
+      re_evaluate_policies: true
+  - model: authentik_flows.flowstagebinding
+    identifiers:
+      target: !KeyOf flow
+      stage: !KeyOf prompt-stage
+      order: 10
+  - model: authentik_flows.flowstagebinding
+    identifiers:
+      target: !KeyOf flow
+      stage: !KeyOf user-write-stage
+      order: 20
+  - model: authentik_flows.flowstagebinding
+    identifiers:
+      target: !KeyOf flow
+      stage: !KeyOf user-login-stage
+      order: 100
