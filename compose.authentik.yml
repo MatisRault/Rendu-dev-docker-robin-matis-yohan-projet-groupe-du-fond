@@ -47,8 +47,6 @@ services:
     shm_size: 512mb
     environment:
       <<: *authentik-env
-    volumes:
-      - authentik_data:/data
     depends_on:
       authentik-db:
         condition: service_healthy
@@ -73,7 +71,6 @@ services:
       DEMO_PASSWORD: ${DEMO_PASSWORD}
       RALLLY_ADMIN_EMAIL: ${RALLLY_ADMIN_EMAIL}
     volumes:
-      - authentik_data:/data
       - ./authentik/blueprints:/blueprints/custom:ro
     depends_on:
       authentik-db:
@@ -82,6 +79,3 @@ services:
     security_opt: ["no-new-privileges:true"]
     cap_drop: [ALL]
 
-volumes:
-  # Médias Authentik (icônes d'applications…), partagés server/worker
-  authentik_data:
