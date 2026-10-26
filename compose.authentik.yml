@@ -32,6 +32,12 @@ services:
     volumes:
       - authentik_db:/var/lib/postgresql/data
     networks: [authentik_backend]
+    read_only: true
+    tmpfs: [/tmp, /var/run/postgresql]
+    cap_drop: [ALL]
+    # Mesure sur postgres:16-alpine : sans ces 5 caps l.initdb echoue
+    # (chmod/chown du datadir, su-exec vers l.uid 70, find en 0700 -> DAC_OVERRIDE).
+    cap_add: [CHOWN, SETUID, SETGID, FOWNER, DAC_OVERRIDE]
     security_opt: ["no-new-privileges:true"]
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -d authentik -U authentik"]
@@ -52,6 +58,8 @@ services:
         condition: service_healthy
     # Pas de port publié : uniquement joignable via Caddy (réseau edge)
     networks: [edge, authentik_backend, mail]
+    read_only: true
+    tmpfs: [/tmp, /media, /certs]
     security_opt: ["no-new-privileges:true"]
     cap_drop: [ALL]
 
@@ -76,6 +84,8 @@ services:
       authentik-db:
         condition: service_healthy
     networks: [authentik_backend, mail]
+    read_only: true
+    tmpfs: [/tmp, /media, /certs]
     security_opt: ["no-new-privileges:true"]
     cap_drop: [ALL]
 

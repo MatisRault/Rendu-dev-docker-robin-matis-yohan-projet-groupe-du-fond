@@ -291,6 +291,52 @@ reste donc une assurance non consommée — mais Authentik, qui réclame 2 Go à
 n'est pas encore déployé. C'est précisément à ce moment-là que la marge sera utile ;
 la mesure sera à refaire après la livraison de P2.
 
+### 5.4 Piège majeur : un `git pull` ne met pas à jour une config montée en bind
+
+**Symptôme rencontré, et c'était une faille de sécurité réelle.** Après avoir déployé
+Authentik sur la VM, `https://mail.<domaine>` répondait **200** alors que le même
+test en local répondait **302**. Autrement dit, **Mailpit était accessible sans
+authentification sur la VM**, alors que le `forward_auth` Authentik écrit par P2
+était bien présent dans `proxy/Caddyfile` après le `git pull`.
+
+Diagnostic :
+
+```bash
+# Sur le disque de la VM : la regle est la
+grep -c forward_auth /root/rallly-stack/proxy/Caddyfile        # -> 1
+# Dans le conteneur Caddy : elle n'y est pas
+docker compose exec caddy grep -c forward_auth /etc/caddy/Caddyfile   # -> 0
+```
+
+**Cause.** `compose.yml` monte un **fichier unique**
+(`./proxy/Caddyfile:/etc/caddy/Caddyfile:ro`). Un bind mount de fichier suit
+l'**inode**, pas le chemin. `git pull` ne modifie pas le fichier en place : il écrit
+un nouveau fichier et le renomme par-dessus, ce qui crée un **nouvel inode**. Le
+conteneur reste donc attaché à l'ancien inode, désormais détaché de l'arborescence —
+il lit indéfiniment l'ancienne configuration.
+
+Deux conséquences contre-intuitives :
+- `docker compose up -d` **ne corrige rien** : la définition du service n'a pas
+  changé, donc Compose ne recrée pas le conteneur.
+- `caddy reload` **ne corrige rien non plus** : il relit le même inode périmé.
+
+**Correctif** — il faut recréer le conteneur :
+```bash
+docker compose up -d --force-recreate caddy
+```
+Après quoi `mail.<domaine>` renvoie bien **302** vers
+`https://auth.<domaine>/application/o/authorize/…`.
+
+**À retenir pour le script de déploiement de P3** : tout déploiement qui suit un
+`git pull` doit recréer les services dont une configuration est montée en bind
+(`caddy`, et `garage` pour `config/garage.toml`). Les blueprints Authentik ne sont
+pas concernés : ils sont montés en tant que **répertoire**
+(`./authentik/blueprints:/blueprints/custom:ro`), et un bind mount de répertoire suit
+bien le chemin, donc les nouveaux fichiers y apparaissent normalement.
+
+Généralisation utile : monter un **répertoire** plutôt qu'un fichier unique évite
+complètement ce piège.
+
 ## 6. Écarts local / VM
 
 | Élément | Local (poste de P1) | VM Énov | Pourquoi |
@@ -329,7 +375,12 @@ la mesure sera à refaire après la livraison de P2.
       (`restart: unless-stopped`), le swap être réactivé par `fstab` et le DNS tenir
       grâce au drop-in de §4.1. À faire avec l'accord de l'équipe, pas en pleine
       séance de travail de P2 ou P3.
-- [ ] Repasser `RALLLY_IMAGE` sur l'image GHCR dès que P3 l'a publiée en public.
-- [ ] Refaire la mesure mémoire de §5.3 après le déploiement d'Authentik par P2.
+- [x] ~~Repasser `RALLLY_IMAGE` sur l'image GHCR~~ — fait le 26/10/2026. L'image
+      `ghcr.io/matisrault/…/rallly:main` se télécharge **sans authentification**, donc
+      elle est bien publique. Stack redéployée avec elle, `rallly` `healthy`.
+- [x] ~~Refaire la mesure mémoire après le déploiement d'Authentik~~ — fait :
+      **1871 Mo** utilisés sur 3915 avec les 8 services actifs, et **0 octet de swap
+      consommé**. Le dimensionnement 2 vCPU / 4 Go tient confortablement ; le swap de
+      §4.4 reste une assurance non consommée.
 - [ ] Tester l'accès depuis le poste d'une personne extérieure au groupe
       (*Definition of done* de l'étape 6).
