@@ -27,7 +27,7 @@ import {
   findPendingPollInvite,
 } from "@/features/poll/invite/mutations";
 import { getPollInvitePath } from "@/features/poll/invite/utils";
-import { generateAccessToken } from "@/features/poll/utils";
+import { generateAccessToken, isPollExpired } from "@/features/poll/utils";
 import { AppError } from "@/lib/errors/app-error";
 import { track } from "@/lib/posthog";
 import {
@@ -333,6 +333,7 @@ export const participants = router({
           where: { id: pollId },
           select: {
             status: true,
+            deadline: true,
             deleted: true,
             requireParticipantEmail: true,
             customFields: true,
@@ -354,6 +355,15 @@ export const participants = router({
           throw new TRPCError({
             code: "BAD_REQUEST",
             message: "This poll is no longer accepting responses",
+          });
+        }
+
+        // [projet] Expiration (#134): past the deadline the poll is closed
+        // even if no cron job has flipped its status yet.
+        if (isPollExpired(poll)) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "This poll has expired and no longer accepts responses",
           });
         }
 
