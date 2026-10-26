@@ -1,0 +1,1334 @@
+
+Report Summary
+
+┌──────────────────────────────────────────────────────────────────────────────────┬──────────┬─────────────────┐
+│                                      Target                                      │   Type   │ Vulnerabilities │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ lukevella/rallly:4 (debian 12.15)                                                │  debian  │       68        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/apps/web/package.json                                                        │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@aws+lambda-invoke-store@0.2.3/node_modules/@aws/lambda-- │ node-pkg │        0        │
+│ invoke-store/package.json                                                        │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@aws+lambda-invoke-store@0.3.0/node_modules/@aws/lambda-- │ node-pkg │        0        │
+│ invoke-store/package.json                                                        │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@aws-crypto+crc32@5.2.0/node_modules/@aws-crypto/crc32/p- │ node-pkg │        0        │
+│ ackage.json                                                                      │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@aws-crypto+crc32c@5.2.0/node_modules/@aws-crypto/crc32c- │ node-pkg │        0        │
+│ /package.json                                                                    │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@aws-crypto+util@5.2.0/node_modules/@aws-crypto/util/pac- │ node-pkg │        0        │
+│ kage.json                                                                        │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@aws-sdk+client-s3@3.984.0/node_modules/@aws-sdk/client-- │ node-pkg │        0        │
+│ s3/package.json                                                                  │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@aws-sdk+client-sso@3.982.0/node_modules/@aws-sdk/client- │ node-pkg │        0        │
+│ -sso/package.json                                                                │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@aws-sdk+core@3.973.6/node_modules/@aws-sdk/core/package- │ node-pkg │        0        │
+│ .json                                                                            │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@aws-sdk+crc64-nvme@3.972.0/node_modules/@aws-sdk/crc64-- │ node-pkg │        0        │
+│ nvme/package.json                                                                │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@aws-sdk+credential-provider-env@3.972.4/node_modules/@a- │ node-pkg │        0        │
+│ ws-sdk/credential-provider-env/package.json                                      │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@aws-sdk+credential-provider-http@3.972.6/node_modules/@- │ node-pkg │        0        │
+│ aws-sdk/credential-provider-http/package.json                                    │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@aws-sdk+credential-provider-ini@3.972.4/node_modules/@a- │ node-pkg │        0        │
+│ ws-sdk/credential-provider-ini/package.json                                      │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@aws-sdk+credential-provider-login@3.972.4/node_modules/- │ node-pkg │        0        │
+│ @aws-sdk/credential-provider-login/package.json                                  │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@aws-sdk+credential-provider-node@3.972.5/node_modules/@- │ node-pkg │        0        │
+│ aws-sdk/credential-provider-node/package.json                                    │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@aws-sdk+credential-provider-process@3.972.4/node_module- │ node-pkg │        0        │
+│ s/@aws-sdk/credential-provider-process/package.json                              │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@aws-sdk+credential-provider-sso@3.972.4/node_modules/@a- │ node-pkg │        0        │
+│ ws-sdk/credential-provider-sso/package.json                                      │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@aws-sdk+credential-provider-web-identity@3.972.4/node_m- │ node-pkg │        0        │
+│ odules/@aws-sdk/credential-provider-web-identity/package.json                    │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@aws-sdk+middleware-bucket-endpoint@3.972.3/node_modules- │ node-pkg │        0        │
+│ /@aws-sdk/middleware-bucket-endpoint/package.json                                │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@aws-sdk+middleware-expect-continue@3.972.3/node_modules- │ node-pkg │        0        │
+│ /@aws-sdk/middleware-expect-continue/package.json                                │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@aws-sdk+middleware-flexible-checksums@3.972.4/node_modu- │ node-pkg │        0        │
+│ les/@aws-sdk/middleware-flexible-checksums/package.json                          │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@aws-sdk+middleware-host-header@3.972.3/node_modules/@aw- │ node-pkg │        0        │
+│ s-sdk/middleware-host-header/package.json                                        │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@aws-sdk+middleware-location-constraint@3.972.3/node_mod- │ node-pkg │        0        │
+│ ules/@aws-sdk/middleware-location-constraint/package.json                        │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@aws-sdk+middleware-logger@3.972.3/node_modules/@aws-sdk- │ node-pkg │        0        │
+│ /middleware-logger/package.json                                                  │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@aws-sdk+middleware-recursion-detection@3.972.3/node_mod- │ node-pkg │        0        │
+│ ules/@aws-sdk/middleware-recursion-detection/package.json                        │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@aws-sdk+middleware-sdk-s3@3.972.6/node_modules/@aws-sdk- │ node-pkg │        0        │
+│ /middleware-sdk-s3/package.json                                                  │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@aws-sdk+middleware-ssec@3.972.3/node_modules/@aws-sdk/m- │ node-pkg │        0        │
+│ iddleware-ssec/package.json                                                      │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@aws-sdk+middleware-user-agent@3.972.6/node_modules/@aws- │ node-pkg │        0        │
+│ -sdk/middleware-user-agent/package.json                                          │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@aws-sdk+nested-clients@3.982.0/node_modules/@aws-sdk/ne- │ node-pkg │        0        │
+│ sted-clients/package.json                                                        │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@aws-sdk+region-config-resolver@3.972.3/node_modules/@aw- │ node-pkg │        0        │
+│ s-sdk/region-config-resolver/package.json                                        │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@aws-sdk+signature-v4-multi-region@3.984.0/node_modules/- │ node-pkg │        0        │
+│ @aws-sdk/signature-v4-multi-region/package.json                                  │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@aws-sdk+token-providers@3.982.0/node_modules/@aws-sdk/t- │ node-pkg │        0        │
+│ oken-providers/package.json                                                      │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@aws-sdk+util-arn-parser@3.972.2/node_modules/@aws-sdk/u- │ node-pkg │        0        │
+│ til-arn-parser/package.json                                                      │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@aws-sdk+util-endpoints@3.982.0/node_modules/@aws-sdk/ut- │ node-pkg │        0        │
+│ il-endpoints/package.json                                                        │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@aws-sdk+util-endpoints@3.984.0/node_modules/@aws-sdk/ut- │ node-pkg │        0        │
+│ il-endpoints/package.json                                                        │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@aws-sdk+util-user-agent-node@3.972.4/node_modules/@aws-- │ node-pkg │        0        │
+│ sdk/util-user-agent-node/package.json                                            │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@aws-sdk+xml-builder@3.972.4/node_modules/@aws-sdk/xml-b- │ node-pkg │        0        │
+│ uilder/package.json                                                              │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@img+colour@1.1.0/node_modules/@img/colour/package.json   │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@img+sharp-libvips-linux-arm64@1.3.4/node_modules/@img/s- │ node-pkg │        0        │
+│ harp-libvips-linux-arm64/package.json                                            │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@img+sharp-libvips-linuxmusl-arm64@1.3.4/node_modules/@i- │ node-pkg │        0        │
+│ mg/sharp-libvips-linuxmusl-arm64/package.json                                    │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@img+sharp-linux-arm64@0.35.5/node_modules/@img/sharp-li- │ node-pkg │        0        │
+│ nux-arm64/package.json                                                           │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@img+sharp-linuxmusl-arm64@0.35.5/node_modules/@img/shar- │ node-pkg │        0        │
+│ p-linuxmusl-arm64/package.json                                                   │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@next+env@16.4.2/node_modules/@next/env/package.json      │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@opentelemetry+api@1.9.1/node_modules/@opentelemetry/api- │ node-pkg │        0        │
+│ /package.json                                                                    │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@pinojs+redact@0.4.0/node_modules/@pinojs/redact/package- │ node-pkg │        0        │
+│ .json                                                                            │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@prisma+client-runtime-utils@7.8.0/node_modules/@prisma/- │ node-pkg │        0        │
+│ client-runtime-utils/package.json                                                │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@prisma+client@7.8.0_prisma@7.8.0_@types+react-dom@19.2.- │ node-pkg │        0        │
+│ 3_@types+react@19.2.13__@types+_a952af91d3025c6b42b98acd44c7e6e3/node_modules/@- │          │                 │
+│ prisma/client/package.json                                                       │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@smithy+config-resolver@4.4.6/node_modules/@smithy/confi- │ node-pkg │        0        │
+│ g-resolver/package.json                                                          │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@smithy+core@3.22.1/node_modules/@smithy/core/package.js- │ node-pkg │        0        │
+│ on                                                                               │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@smithy+credential-provider-imds@4.2.8/node_modules/@smi- │ node-pkg │        0        │
+│ thy/credential-provider-imds/package.json                                        │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@smithy+eventstream-codec@4.2.8/node_modules/@smithy/eve- │ node-pkg │        0        │
+│ ntstream-codec/package.json                                                      │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@smithy+eventstream-serde-config-resolver@4.3.8/node_mod- │ node-pkg │        0        │
+│ ules/@smithy/eventstream-serde-config-resolver/package.json                      │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@smithy+eventstream-serde-node@4.2.8/node_modules/@smith- │ node-pkg │        0        │
+│ y/eventstream-serde-node/package.json                                            │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@smithy+eventstream-serde-universal@4.2.8/node_modules/@- │ node-pkg │        0        │
+│ smithy/eventstream-serde-universal/package.json                                  │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@smithy+fetch-http-handler@5.3.9/node_modules/@smithy/fe- │ node-pkg │        0        │
+│ tch-http-handler/package.json                                                    │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@smithy+hash-node@4.2.8/node_modules/@smithy/hash-node/p- │ node-pkg │        0        │
+│ ackage.json                                                                      │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@smithy+hash-stream-node@4.2.8/node_modules/@smithy/hash- │ node-pkg │        0        │
+│ -stream-node/package.json                                                        │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@smithy+is-array-buffer@2.2.0/node_modules/@smithy/is-ar- │ node-pkg │        0        │
+│ ray-buffer/package.json                                                          │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@smithy+is-array-buffer@4.2.0/node_modules/@smithy/is-ar- │ node-pkg │        0        │
+│ ray-buffer/package.json                                                          │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@smithy+middleware-content-length@4.2.8/node_modules/@sm- │ node-pkg │        0        │
+│ ithy/middleware-content-length/package.json                                      │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@smithy+middleware-endpoint@4.4.13/node_modules/@smithy/- │ node-pkg │        0        │
+│ middleware-endpoint/package.json                                                 │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@smithy+middleware-retry@4.4.30/node_modules/@smithy/mid- │ node-pkg │        0        │
+│ dleware-retry/package.json                                                       │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@smithy+middleware-serde@4.2.9/node_modules/@smithy/midd- │ node-pkg │        0        │
+│ leware-serde/package.json                                                        │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@smithy+middleware-stack@4.2.8/node_modules/@smithy/midd- │ node-pkg │        0        │
+│ leware-stack/package.json                                                        │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@smithy+node-config-provider@4.3.8/node_modules/@smithy/- │ node-pkg │        0        │
+│ node-config-provider/package.json                                                │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@smithy+node-http-handler@4.4.9/node_modules/@smithy/nod- │ node-pkg │        0        │
+│ e-http-handler/package.json                                                      │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@smithy+property-provider@4.2.8/node_modules/@smithy/pro- │ node-pkg │        0        │
+│ perty-provider/package.json                                                      │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@smithy+protocol-http@5.3.8/node_modules/@smithy/protoco- │ node-pkg │        0        │
+│ l-http/package.json                                                              │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@smithy+querystring-builder@4.2.8/node_modules/@smithy/q- │ node-pkg │        0        │
+│ uerystring-builder/package.json                                                  │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@smithy+querystring-parser@4.2.8/node_modules/@smithy/qu- │ node-pkg │        0        │
+│ erystring-parser/package.json                                                    │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@smithy+service-error-classification@4.2.8/node_modules/- │ node-pkg │        0        │
+│ @smithy/service-error-classification/package.json                                │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@smithy+shared-ini-file-loader@4.4.3/node_modules/@smith- │ node-pkg │        0        │
+│ y/shared-ini-file-loader/package.json                                            │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@smithy+signature-v4@5.3.8/node_modules/@smithy/signatur- │ node-pkg │        0        │
+│ e-v4/package.json                                                                │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@smithy+smithy-client@4.11.2/node_modules/@smithy/smithy- │ node-pkg │        0        │
+│ -client/package.json                                                             │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@smithy+types@4.12.0/node_modules/@smithy/types/package.- │ node-pkg │        0        │
+│ json                                                                             │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@smithy+url-parser@4.2.8/node_modules/@smithy/url-parser- │ node-pkg │        0        │
+│ /package.json                                                                    │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@smithy+util-base64@4.3.0/node_modules/@smithy/util-base- │ node-pkg │        0        │
+│ 64/package.json                                                                  │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@smithy+util-body-length-browser@4.2.0/node_modules/@smi- │ node-pkg │        0        │
+│ thy/util-body-length-browser/package.json                                        │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@smithy+util-body-length-node@4.2.1/node_modules/@smithy- │ node-pkg │        0        │
+│ /util-body-length-node/package.json                                              │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@smithy+util-buffer-from@2.2.0/node_modules/@smithy/util- │ node-pkg │        0        │
+│ -buffer-from/package.json                                                        │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@smithy+util-buffer-from@4.2.0/node_modules/@smithy/util- │ node-pkg │        0        │
+│ -buffer-from/package.json                                                        │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@smithy+util-config-provider@4.2.0/node_modules/@smithy/- │ node-pkg │        0        │
+│ util-config-provider/package.json                                                │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@smithy+util-defaults-mode-node@4.2.32/node_modules/@smi- │ node-pkg │        0        │
+│ thy/util-defaults-mode-node/package.json                                         │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@smithy+util-endpoints@3.2.8/node_modules/@smithy/util-e- │ node-pkg │        0        │
+│ ndpoints/package.json                                                            │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@smithy+util-hex-encoding@4.2.0/node_modules/@smithy/uti- │ node-pkg │        0        │
+│ l-hex-encoding/package.json                                                      │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@smithy+util-middleware@4.2.8/node_modules/@smithy/util-- │ node-pkg │        0        │
+│ middleware/package.json                                                          │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@smithy+util-retry@4.2.8/node_modules/@smithy/util-retry- │ node-pkg │        0        │
+│ /package.json                                                                    │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@smithy+util-stream@4.5.11/node_modules/@smithy/util-str- │ node-pkg │        0        │
+│ eam/package.json                                                                 │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@smithy+util-uri-escape@4.2.0/node_modules/@smithy/util-- │ node-pkg │        0        │
+│ uri-escape/package.json                                                          │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@smithy+util-utf8@2.3.0/node_modules/@smithy/util-utf8/p- │ node-pkg │        0        │
+│ ackage.json                                                                      │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@smithy+util-utf8@4.2.0/node_modules/@smithy/util-utf8/p- │ node-pkg │        0        │
+│ ackage.json                                                                      │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@smithy+util-waiter@4.2.8/node_modules/@smithy/util-wait- │ node-pkg │        0        │
+│ er/package.json                                                                  │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@smithy+uuid@1.1.0/node_modules/@smithy/uuid/package.json │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@swc+helpers@0.5.15/node_modules/@swc/helpers/package.js- │ node-pkg │        0        │
+│ on                                                                               │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/@swc+helpers@0.5.23/node_modules/@swc/helpers/package.js- │ node-pkg │        0        │
+│ on                                                                               │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/atomic-sleep@1.0.0/node_modules/atomic-sleep/package.json │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/client-only@0.0.1/node_modules/client-only/package.json   │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/colorette@2.0.20/node_modules/colorette/package.json      │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/dateformat@4.6.3/node_modules/dateformat/package.json     │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/detect-libc@2.1.2/node_modules/detect-libc/package.json   │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/end-of-stream@1.4.5/node_modules/end-of-stream/package.j- │ node-pkg │        0        │
+│ son                                                                              │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/fast-copy@4.0.2/node_modules/fast-copy/package.json       │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/fast-safe-stringify@2.1.1/node_modules/fast-safe-stringi- │ node-pkg │        0        │
+│ fy/package.json                                                                  │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/fast-xml-parser@5.3.4/node_modules/fast-xml-parser/packa- │ node-pkg │        3        │
+│ ge.json                                                                          │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/next@16.4.2_@babel+core@7.29.0_@opentelemetry+api@1.9.1_- │ node-pkg │        0        │
+│ @playwright+test@1.58.1_@types+_eb57dcfa3e3e3fece68adcf294fdd31c/node_modules/n- │          │                 │
+│ ext/dist/compiled/@edge-runtime/cookies/package.json                             │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/next@16.4.2_@babel+core@7.29.0_@opentelemetry+api@1.9.1_- │ node-pkg │        0        │
+│ @playwright+test@1.58.1_@types+_eb57dcfa3e3e3fece68adcf294fdd31c/node_modules/n- │          │                 │
+│ ext/dist/compiled/@edge-runtime/ponyfill/package.json                            │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/next@16.4.2_@babel+core@7.29.0_@opentelemetry+api@1.9.1_- │ node-pkg │        0        │
+│ @playwright+test@1.58.1_@types+_eb57dcfa3e3e3fece68adcf294fdd31c/node_modules/n- │          │                 │
+│ ext/dist/compiled/@edge-runtime/primitives/package.json                          │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/next@16.4.2_@babel+core@7.29.0_@opentelemetry+api@1.9.1_- │ node-pkg │        0        │
+│ @playwright+test@1.58.1_@types+_eb57dcfa3e3e3fece68adcf294fdd31c/node_modules/n- │          │                 │
+│ ext/dist/compiled/@vercel/og/package.json                                        │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/next@16.4.2_@babel+core@7.29.0_@opentelemetry+api@1.9.1_- │ node-pkg │        0        │
+│ @playwright+test@1.58.1_@types+_eb57dcfa3e3e3fece68adcf294fdd31c/node_modules/n- │          │                 │
+│ ext/dist/compiled/react-is/package.json                                          │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/next@16.4.2_@babel+core@7.29.0_@opentelemetry+api@1.9.1_- │ node-pkg │        0        │
+│ @playwright+test@1.58.1_@types+_eb57dcfa3e3e3fece68adcf294fdd31c/node_modules/n- │          │                 │
+│ ext/dist/compiled/regenerator-runtime/package.json                               │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/next@16.4.2_@babel+core@7.29.0_@opentelemetry+api@1.9.1_- │ node-pkg │        0        │
+│ @playwright+test@1.58.1_@types+_eb57dcfa3e3e3fece68adcf294fdd31c/node_modules/n- │          │                 │
+│ ext/package.json                                                                 │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/on-exit-leak-free@2.1.2/node_modules/on-exit-leak-free/p- │ node-pkg │        0        │
+│ ackage.json                                                                      │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/once@1.4.0/node_modules/once/package.json                 │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/pg-cloudflare@1.3.0/node_modules/pg-cloudflare/package.j- │ node-pkg │        0        │
+│ son                                                                              │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/pg-connection-string@2.11.0/node_modules/pg-connection-s- │ node-pkg │        0        │
+│ tring/package.json                                                               │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/pg-int8@1.0.1/node_modules/pg-int8/package.json           │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/pg-pool@3.11.0_pg@8.18.0/node_modules/pg-pool/package.js- │ node-pkg │        0        │
+│ on                                                                               │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/pg-protocol@1.11.0/node_modules/pg-protocol/package.json  │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/pg-types@2.2.0/node_modules/pg-types/package.json         │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/pg@8.18.0/node_modules/pg/package.json                    │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/pgpass@1.0.5/node_modules/pgpass/package.json             │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/pino-abstract-transport@3.0.0/node_modules/pino-abstract- │ node-pkg │        0        │
+│ -transport/package.json                                                          │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/pino-pretty@13.1.3/node_modules/pino-pretty/package.json  │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/pino-std-serializers@7.1.0/node_modules/pino-std-seriali- │ node-pkg │        0        │
+│ zers/package.json                                                                │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/pino@10.3.0/node_modules/pino/package.json                │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/postgres-array@2.0.0/node_modules/postgres-array/package- │ node-pkg │        0        │
+│ .json                                                                            │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/postgres-array@3.0.4/node_modules/postgres-array/package- │ node-pkg │        0        │
+│ .json                                                                            │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/postgres-bytea@1.0.1/node_modules/postgres-bytea/package- │ node-pkg │        0        │
+│ .json                                                                            │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/postgres-date@1.0.7/node_modules/postgres-date/package.j- │ node-pkg │        0        │
+│ son                                                                              │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/postgres-interval@1.2.0/node_modules/postgres-interval/p- │ node-pkg │        0        │
+│ ackage.json                                                                      │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/prettier@3.8.1/node_modules/prettier/package.json         │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/pump@3.0.3/node_modules/pump/package.json                 │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/quick-format-unescaped@4.0.4/node_modules/quick-format-u- │ node-pkg │        0        │
+│ nescaped/package.json                                                            │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/react-dom@19.2.6_react@19.2.6/node_modules/react-dom/pac- │ node-pkg │        0        │
+│ kage.json                                                                        │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/react@19.2.6/node_modules/react/package.json              │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/real-require@0.2.0/node_modules/real-require/package.json │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/safe-stable-stringify@2.5.0/node_modules/safe-stable-str- │ node-pkg │        0        │
+│ ingify/package.json                                                              │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/secure-json-parse@4.1.0/node_modules/secure-json-parse/p- │ node-pkg │        0        │
+│ ackage.json                                                                      │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/semver@6.3.1/node_modules/semver/package.json             │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/semver@7.8.5/node_modules/semver/package.json             │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/sharp@0.35.5_@types+node@24.10.11/node_modules/sharp/pac- │ node-pkg │        0        │
+│ kage.json                                                                        │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/sonic-boom@4.2.0/node_modules/sonic-boom/package.json     │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/split2@4.2.0/node_modules/split2/package.json             │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/styled-jsx@5.1.6_@babel+core@7.29.0_react@19.2.6/node_mo- │ node-pkg │        0        │
+│ dules/styled-jsx/package.json                                                    │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/thread-stream@4.0.0/node_modules/thread-stream/package.j- │ node-pkg │        0        │
+│ son                                                                              │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/tslib@2.8.1/node_modules/tslib/package.json               │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/wrappy@1.0.2/node_modules/wrappy/package.json             │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/.pnpm/xtend@4.0.2/node_modules/xtend/package.json               │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/@electric-sql/pglite-socket/package.json                        │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/@electric-sql/pglite-tools/package.json                         │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/@electric-sql/pglite/package.json                               │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/@prisma/config/package.json                                     │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/@prisma/debug/package.json                                      │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/@prisma/dev/package.json                                        │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/@prisma/engines-version/package.json                            │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/@prisma/engines/node_modules/@prisma/get-platform/package.json  │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/@prisma/engines/package.json                                    │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/@prisma/fetch-engine/node_modules/@prisma/get-platform/package- │ node-pkg │        0        │
+│ .json                                                                            │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/@prisma/fetch-engine/package.json                               │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/@prisma/get-platform/node_modules/@prisma/debug/package.json    │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/@prisma/get-platform/package.json                               │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/@prisma/query-plan-executor/package.json                        │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/@prisma/streams-local/package.json                              │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/@prisma/studio-core/package.json                                │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/@radix-ui/primitive/package.json                                │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/@radix-ui/react-compose-refs/package.json                       │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/@radix-ui/react-primitive/package.json                          │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/@radix-ui/react-slot/package.json                               │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/@radix-ui/react-toggle/package.json                             │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/@radix-ui/react-use-controllable-state/package.json             │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/@radix-ui/react-use-effect-event/package.json                   │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/@radix-ui/react-use-layout-effect/package.json                  │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/@standard-schema/spec/package.json                              │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/@types/d3-array/package.json                                    │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/@types/d3-color/package.json                                    │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/@types/d3-delaunay/package.json                                 │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/@types/d3-format/package.json                                   │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/@types/d3-geo/package.json                                      │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/@types/d3-interpolate/package.json                              │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/@types/d3-path/package.json                                     │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/@types/d3-scale/package.json                                    │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/@types/d3-shape/package.json                                    │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/@types/d3-time-format/package.json                              │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/@types/d3-time/package.json                                     │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/@types/geojson/package.json                                     │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/@types/lodash/package.json                                      │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/@types/node/package.json                                        │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/@types/react/package.json                                       │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/@visx/curve/package.json                                        │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/@visx/event/package.json                                        │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/@visx/grid/package.json                                         │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/@visx/group/package.json                                        │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/@visx/point/package.json                                        │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/@visx/responsive/package.json                                   │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/@visx/scale/package.json                                        │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/@visx/shape/package.json                                        │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/@visx/vendor/node_modules/d3-array/package.json                 │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/@visx/vendor/package.json                                       │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/ajv/package.json                                                │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/aws-ssl-profiles/package.json                                   │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/better-result/package.json                                      │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/c12/package.json                                                │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/chokidar/package.json                                           │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/classnames/package.json                                         │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/confbox/package.json                                            │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/cross-spawn/package.json                                        │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/csstype/package.json                                            │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/d3-array/package.json                                           │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/d3-color/package.json                                           │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/d3-delaunay/package.json                                        │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/d3-format/package.json                                          │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/d3-geo/package.json                                             │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/d3-interpolate/package.json                                     │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/d3-path/package.json                                            │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/d3-scale/package.json                                           │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/d3-shape/package.json                                           │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/d3-time-format/package.json                                     │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/d3-time/package.json                                            │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/deepmerge-ts/package.json                                       │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/defu/package.json                                               │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/delaunator/package.json                                         │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/destr/package.json                                              │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/dotenv/package.json                                             │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/effect/package.json                                             │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/elkjs/package.json                                              │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/empathic/package.json                                           │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/env-paths/package.json                                          │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/exsolve/package.json                                            │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/fast-check/package.json                                         │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/fast-decode-uri-component/package.json                          │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/fast-deep-equal/package.json                                    │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/fast-querystring/package.json                                   │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/fast-uri/benchmark/package.json                                 │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/fast-uri/package.json                                           │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/find-my-way/package.json                                        │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/foreground-child/package.json                                   │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/generate-function/package.json                                  │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/get-port-please/package.json                                    │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/giget/package.json                                              │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/graceful-fs/package.json                                        │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/grammex/package.json                                            │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/graphmatch/package.json                                         │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/iconv-lite/package.json                                         │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/internmap/package.json                                          │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/is-property/package.json                                        │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/isexe/package.json                                              │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/jiti/package.json                                               │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/json-schema-traverse/package.json                               │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/lodash/package.json                                             │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/long/package.json                                               │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/lru.min/package.json                                            │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/mysql2/package.json                                             │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/named-placeholders/package.json                                 │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/ohash/package.json                                              │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/path-key/package.json                                           │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/pathe/package.json                                              │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/perfect-debounce/package.json                                   │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/pkg-types/node_modules/confbox/package.json                     │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/pkg-types/package.json                                          │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/postgres/package.json                                           │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/prisma/package.json                                             │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/proper-lockfile/node_modules/signal-exit/package.json           │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/proper-lockfile/package.json                                    │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/pure-rand/package.json                                          │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/rc9/package.json                                                │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/react-dom/package.json                                          │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/react/package.json                                              │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/readdirp/package.json                                           │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/remeda/package.json                                             │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/require-from-string/package.json                                │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/ret/package.json                                                │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/retry/package.json                                              │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/robust-predicates/package.json                                  │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/safe-regex2/package.json                                        │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/safer-buffer/package.json                                       │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/scheduler/package.json                                          │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/shebang-command/package.json                                    │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/shebang-regex/package.json                                      │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/signal-exit/package.json                                        │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/sql-escaper/package.json                                        │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/std-env/package.json                                            │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/undici-types/package.json                                       │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/valibot/package.json                                            │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/which/package.json                                              │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ app/node_modules/zeptomatch/package.json                                         │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ opt/yarn-v1.22.22/package.json                                                   │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/corepack/package.json                                 │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/@gar/promise-retry/package.json      │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/@isaacs/fs-minipass/package.json     │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/@isaacs/string-locale-compare/packa- │ node-pkg │        0        │
+│ ge.json                                                                          │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/@npmcli/agent/package.json           │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/@npmcli/arborist/package.json        │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/@npmcli/config/package.json          │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/@npmcli/fs/package.json              │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/@npmcli/git/package.json             │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/@npmcli/installed-package-contents/- │ node-pkg │        0        │
+│ package.json                                                                     │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/@npmcli/map-workspaces/package.json  │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/@npmcli/metavuln-calculator/package- │ node-pkg │        0        │
+│ .json                                                                            │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/@npmcli/name-from-folder/package.js- │ node-pkg │        0        │
+│ on                                                                               │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/@npmcli/node-gyp/package.json        │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/@npmcli/package-json/package.json    │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/@npmcli/promise-spawn/package.json   │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/@npmcli/query/package.json           │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/@npmcli/redact/package.json          │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/@npmcli/run-script/package.json      │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/@sigstore/bundle/package.json        │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/@sigstore/core/package.json          │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/@sigstore/protobuf-specs/package.js- │ node-pkg │        0        │
+│ on                                                                               │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/@sigstore/sign/package.json          │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/@sigstore/tuf/package.json           │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/@sigstore/verify/package.json        │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/@tufjs/canonical-json/package.json   │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/@tufjs/models/package.json           │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/abbrev/package.json                  │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/agent-base/package.json              │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/aproba/package.json                  │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/archy/package.json                   │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/balanced-match/package.json          │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/bin-links/package.json               │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/binary-extensions/package.json       │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/brace-expansion/package.json         │ node-pkg │        2        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/cacache/package.json                 │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/chalk/package.json                   │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/chownr/package.json                  │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/ci-info/package.json                 │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/cidr-regex/package.json              │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/cmd-shim/package.json                │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/common-ancestor-path/package.json    │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/cssesc/package.json                  │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/debug/package.json                   │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/diff/package.json                    │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/env-paths/package.json               │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/exponential-backoff/package.json     │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/fastest-levenshtein/package.json     │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/fs-minipass/package.json             │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/glob/package.json                    │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/graceful-fs/package.json             │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/hosted-git-info/package.json         │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/http-cache-semantics/package.json    │ node-pkg │        1        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/http-proxy-agent/package.json        │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/https-proxy-agent/package.json       │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/iconv-lite/package.json              │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/ignore-walk/package.json             │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/ini/package.json                     │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/init-package-json/package.json       │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/ip-address/package.json              │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/is-cidr/package.json                 │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/isexe/package.json                   │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/json-parse-even-better-errors/packa- │ node-pkg │        0        │
+│ ge.json                                                                          │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/json-stringify-nice/package.json     │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/jsonparse/package.json               │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/just-diff-apply/package.json         │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/just-diff/package.json               │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/libnpmaccess/package.json            │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/libnpmdiff/package.json              │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/libnpmexec/package.json              │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/libnpmfund/package.json              │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/libnpmorg/package.json               │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/libnpmpack/package.json              │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/libnpmpublish/package.json           │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/libnpmsearch/package.json            │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/libnpmteam/package.json              │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/libnpmversion/package.json           │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/lru-cache/package.json               │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/make-fetch-happen/package.json       │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/minimatch/package.json               │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/minipass-collect/package.json        │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/minipass-fetch/package.json          │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/minipass-flush/package.json          │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/minipass-pipeline/node_modules/mini- │ node-pkg │        0        │
+│ pass/package.json                                                                │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/minipass-pipeline/node_modules/yall- │ node-pkg │        0        │
+│ ist/package.json                                                                 │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/minipass-pipeline/package.json       │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/minipass-sized/package.json          │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/minipass/package.json                │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/minizlib/package.json                │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/ms/package.json                      │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/mute-stream/package.json             │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/negotiator/package.json              │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/node-gyp/package.json                │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/nopt/package.json                    │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/npm-audit-report/package.json        │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/npm-bundled/package.json             │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/npm-install-checks/package.json      │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/npm-normalize-package-bin/package.j- │ node-pkg │        0        │
+│ son                                                                              │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/npm-package-arg/package.json         │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/npm-packlist/package.json            │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/npm-pick-manifest/package.json       │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/npm-profile/package.json             │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/npm-registry-fetch/package.json      │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/npm-user-validate/package.json       │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/p-map/package.json                   │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/pacote/package.json                  │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/parse-conflict-json/package.json     │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/path-scurry/package.json             │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/postcss-selector-parser/package.json │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/proc-log/package.json                │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/proggy/package.json                  │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/promise-all-reject-late/package.json │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/promise-call-limit/package.json      │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/promzard/package.json                │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/qrcode-terminal/package.json         │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/read-cmd-shim/package.json           │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/read/package.json                    │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/safer-buffer/package.json            │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/semver/package.json                  │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/signal-exit/package.json             │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/sigstore/package.json                │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/smart-buffer/package.json            │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/socks-proxy-agent/package.json       │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/socks/package.json                   │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/spdx-exceptions/package.json         │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/spdx-expression-parse/package.json   │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/spdx-license-ids/package.json        │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/ssri/package.json                    │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/supports-color/package.json          │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/tar/package.json                     │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/text-table/package.json              │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/tiny-relative-date/package.json      │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/tinyglobby/node_modules/fdir/packag- │ node-pkg │        0        │
+│ e.json                                                                           │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/tinyglobby/node_modules/picomatch/p- │ node-pkg │        0        │
+│ ackage.json                                                                      │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/tinyglobby/package.json              │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/treeverse/package.json               │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/tuf-js/package.json                  │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/undici/package.json                  │ node-pkg │        2        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/util-deprecate/package.json          │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/validate-npm-package-name/package.j- │ node-pkg │        0        │
+│ son                                                                              │          │                 │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/walk-up-path/package.json            │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/which/package.json                   │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/write-file-atomic/package.json       │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/node_modules/yallist/package.json                 │ node-pkg │        0        │
+├──────────────────────────────────────────────────────────────────────────────────┼──────────┼─────────────────┤
+│ usr/local/lib/node_modules/npm/package.json                                      │ node-pkg │        0        │
+└──────────────────────────────────────────────────────────────────────────────────┴──────────┴─────────────────┘
+Legend:
+- '-': Not scanned
+- '0': Clean (no security findings detected)
+
+
+lukevella/rallly:4 (debian 12.15)
+=================================
+Total: 68 (HIGH: 67, CRITICAL: 1)
+
+┌──────────────────┬────────────────┬──────────┬──────────────┬────────────────────┬───────────────┬─────────────────────────────────────────────────────────────┐
+│     Library      │ Vulnerability  │ Severity │    Status    │ Installed Version  │ Fixed Version │                            Title                            │
+├──────────────────┼────────────────┼──────────┼──────────────┼────────────────────┼───────────────┼─────────────────────────────────────────────────────────────┤
+│ bsdutils         │ CVE-2026-53613 │ HIGH     │ affected     │ 1:2.38.1-5+deb12u3 │               │ util-linux: util-linux: TOCTOU in the mount program via     │
+│                  │                │          │              │                    │               │ ancestor directory swap on...                               │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-53613                  │
+│                  ├────────────────┤          │              │                    ├───────────────┼─────────────────────────────────────────────────────────────┤
+│                  │ CVE-2026-53615 │          │              │                    │               │ util-linux: util-linux: Partition metadata compromise via   │
+│                  │                │          │              │                    │               │ integer overflow in DOS partition parser...                 │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-53615                  │
+│                  ├────────────────┤          │              │                    ├───────────────┼─────────────────────────────────────────────────────────────┤
+│                  │ CVE-2026-76642 │          │              │                    │               │ util-linux: util-linux: failed external mount helper still  │
+│                  │                │          │              │                    │               │ runs privileged X-mount post-hooks                          │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-76642                  │
+│                  ├────────────────┤          │              │                    ├───────────────┼─────────────────────────────────────────────────────────────┤
+│                  │ CVE-2026-78408 │          │              │                    │               │ util-linux: util-linux: nsenter --join-cgroup leaks root    │
+│                  │                │          │              │                    │               │ cgroup migration authority                                  │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-78408                  │
+│                  ├────────────────┤          │              │                    ├───────────────┼─────────────────────────────────────────────────────────────┤
+│                  │ CVE-2026-78409 │          │              │                    │               │ util-linux: util-linux: X-mount.subdir detached-tree        │
+│                  │                │          │              │                    │               │ resolution can escape via intermediate symlinks             │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-78409                  │
+│                  ├────────────────┤          │              │                    ├───────────────┼─────────────────────────────────────────────────────────────┤
+│                  │ CVE-2026-78410 │          │              │                    │               │ util-linux: util-linux: restricted bind mounts do not pin   │
+│                  │                │          │              │                    │               │ the source, allowing X-mount.owner/group/mode...            │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-78410                  │
+├──────────────────┼────────────────┤          ├──────────────┼────────────────────┼───────────────┼─────────────────────────────────────────────────────────────┤
+│ curl             │ CVE-2026-12064 │          │ fix_deferred │ 7.88.1-10+deb12u15 │               │ curl: curl: SSH host verification bypass when using         │
+│                  │                │          │              │                    │               │ schemeless URLs with SFTP/SCP...                            │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-12064                  │
+│                  ├────────────────┤          ├──────────────┤                    ├───────────────┼─────────────────────────────────────────────────────────────┤
+│                  │ CVE-2026-6276  │          │ affected     │                    │               │ curl: libcurl: Information disclosure due to cookie leak    │
+│                  │                │          │              │                    │               │ when reusing connections with...                            │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-6276                   │
+│                  ├────────────────┤          ├──────────────┤                    ├───────────────┼─────────────────────────────────────────────────────────────┤
+│                  │ CVE-2026-8286  │          │ fix_deferred │                    │               │ curl: curl: Insecure connection establishment due to TLS    │
+│                  │                │          │              │                    │               │ configuration mismatch                                      │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-8286                   │
+│                  ├────────────────┤          │              │                    ├───────────────┼─────────────────────────────────────────────────────────────┤
+│                  │ CVE-2026-8458  │          │              │                    │               │ curl: libcurl: Unauthorized connection reuse due to a       │
+│                  │                │          │              │                    │               │ logical error                                               │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-8458                   │
+│                  ├────────────────┤          │              │                    ├───────────────┼─────────────────────────────────────────────────────────────┤
+│                  │ CVE-2026-8927  │          │              │                    │               │ curl: Information disclosure due to uncleared proxy         │
+│                  │                │          │              │                    │               │ authentication state                                        │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-8927                   │
+├──────────────────┼────────────────┤          │              ├────────────────────┼───────────────┼─────────────────────────────────────────────────────────────┤
+│ gzip             │ CVE-2026-41992 │          │              │ 1.12-1             │               │ gzip: gzip: Information disclosure via global buffer        │
+│                  │                │          │              │                    │               │ overflow in LZH decompression                               │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-41992                  │
+├──────────────────┼────────────────┤          │              ├────────────────────┼───────────────┼─────────────────────────────────────────────────────────────┤
+│ libacl1          │ CVE-2026-54369 │          │              │ 2.3.1-3            │               │ acl: Symlink traversal privilege escalation via libacl      │
+│                  │                │          │              │                    │               │ functions                                                   │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-54369                  │
+├──────────────────┼────────────────┤          ├──────────────┼────────────────────┼───────────────┼─────────────────────────────────────────────────────────────┤
+│ libblkid1        │ CVE-2026-53613 │          │ affected     │ 2.38.1-5+deb12u3   │               │ util-linux: util-linux: TOCTOU in the mount program via     │
+│                  │                │          │              │                    │               │ ancestor directory swap on...                               │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-53613                  │
+│                  ├────────────────┤          │              │                    ├───────────────┼─────────────────────────────────────────────────────────────┤
+│                  │ CVE-2026-53615 │          │              │                    │               │ util-linux: util-linux: Partition metadata compromise via   │
+│                  │                │          │              │                    │               │ integer overflow in DOS partition parser...                 │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-53615                  │
+│                  ├────────────────┤          │              │                    ├───────────────┼─────────────────────────────────────────────────────────────┤
+│                  │ CVE-2026-76642 │          │              │                    │               │ util-linux: util-linux: failed external mount helper still  │
+│                  │                │          │              │                    │               │ runs privileged X-mount post-hooks                          │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-76642                  │
+│                  ├────────────────┤          │              │                    ├───────────────┼─────────────────────────────────────────────────────────────┤
+│                  │ CVE-2026-78408 │          │              │                    │               │ util-linux: util-linux: nsenter --join-cgroup leaks root    │
+│                  │                │          │              │                    │               │ cgroup migration authority                                  │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-78408                  │
+│                  ├────────────────┤          │              │                    ├───────────────┼─────────────────────────────────────────────────────────────┤
+│                  │ CVE-2026-78409 │          │              │                    │               │ util-linux: util-linux: X-mount.subdir detached-tree        │
+│                  │                │          │              │                    │               │ resolution can escape via intermediate symlinks             │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-78409                  │
+│                  ├────────────────┤          │              │                    ├───────────────┼─────────────────────────────────────────────────────────────┤
+│                  │ CVE-2026-78410 │          │              │                    │               │ util-linux: util-linux: restricted bind mounts do not pin   │
+│                  │                │          │              │                    │               │ the source, allowing X-mount.owner/group/mode...            │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-78410                  │
+├──────────────────┼────────────────┤          ├──────────────┼────────────────────┼───────────────┼─────────────────────────────────────────────────────────────┤
+│ libcurl4         │ CVE-2026-12064 │          │ fix_deferred │ 7.88.1-10+deb12u15 │               │ curl: curl: SSH host verification bypass when using         │
+│                  │                │          │              │                    │               │ schemeless URLs with SFTP/SCP...                            │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-12064                  │
+│                  ├────────────────┤          ├──────────────┤                    ├───────────────┼─────────────────────────────────────────────────────────────┤
+│                  │ CVE-2026-6276  │          │ affected     │                    │               │ curl: libcurl: Information disclosure due to cookie leak    │
+│                  │                │          │              │                    │               │ when reusing connections with...                            │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-6276                   │
+│                  ├────────────────┤          ├──────────────┤                    ├───────────────┼─────────────────────────────────────────────────────────────┤
+│                  │ CVE-2026-8286  │          │ fix_deferred │                    │               │ curl: curl: Insecure connection establishment due to TLS    │
+│                  │                │          │              │                    │               │ configuration mismatch                                      │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-8286                   │
+│                  ├────────────────┤          │              │                    ├───────────────┼─────────────────────────────────────────────────────────────┤
+│                  │ CVE-2026-8458  │          │              │                    │               │ curl: libcurl: Unauthorized connection reuse due to a       │
+│                  │                │          │              │                    │               │ logical error                                               │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-8458                   │
+│                  ├────────────────┤          │              │                    ├───────────────┼─────────────────────────────────────────────────────────────┤
+│                  │ CVE-2026-8927  │          │              │                    │               │ curl: Information disclosure due to uncleared proxy         │
+│                  │                │          │              │                    │               │ authentication state                                        │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-8927                   │
+├──────────────────┼────────────────┤          ├──────────────┼────────────────────┼───────────────┼─────────────────────────────────────────────────────────────┤
+│ libldap-2.5-0    │ CVE-2023-2953  │          │ affected     │ 2.5.13+dfsg-5      │               │ openldap: null pointer dereference in ber_memalloc_x        │
+│                  │                │          │              │                    │               │ function                                                    │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2023-2953                   │
+├──────────────────┼────────────────┤          │              ├────────────────────┼───────────────┼─────────────────────────────────────────────────────────────┤
+│ libmount1        │ CVE-2026-53613 │          │              │ 2.38.1-5+deb12u3   │               │ util-linux: util-linux: TOCTOU in the mount program via     │
+│                  │                │          │              │                    │               │ ancestor directory swap on...                               │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-53613                  │
+│                  ├────────────────┤          │              │                    ├───────────────┼─────────────────────────────────────────────────────────────┤
+│                  │ CVE-2026-53615 │          │              │                    │               │ util-linux: util-linux: Partition metadata compromise via   │
+│                  │                │          │              │                    │               │ integer overflow in DOS partition parser...                 │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-53615                  │
+│                  ├────────────────┤          │              │                    ├───────────────┼─────────────────────────────────────────────────────────────┤
+│                  │ CVE-2026-76642 │          │              │                    │               │ util-linux: util-linux: failed external mount helper still  │
+│                  │                │          │              │                    │               │ runs privileged X-mount post-hooks                          │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-76642                  │
+│                  ├────────────────┤          │              │                    ├───────────────┼─────────────────────────────────────────────────────────────┤
+│                  │ CVE-2026-78408 │          │              │                    │               │ util-linux: util-linux: nsenter --join-cgroup leaks root    │
+│                  │                │          │              │                    │               │ cgroup migration authority                                  │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-78408                  │
+│                  ├────────────────┤          │              │                    ├───────────────┼─────────────────────────────────────────────────────────────┤
+│                  │ CVE-2026-78409 │          │              │                    │               │ util-linux: util-linux: X-mount.subdir detached-tree        │
+│                  │                │          │              │                    │               │ resolution can escape via intermediate symlinks             │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-78409                  │
+│                  ├────────────────┤          │              │                    ├───────────────┼─────────────────────────────────────────────────────────────┤
+│                  │ CVE-2026-78410 │          │              │                    │               │ util-linux: util-linux: restricted bind mounts do not pin   │
+│                  │                │          │              │                    │               │ the source, allowing X-mount.owner/group/mode...            │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-78410                  │
+├──────────────────┼────────────────┤          │              │                    ├───────────────┼─────────────────────────────────────────────────────────────┤
+│ libsmartcols1    │ CVE-2026-53613 │          │              │                    │               │ util-linux: util-linux: TOCTOU in the mount program via     │
+│                  │                │          │              │                    │               │ ancestor directory swap on...                               │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-53613                  │
+│                  ├────────────────┤          │              │                    ├───────────────┼─────────────────────────────────────────────────────────────┤
+│                  │ CVE-2026-53615 │          │              │                    │               │ util-linux: util-linux: Partition metadata compromise via   │
+│                  │                │          │              │                    │               │ integer overflow in DOS partition parser...                 │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-53615                  │
+│                  ├────────────────┤          │              │                    ├───────────────┼─────────────────────────────────────────────────────────────┤
+│                  │ CVE-2026-76642 │          │              │                    │               │ util-linux: util-linux: failed external mount helper still  │
+│                  │                │          │              │                    │               │ runs privileged X-mount post-hooks                          │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-76642                  │
+│                  ├────────────────┤          │              │                    ├───────────────┼─────────────────────────────────────────────────────────────┤
+│                  │ CVE-2026-78408 │          │              │                    │               │ util-linux: util-linux: nsenter --join-cgroup leaks root    │
+│                  │                │          │              │                    │               │ cgroup migration authority                                  │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-78408                  │
+│                  ├────────────────┤          │              │                    ├───────────────┼─────────────────────────────────────────────────────────────┤
+│                  │ CVE-2026-78409 │          │              │                    │               │ util-linux: util-linux: X-mount.subdir detached-tree        │
+│                  │                │          │              │                    │               │ resolution can escape via intermediate symlinks             │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-78409                  │
+│                  ├────────────────┤          │              │                    ├───────────────┼─────────────────────────────────────────────────────────────┤
+│                  │ CVE-2026-78410 │          │              │                    │               │ util-linux: util-linux: restricted bind mounts do not pin   │
+│                  │                │          │              │                    │               │ the source, allowing X-mount.owner/group/mode...            │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-78410                  │
+├──────────────────┼────────────────┤          ├──────────────┼────────────────────┼───────────────┼─────────────────────────────────────────────────────────────┤
+│ libsystemd0      │ CVE-2026-16742 │          │ fix_deferred │ 252.39-1~deb12u2   │               │ systemd: systemd-homed: Local privilege escalation via      │
+│                  │                │          │              │                    │               │ missing home-record signature verification                  │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-16742                  │
+├──────────────────┼────────────────┤          ├──────────────┼────────────────────┼───────────────┼─────────────────────────────────────────────────────────────┤
+│ libtinfo6        │ CVE-2025-69720 │          │ affected     │ 6.4-4              │               │ ncurses: ncurses: Buffer overflow vulnerability may lead to │
+│                  │                │          │              │                    │               │ arbitrary code execution.                                   │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2025-69720                  │
+├──────────────────┼────────────────┤          ├──────────────┼────────────────────┼───────────────┼─────────────────────────────────────────────────────────────┤
+│ libudev1         │ CVE-2026-16742 │          │ fix_deferred │ 252.39-1~deb12u2   │               │ systemd: systemd-homed: Local privilege escalation via      │
+│                  │                │          │              │                    │               │ missing home-record signature verification                  │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-16742                  │
+├──────────────────┼────────────────┤          ├──────────────┼────────────────────┼───────────────┼─────────────────────────────────────────────────────────────┤
+│ libuuid1         │ CVE-2026-53613 │          │ affected     │ 2.38.1-5+deb12u3   │               │ util-linux: util-linux: TOCTOU in the mount program via     │
+│                  │                │          │              │                    │               │ ancestor directory swap on...                               │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-53613                  │
+│                  ├────────────────┤          │              │                    ├───────────────┼─────────────────────────────────────────────────────────────┤
+│                  │ CVE-2026-53615 │          │              │                    │               │ util-linux: util-linux: Partition metadata compromise via   │
+│                  │                │          │              │                    │               │ integer overflow in DOS partition parser...                 │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-53615                  │
+│                  ├────────────────┤          │              │                    ├───────────────┼─────────────────────────────────────────────────────────────┤
+│                  │ CVE-2026-76642 │          │              │                    │               │ util-linux: util-linux: failed external mount helper still  │
+│                  │                │          │              │                    │               │ runs privileged X-mount post-hooks                          │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-76642                  │
+│                  ├────────────────┤          │              │                    ├───────────────┼─────────────────────────────────────────────────────────────┤
+│                  │ CVE-2026-78408 │          │              │                    │               │ util-linux: util-linux: nsenter --join-cgroup leaks root    │
+│                  │                │          │              │                    │               │ cgroup migration authority                                  │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-78408                  │
+│                  ├────────────────┤          │              │                    ├───────────────┼─────────────────────────────────────────────────────────────┤
+│                  │ CVE-2026-78409 │          │              │                    │               │ util-linux: util-linux: X-mount.subdir detached-tree        │
+│                  │                │          │              │                    │               │ resolution can escape via intermediate symlinks             │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-78409                  │
+│                  ├────────────────┤          │              │                    ├───────────────┼─────────────────────────────────────────────────────────────┤
+│                  │ CVE-2026-78410 │          │              │                    │               │ util-linux: util-linux: restricted bind mounts do not pin   │
+│                  │                │          │              │                    │               │ the source, allowing X-mount.owner/group/mode...            │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-78410                  │
+├──────────────────┼────────────────┤          │              │                    ├───────────────┼─────────────────────────────────────────────────────────────┤
+│ mount            │ CVE-2026-53613 │          │              │                    │               │ util-linux: util-linux: TOCTOU in the mount program via     │
+│                  │                │          │              │                    │               │ ancestor directory swap on...                               │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-53613                  │
+│                  ├────────────────┤          │              │                    ├───────────────┼─────────────────────────────────────────────────────────────┤
+│                  │ CVE-2026-53615 │          │              │                    │               │ util-linux: util-linux: Partition metadata compromise via   │
+│                  │                │          │              │                    │               │ integer overflow in DOS partition parser...                 │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-53615                  │
+│                  ├────────────────┤          │              │                    ├───────────────┼─────────────────────────────────────────────────────────────┤
+│                  │ CVE-2026-76642 │          │              │                    │               │ util-linux: util-linux: failed external mount helper still  │
+│                  │                │          │              │                    │               │ runs privileged X-mount post-hooks                          │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-76642                  │
+│                  ├────────────────┤          │              │                    ├───────────────┼─────────────────────────────────────────────────────────────┤
+│                  │ CVE-2026-78408 │          │              │                    │               │ util-linux: util-linux: nsenter --join-cgroup leaks root    │
+│                  │                │          │              │                    │               │ cgroup migration authority                                  │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-78408                  │
+│                  ├────────────────┤          │              │                    ├───────────────┼─────────────────────────────────────────────────────────────┤
+│                  │ CVE-2026-78409 │          │              │                    │               │ util-linux: util-linux: X-mount.subdir detached-tree        │
+│                  │                │          │              │                    │               │ resolution can escape via intermediate symlinks             │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-78409                  │
+│                  ├────────────────┤          │              │                    ├───────────────┼─────────────────────────────────────────────────────────────┤
+│                  │ CVE-2026-78410 │          │              │                    │               │ util-linux: util-linux: restricted bind mounts do not pin   │
+│                  │                │          │              │                    │               │ the source, allowing X-mount.owner/group/mode...            │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-78410                  │
+├──────────────────┼────────────────┤          │              ├────────────────────┼───────────────┼─────────────────────────────────────────────────────────────┤
+│ ncurses-base     │ CVE-2025-69720 │          │              │ 6.4-4              │               │ ncurses: ncurses: Buffer overflow vulnerability may lead to │
+│                  │                │          │              │                    │               │ arbitrary code execution.                                   │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2025-69720                  │
+├──────────────────┤                │          │              │                    ├───────────────┤                                                             │
+│ ncurses-bin      │                │          │              │                    │               │                                                             │
+│                  │                │          │              │                    │               │                                                             │
+│                  │                │          │              │                    │               │                                                             │
+├──────────────────┼────────────────┤          ├──────────────┼────────────────────┼───────────────┼─────────────────────────────────────────────────────────────┤
+│ perl-base        │ CVE-2026-9538  │          │ fix_deferred │ 5.36.0-7+deb12u4   │               │ perl-Archive-Tar: perl-Archive-Tar: Denial of Service via   │
+│                  │                │          │              │                    │               │ crafted tar header with large entry...                      │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-9538                   │
+├──────────────────┼────────────────┤          ├──────────────┼────────────────────┼───────────────┼─────────────────────────────────────────────────────────────┤
+│ util-linux       │ CVE-2026-53613 │          │ affected     │ 2.38.1-5+deb12u3   │               │ util-linux: util-linux: TOCTOU in the mount program via     │
+│                  │                │          │              │                    │               │ ancestor directory swap on...                               │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-53613                  │
+│                  ├────────────────┤          │              │                    ├───────────────┼─────────────────────────────────────────────────────────────┤
+│                  │ CVE-2026-53615 │          │              │                    │               │ util-linux: util-linux: Partition metadata compromise via   │
+│                  │                │          │              │                    │               │ integer overflow in DOS partition parser...                 │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-53615                  │
+│                  ├────────────────┤          │              │                    ├───────────────┼─────────────────────────────────────────────────────────────┤
+│                  │ CVE-2026-76642 │          │              │                    │               │ util-linux: util-linux: failed external mount helper still  │
+│                  │                │          │              │                    │               │ runs privileged X-mount post-hooks                          │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-76642                  │
+│                  ├────────────────┤          │              │                    ├───────────────┼─────────────────────────────────────────────────────────────┤
+│                  │ CVE-2026-78408 │          │              │                    │               │ util-linux: util-linux: nsenter --join-cgroup leaks root    │
+│                  │                │          │              │                    │               │ cgroup migration authority                                  │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-78408                  │
+│                  ├────────────────┤          │              │                    ├───────────────┼─────────────────────────────────────────────────────────────┤
+│                  │ CVE-2026-78409 │          │              │                    │               │ util-linux: util-linux: X-mount.subdir detached-tree        │
+│                  │                │          │              │                    │               │ resolution can escape via intermediate symlinks             │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-78409                  │
+│                  ├────────────────┤          │              │                    ├───────────────┼─────────────────────────────────────────────────────────────┤
+│                  │ CVE-2026-78410 │          │              │                    │               │ util-linux: util-linux: restricted bind mounts do not pin   │
+│                  │                │          │              │                    │               │ the source, allowing X-mount.owner/group/mode...            │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-78410                  │
+├──────────────────┼────────────────┤          │              │                    ├───────────────┼─────────────────────────────────────────────────────────────┤
+│ util-linux-extra │ CVE-2026-53613 │          │              │                    │               │ util-linux: util-linux: TOCTOU in the mount program via     │
+│                  │                │          │              │                    │               │ ancestor directory swap on...                               │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-53613                  │
+│                  ├────────────────┤          │              │                    ├───────────────┼─────────────────────────────────────────────────────────────┤
+│                  │ CVE-2026-53615 │          │              │                    │               │ util-linux: util-linux: Partition metadata compromise via   │
+│                  │                │          │              │                    │               │ integer overflow in DOS partition parser...                 │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-53615                  │
+│                  ├────────────────┤          │              │                    ├───────────────┼─────────────────────────────────────────────────────────────┤
+│                  │ CVE-2026-76642 │          │              │                    │               │ util-linux: util-linux: failed external mount helper still  │
+│                  │                │          │              │                    │               │ runs privileged X-mount post-hooks                          │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-76642                  │
+│                  ├────────────────┤          │              │                    ├───────────────┼─────────────────────────────────────────────────────────────┤
+│                  │ CVE-2026-78408 │          │              │                    │               │ util-linux: util-linux: nsenter --join-cgroup leaks root    │
+│                  │                │          │              │                    │               │ cgroup migration authority                                  │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-78408                  │
+│                  ├────────────────┤          │              │                    ├───────────────┼─────────────────────────────────────────────────────────────┤
+│                  │ CVE-2026-78409 │          │              │                    │               │ util-linux: util-linux: X-mount.subdir detached-tree        │
+│                  │                │          │              │                    │               │ resolution can escape via intermediate symlinks             │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-78409                  │
+│                  ├────────────────┤          │              │                    ├───────────────┼─────────────────────────────────────────────────────────────┤
+│                  │ CVE-2026-78410 │          │              │                    │               │ util-linux: util-linux: restricted bind mounts do not pin   │
+│                  │                │          │              │                    │               │ the source, allowing X-mount.owner/group/mode...            │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2026-78410                  │
+├──────────────────┼────────────────┼──────────┼──────────────┼────────────────────┼───────────────┼─────────────────────────────────────────────────────────────┤
+│ zlib1g           │ CVE-2023-45853 │ CRITICAL │ will_not_fix │ 1:1.2.13.dfsg-1    │               │ zlib: integer overflow and resultant heap-based buffer      │
+│                  │                │          │              │                    │               │ overflow in zipOpenNewFileInZip4_6                          │
+│                  │                │          │              │                    │               │ https://avd.aquasec.com/nvd/cve-2023-45853                  │
+└──────────────────┴────────────────┴──────────┴──────────────┴────────────────────┴───────────────┴─────────────────────────────────────────────────────────────┘
+
+Node.js (node-pkg)
+==================
+Total: 8 (HIGH: 7, CRITICAL: 1)
+
+┌─────────────────────────────────────┬─────────────────┬──────────┬──────────┬───────────────────┬──────────────────────────────┬──────────────────────────────────────────────────────────────┐
+│               Library               │  Vulnerability  │ Severity │  Status  │ Installed Version │        Fixed Version         │                            Title                             │
+├─────────────────────────────────────┼─────────────────┼──────────┼──────────┼───────────────────┼──────────────────────────────┼──────────────────────────────────────────────────────────────┤
+│ brace-expansion (package.json)      │ CVE-2026-102276 │ HIGH     │ fixed    │ 5.0.9             │ 5.0.10, 3.0.7, 2.1.5, 1.1.19 │ brace-expansion: brace-expansion: Denial of Service via      │
+│                                     │                 │          │          │                   │                              │ stack exhaustion from crafted brace patterns...              │
+│                                     │                 │          │          │                   │                              │ https://avd.aquasec.com/nvd/cve-2026-102276                  │
+│                                     ├─────────────────┤          │          │                   ├──────────────────────────────┼──────────────────────────────────────────────────────────────┤
+│                                     │ CVE-2026-102278 │          │          │                   │ 5.0.11, 3.0.8, 2.1.6, 1.1.20 │ brace-expansion: brace-expansion: Denial of Service via      │
+│                                     │                 │          │          │                   │                              │ uncontrolled recursion in nested brace patterns...           │
+│                                     │                 │          │          │                   │                              │ https://avd.aquasec.com/nvd/cve-2026-102278                  │
+├─────────────────────────────────────┼─────────────────┼──────────┤          ├───────────────────┼──────────────────────────────┼──────────────────────────────────────────────────────────────┤
+│ fast-xml-parser (package.json)      │ CVE-2026-25896  │ CRITICAL │          │ 5.3.4             │ 5.3.5, 4.5.4                 │ fast-xml-parser: fast-xml-parser: Cross-Site Scripting (XSS) │
+│                                     │                 │          │          │                   │                              │ due to improper DOCTYPE entity handling                      │
+│                                     │                 │          │          │                   │                              │ https://avd.aquasec.com/nvd/cve-2026-25896                   │
+│                                     ├─────────────────┼──────────┤          │                   ├──────────────────────────────┼──────────────────────────────────────────────────────────────┤
+│                                     │ CVE-2026-26278  │ HIGH     │          │                   │ 4.5.4, 5.3.6                 │ fast-xml-parser: fast-xml-parser: Denial of Service via      │
+│                                     │                 │          │          │                   │                              │ unlimited XML entity expansion                               │
+│                                     │                 │          │          │                   │                              │ https://avd.aquasec.com/nvd/cve-2026-26278                   │
+│                                     ├─────────────────┤          │          │                   ├──────────────────────────────┼──────────────────────────────────────────────────────────────┤
+│                                     │ CVE-2026-33036  │          │          │                   │ 5.5.6, 4.5.5                 │ fast-xml-parser: fast-xml-parser: Denial of Service via XML  │
+│                                     │                 │          │          │                   │                              │ entity expansion bypass                                      │
+│                                     │                 │          │          │                   │                              │ https://avd.aquasec.com/nvd/cve-2026-33036                   │
+├─────────────────────────────────────┼─────────────────┤          ├──────────┼───────────────────┼──────────────────────────────┼──────────────────────────────────────────────────────────────┤
+│ http-cache-semantics (package.json) │ CVE-2026-93748  │          │ affected │ 4.2.0             │                              │ http-cache-semantics: http-cache-semantics: Information      │
+│                                     │                 │          │          │                   │                              │ Disclosure via max-stale directive                           │
+│                                     │                 │          │          │                   │                              │ https://avd.aquasec.com/nvd/cve-2026-93748                   │
+├─────────────────────────────────────┼─────────────────┤          ├──────────┼───────────────────┼──────────────────────────────┼──────────────────────────────────────────────────────────────┤
+│ undici (package.json)               │ CVE-2026-109869 │          │ fixed    │ 6.28.0            │ 6.29.1, 7.30.1, 8.12.2       │ undici: undici: Denial of Service via unhandled stream error │
+│                                     │                 │          │          │                   │                              │ on excessive content...                                      │
+│                                     │                 │          │          │                   │                              │ https://avd.aquasec.com/nvd/cve-2026-109869                  │
+│                                     ├─────────────────┤          │          │                   ├──────────────────────────────┼──────────────────────────────────────────────────────────────┤
+│                                     │ CVE-2026-19534  │          │          │                   │ 6.28.1, 7.29.1, 8.10.2       │ undici: undici: Denial of Service via unrequested WebSocket  │
+│                                     │                 │          │          │                   │                              │ subprotocol                                                  │
+│                                     │                 │          │          │                   │                              │ https://avd.aquasec.com/nvd/cve-2026-19534                   │
+└─────────────────────────────────────┴─────────────────┴──────────┴──────────┴───────────────────┴──────────────────────────────┴──────────────────────────────────────────────────────────────┘

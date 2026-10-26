@@ -12,6 +12,13 @@ services:
       # Postgres ≥ 18 attend le volume sur /var/lib/postgresql (pas .../data)
       - rallly_db:/var/lib/postgresql
     networks: [rallly_backend]
+    read_only: true
+    tmpfs: [/tmp, /var/run/postgresql]
+    cap_drop: [ALL]
+    # Mesure : ces 5 caps sont exigees par l.entrypoint Postgres (chmod/chown du
+    # datadir, su-exec vers l.uid 70, et un find en root sur un datadir en 0700
+    # qui impose DAC_OVERRIDE au REDEMARRAGE sur un volume deja initialise).
+    cap_add: [CHOWN, SETUID, SETGID, FOWNER, DAC_OVERRIDE]
     security_opt: ["no-new-privileges:true"]
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -d rallly -U rallly"]
@@ -34,6 +41,9 @@ services:
       - garage_meta:/var/lib/garage/meta
       - garage_data:/var/lib/garage/data
     networks: [rallly_backend]
+    read_only: true
+    tmpfs: [/tmp]
+    cap_drop: [ALL]
     security_opt: ["no-new-privileges:true"]
 
   rallly:
@@ -75,6 +85,8 @@ services:
       ca-export:
         condition: service_completed_successfully
     networks: [edge, rallly_backend, mail]
+    read_only: true
+    tmpfs: [/tmp]
     security_opt: ["no-new-privileges:true"]
     cap_drop: [ALL]
     healthcheck:
