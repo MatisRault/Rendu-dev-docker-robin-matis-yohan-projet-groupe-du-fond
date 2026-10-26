@@ -19,6 +19,7 @@ import {
   hasPollAdminAccess,
 } from "@/features/poll/data";
 import { MAX_POLL_DESCRIPTION_LENGTH } from "@/features/poll/schema";
+import { isPollExpired } from "@/features/poll/utils";
 import { formatEventDateTime } from "@/features/scheduled-event/utils";
 import { getActiveSpaceForUser } from "@/features/space/data";
 import {
@@ -112,6 +113,8 @@ export const polls = router({
         disableComments: z.boolean().optional(),
         requireParticipantEmail: z.boolean().optional(),
         customFields: customFieldsSchema.optional(),
+        // [projet] Expiration (#134): null removes the deadline
+        deadline: z.date().nullable().optional(),
         options: z
           .object({
             startDate: z.string(),
@@ -124,6 +127,14 @@ export const polls = router({
     .use(requireUserMiddleware)
     .use(createRateLimitMiddleware("create_poll", 20, "1 h"))
     .mutation(async ({ ctx, input }) => {
+      // [projet] A poll created already expired could never take a response.
+      if (input.deadline && isPollExpired({ deadline: input.deadline })) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "The deadline must be in the future",
+        });
+      }
+
       const activeSpace = ctx.user.isGuest
         ? null
         : await getActiveSpaceForUser(ctx.user.id);
@@ -221,6 +232,7 @@ export const polls = router({
             hideScores: input.hideScores,
             requireParticipantEmail: input.requireParticipantEmail,
             customFields: input.customFields ?? [],
+            deadline: input.deadline ?? null,
             spaceId,
           },
         });
@@ -326,6 +338,8 @@ export const polls = router({
         hideScores: z.boolean().optional(),
         requireParticipantEmail: z.boolean().optional(),
         customFields: customFieldsSchema.optional(),
+        // [projet] Expiration (#134): null removes the deadline
+        deadline: z.date().nullable().optional(),
       }),
     )
     .use(requireUserMiddleware)
@@ -415,6 +429,7 @@ export const polls = router({
             hideScores: true,
             disableComments: true,
             requireParticipantEmail: true,
+            deadline: true,
           },
         });
 
@@ -428,6 +443,27 @@ export const polls = router({
         // a poll_reopened event.
         let reopened = false;
         if (newOptions.some(optionEndsInFuture)) {
+          const { count } = await tx.poll.updateMany({
+            where: { id: pollId, status: "closed", closedReason: "auto" },
+            data: { status: "open", closedReason: null },
+          });
+          reopened = count === 1;
+        }
+
+        // [projet] Expiration (#134): moving the deadline later (or removing
+        // it) reopens a poll the deadline closed, as long as it still has
+        // dates ahead. Same conditional transition as above.
+        if (
+          !reopened &&
+          input.deadline !== undefined &&
+          !isPollExpired({ deadline: input.deadline }) &&
+          (
+            await tx.option.findMany({
+              where: { pollId },
+              select: { startTime: true, duration: true },
+            })
+          ).some(optionEndsInFuture)
+        ) {
           const { count } = await tx.poll.updateMany({
             where: { id: pollId, status: "closed", closedReason: "auto" },
             data: { status: "open", closedReason: null },
@@ -500,6 +536,7 @@ export const polls = router({
             disableComments: input.disableComments,
             requireParticipantEmail: input.requireParticipantEmail,
             customFields: input.customFields,
+            deadline: input.deadline,
             kind,
           },
         });
@@ -529,7 +566,10 @@ export const polls = router({
           (input.hideScores !== undefined &&
             input.hideScores !== prior.hideScores) ||
           (input.requireParticipantEmail !== undefined &&
-            input.requireParticipantEmail !== prior.requireParticipantEmail);
+            input.requireParticipantEmail !== prior.requireParticipantEmail) ||
+          (input.deadline !== undefined &&
+            (input.deadline?.getTime() ?? null) !==
+              (prior.deadline?.getTime() ?? null));
 
         await recordPollActivities(tx, [
           ...deletedOptions.map((option) => ({
@@ -637,7 +677,8 @@ export const polls = router({
         input.hideParticipants !== undefined ||
         input.disableComments !== undefined ||
         input.hideScores !== undefined ||
-        input.requireParticipantEmail !== undefined;
+        input.requireParticipantEmail !== undefined ||
+        input.deadline !== undefined;
 
       if (hasDetailsUpdate) {
         track(ctx.user, {
@@ -731,6 +772,7 @@ export const polls = router({
           createdAt: true,
           status: true,
           closedReason: true,
+          deadline: true,
           hideParticipants: true,
           disableComments: true,
           hideScores: true,

@@ -9,7 +9,10 @@ import { resolveSpaceTier } from "@/features/billing/utils";
 import { recordPollActivities } from "@/features/poll/activity/mutations";
 import { MAX_POLL_INVITES_PER_DAY } from "@/features/poll/invite/constants";
 import { getPollInvitePath } from "@/features/poll/invite/utils";
-import { generateAccessToken } from "@/features/poll/utils";
+import {
+  generateAccessToken,
+  isPollAcceptingResponses,
+} from "@/features/poll/utils";
 
 const logger = createLogger("poll/invite/mutations");
 
@@ -44,6 +47,7 @@ export async function sendPollInvite({
       select: {
         title: true,
         status: true,
+        deadline: true,
         space: {
           select: {
             tier: true,
@@ -65,7 +69,8 @@ export async function sendPollInvite({
     return { ok: false, reason: "notFound" };
   }
 
-  if (poll.status !== "open") {
+  // [projet] An expired poll (#134) is closed for invitations too.
+  if (!isPollAcceptingResponses(poll)) {
     return { ok: false, reason: "pollClosed" };
   }
 

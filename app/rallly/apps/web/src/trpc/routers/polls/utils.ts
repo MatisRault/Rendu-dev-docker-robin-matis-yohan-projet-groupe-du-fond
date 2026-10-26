@@ -4,6 +4,7 @@ import {
   hasPollAdminAccess,
   listParticipantIdsByToken,
 } from "@/features/poll/data";
+import { isPollExpired } from "@/features/poll/utils";
 
 type Actor = { id: string; isGuest: boolean };
 
@@ -51,6 +52,14 @@ export async function authorizeParticipantEdit({
     throw new TRPCError({
       code: "BAD_REQUEST",
       message: "This poll is no longer accepting changes",
+    });
+  }
+
+  // [projet] Expiration (#134)
+  if (isPollExpired(participant.poll)) {
+    throw new TRPCError({
+      code: "BAD_REQUEST",
+      message: "This poll has expired and no longer accepts changes",
     });
   }
 
