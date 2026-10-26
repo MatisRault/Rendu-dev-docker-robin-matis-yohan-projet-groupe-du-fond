@@ -370,11 +370,8 @@ complètement ce piège.
 
 ## 8. Reste à faire
 
-- [ ] **Reboot de validation** : le noyau 6.8.0-146 attend un redémarrage (§4.3).
-      Il servira de test de résilience — après reboot, la stack doit remonter seule
-      (`restart: unless-stopped`), le swap être réactivé par `fstab` et le DNS tenir
-      grâce au drop-in de §4.1. À faire avec l'accord de l'équipe, pas en pleine
-      séance de travail de P2 ou P3.
+- [x] ~~Reboot de validation~~ — **fait le 26/10/2026, tout est remonté seul.**
+      Résultats en §9.
 - [x] ~~Repasser `RALLLY_IMAGE` sur l'image GHCR~~ — fait le 26/10/2026. L'image
       `ghcr.io/matisrault/…/rallly:main` se télécharge **sans authentification**, donc
       elle est bien publique. Stack redéployée avec elle, `rallly` `healthy`.
@@ -384,3 +381,48 @@ complètement ce piège.
       §4.4 reste une assurance non consommée.
 - [ ] Tester l'accès depuis le poste d'une personne extérieure au groupe
       (*Definition of done* de l'étape 6).
+
+## 9. Test de résilience : reboot complet
+
+Réalisé le 26/10/2026, après 17 jours d'uptime, avec la stack complète (Authentik
+compris) et le durcissement de `docs/securite.md` en place. **Aucune intervention
+manuelle n'a été nécessaire après le redémarrage.**
+
+| Élément vérifié | Mécanisme censé le maintenir | Résultat |
+|---|---|---|
+| Noyau | — | **6.8.0-147** (était 6.8.0-117) |
+| Swap de 2 Go | ligne dans `/etc/fstab` | **réactivé**, `vm.swappiness=10` conservé |
+| Résolution DNS | drop-in `systemd-resolved` | **tenue**, `getent hosts github.com` répond |
+| Pare-feu | service `ufw` | **actif** |
+| Les 8 services | `restart: unless-stopped` | **tous `healthy`** en ~40 s, `ca-export` `Exited (0)` |
+| Les 3 URL en HTTPS | — | `rallly` **200**, `auth` **302**, `mail` **302** |
+| Redirection 80 → 443 | — | **308** |
+| Mailpit protégé | forward-auth Authentik (P2) | **302** vers l'endpoint d'autorisation |
+| Découverte OIDC depuis le conteneur `rallly` | alias réseau + `NODE_EXTRA_CA_CERTS` | **200** |
+
+### Ce que ce test prouve, et qui n'était jusque-là qu'une hypothèse
+
+Le correctif DNS avait été placé dans un **drop-in `systemd-resolved`** plutôt que
+dans netplan, au motif que `one-context` régénère netplan à chaque démarrage. Le
+reboot le confirme par la mesure :
+
+```bash
+grep -c nameservers /etc/netplan/50-one-context.yaml   # -> 0
+resolvectl status | grep "DNS Servers"                 # -> 1.1.1.1 8.8.8.8
+```
+
+netplan a bien été régénéré **sans aucun serveur DNS**, et la résolution fonctionne
+quand même. Un correctif écrit dans netplan aurait été effacé et la VM serait repartie
+sans DNS — donc sans pouvoir tirer la moindre image. Le choix n'était pas une
+précaution théorique.
+
+Autre enseignement : le noyau installé était **6.8.0-147** et non le 6.8.0-146 relevé
+le 9 octobre. `unattended-upgrades` (§2.4 de `docs/securite.md` pour la politique) a
+donc bien travaillé pendant les 17 jours d'uptime. Les mises à jour de sécurité
+automatiques fonctionnent, mais elles **n'appliquent pas** les correctifs de noyau
+sans redémarrage : il reste à planifier.
+
+### Mémoire après reboot
+1530 Mo utilisés sur 3915, **0 octet de swap**. À froid, la stack complète consomme
+donc environ 1,5 Go ; elle montait à 1871 Mo après plusieurs heures de
+fonctionnement. Le dimensionnement 2 vCPU / 4 Go est confortable.
