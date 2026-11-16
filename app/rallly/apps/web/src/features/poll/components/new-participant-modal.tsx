@@ -179,6 +179,13 @@ export const NewParticipantForm = (props: NewParticipantModalProps) => {
             "This slot has just been booked by someone else. Pick another one.",
         });
       }
+      // [projet] Expiration (#134): the deadline passed while the page was open
+      if (error.data.appError === "POLL_EXPIRED") {
+        return t("pollExpiredDescription", {
+          defaultValue:
+            "This poll has passed its deadline. No more responses are being accepted.",
+        });
+      }
       if (error.data.appError === "BOOKING_LIMIT") {
         return t("bookingLimitError", {
           defaultValue:

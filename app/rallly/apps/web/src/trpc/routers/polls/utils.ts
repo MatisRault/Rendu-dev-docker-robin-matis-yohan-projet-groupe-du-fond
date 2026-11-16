@@ -5,6 +5,7 @@ import {
   listParticipantIdsByToken,
 } from "@/features/poll/data";
 import { isPollExpired } from "@/features/poll/utils";
+import { AppError } from "@/lib/errors/app-error";
 
 type Actor = { id: string; isGuest: boolean };
 
@@ -48,18 +49,23 @@ export async function authorizeParticipantEdit({
     });
   }
 
-  if (participant.poll.status !== "open") {
-    throw new TRPCError({
-      code: "BAD_REQUEST",
-      message: "This poll is no longer accepting changes",
-    });
-  }
-
-  // [projet] Expiration (#134)
+  // [projet] Expiration (#134): checked before the status, see
+  // participants.add.
   if (isPollExpired(participant.poll)) {
     throw new TRPCError({
       code: "BAD_REQUEST",
       message: "This poll has expired and no longer accepts changes",
+      cause: new AppError({
+        code: "POLL_EXPIRED",
+        message: "Poll deadline has passed",
+      }),
+    });
+  }
+
+  if (participant.poll.status !== "open") {
+    throw new TRPCError({
+      code: "BAD_REQUEST",
+      message: "This poll is no longer accepting changes",
     });
   }
 

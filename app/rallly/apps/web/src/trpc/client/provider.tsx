@@ -56,6 +56,19 @@ export function TRPCProvider(props: { children: React.ReactNode }) {
         return;
       }
 
+      // [projet] Expiration (#134): editing a vote after the deadline would
+      // otherwise fall to "An internal server error occurred".
+      if (error.data.appError === "POLL_EXPIRED") {
+        toast.error(
+          t("pollExpiredDescription", {
+            defaultValue:
+              "This poll has passed its deadline. No more responses are being accepted.",
+          }),
+          { id: "poll-expired" },
+        );
+        return;
+      }
+
       switch (error.data?.code) {
         case "UNAUTHORIZED":
           // Never sign out automatically — a failed sign out turns this
