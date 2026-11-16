@@ -77,6 +77,8 @@ Résultats vérifiés (parcours complet, local) :
 | admin | Session Rallly « Admin Rallly », rôle admin à réclamer dans le Control Panel |
 | bob | Bloqué sur Authentik (« Permission denied »), aucune session Rallly |
 
+![alice connectée à Rallly via Authentik : nom et e-mail viennent de l'IdP](captures/sso-alice-identite.jpg)
+
 ## 3. Groupes et policies
 
 | Groupe | Rallly | Mailpit | Comptes |
@@ -111,6 +113,10 @@ navigateur ──► Caddy (mail.*) ──forward_auth──► authentik-server
 - La config de l'outpost est un JSON **remplacé en bloc** par le blueprint. On y recopie donc
   toutes les clés par défaut de la version installée. Après une montée de version, il faut
   comparer avec la config par défaut, sinon des clés pourraient disparaître.
+
+| bob (`sans-acces`) refusé sur Rallly | admin (`rallly-admins`) dans Mailpit |
+|---|---|
+| ![Permission refusée pour bob](captures/sso-bob-refuse.jpg) | ![Mailpit ouvert pour admin](captures/mailpit-admin.jpg) |
 
 ## 4. Invitation d'un externe
 
