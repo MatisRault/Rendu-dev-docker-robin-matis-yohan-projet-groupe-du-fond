@@ -194,11 +194,19 @@ Récupérer la syntaxe exacte d'un objet créé à la main dans l'UI :
 
 ## 7. Limites et contournement du SSO
 
-Par défaut, Rallly accepte aussi la connexion par e-mail (lien magique). bob, refusé par
-Authentik, pourrait donc entrer quand même avec son adresse. Rallly 4.15 propose
-`EMAIL_LOGIN_ENABLED=false` : avec cette valeur, seule la connexion SSO reste possible et les
-policies Authentik deviennent la seule porte d'entrée. Ce réglage se trouve dans
-`compose.rallly.yml` (P3).
+Par défaut, Rallly accepte aussi la connexion par e-mail (code envoyé par mail). bob, refusé
+par Authentik, pourrait donc entrer quand même avec son adresse.
+
+`EMAIL_LOGIN_ENABLED=false` (dans `compose.rallly.yml`, P3) ne suffit pas seul : il masque le
+formulaire de la page de connexion, mais l'API better-auth du code e-mail
+(`/api/better-auth/email-otp/send-verification-otp`, `/sign-in/email-otp`,
+`/email-otp/verify-email`) restait ouverte et permettait de contourner le SSO. P3 l'a fermée
+dans `app/rallly/apps/web/src/lib/auth.ts` (commentaire `[projet]`) : avec ce réglage, ces
+routes répondent **403**. Le smoke test le vérifie à chaque déploiement
+(`✅ Connexion par e-mail refusée`).
+
+Résultat : la connexion SSO est la seule porte d'entrée, et les policies Authentik
+s'appliquent à tout le monde.
 
 Les **participants invités** (vote sans compte) restent possibles dans Rallly : c'est le
 fonctionnement normal d'un outil de sondage. Seuls la création de compte et l'accès à
