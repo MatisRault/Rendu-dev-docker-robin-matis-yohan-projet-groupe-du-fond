@@ -337,6 +337,44 @@ bien le chemin, donc les nouveaux fichiers y apparaissent normalement.
 Généralisation utile : monter un **répertoire** plutôt qu'un fichier unique évite
 complètement ce piège.
 
+### 5.5 Piège : `:main` n'est pas « l'image de ce commit »
+
+Rencontré en déployant le 16/11/2026, et **invisible dans le smoke test**.
+
+`scripts/deploy.sh` fait un `git pull` puis tire l'image. Si on tire le tag
+`:main`, on obtient le **dernier build vert de `main`**, pas le build du commit
+qu'on vient de récupérer. Déployer juste après un merge installe donc l'image
+**précédente** : le dépôt est à jour, le conteneur non.
+
+C'est d'autant plus sournois que les **migrations Prisma voyagent dans l'image**.
+Le symptôme observé : la colonne `booking_mode` de la feature #139 était absente de
+la base alors que `git log` sur la VM montrait bien le commit qui l'ajoute. Et le
+smoke test restait **entièrement vert**, puisqu'il ne vérifie que des fonctions qui
+existaient déjà.
+
+```bash
+# Ce qui a trahi le decalage
+docker image inspect ...rallly:main --format '{{.Created}}'   # -> 09:08
+gh run list --branch main --limit 1                           # merge a 09:17, CI en cours
+```
+
+**Correctif appliqué** : `deploy.sh` déploie désormais
+`...rallly:sha-$(git rev-parse --short=7 HEAD)`, le tag que `metadata-action`
+produit déjà dans `ci.yml`. Deux issues possibles, toutes deux franches :
+l'image existe et correspond **exactement** au code déployé, ou le `pull` échoue
+et le script s'arrête **sans toucher à la stack**, en disant que la CI de ce commit
+n'a pas fini.
+
+Vérification après correctif :
+```bash
+docker compose exec rallly-db psql -U rallly -d rallly \
+  -c "select migration_name from _prisma_migrations order by finished_at desc limit 1;"
+# -> 20261116120000_booking_mode
+```
+
+Règle générale à retenir : **un tag mobile ne doit jamais servir à déployer.** Il
+sert à suivre, pas à figer.
+
 ## 6. Écarts local / VM
 
 | Élément | Local (poste de P1) | VM Énov | Pourquoi |

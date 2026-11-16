@@ -7,6 +7,34 @@ cd "$(dirname "$0")/.."
 
 AVANT="$(git rev-parse HEAD)"
 echo "→ git pull";            git pull --ff-only
+
+# [projet] Déployer CE commit, pas le dernier build vert.
+# Le tag `:main` signifie « dernier build vert de main », pas « build de ce
+# commit ». Déployer juste après un merge installe donc silencieusement
+# l'image précédente — et comme les migrations Prisma voyagent dans l'image,
+# le schéma de base reste en arrière sans que le smoke test le voie (il ne
+# teste que ce qui existait déjà). Constaté pour de vrai le 16/11/2026.
+# Le tag `sha-<commit>` est déjà produit par metadata-action dans ci.yml.
+DEPOT="$(grep -E '^RALLLY_IMAGE=' .env | cut -d= -f2)"
+case "$DEPOT" in
+  ghcr.io/*)
+    RALLLY_IMAGE="${DEPOT%%:*}:sha-$(git rev-parse --short=7 HEAD)"
+    export RALLLY_IMAGE
+    echo "→ image visée";       echo "   $RALLLY_IMAGE"
+    if ! docker pull "$RALLLY_IMAGE" >/dev/null 2>&1; then
+      echo "❌ $RALLLY_IMAGE absente du registre."
+      echo "   La CI de ce commit n'a pas fini de publier, ou elle a échoué."
+      echo "   Attendez sa fin puis relancez. La stack n'a pas été touchée."
+      exit 1
+    fi
+    ;;
+  *)
+    # Image locale ou upstream : on ne force rien, mais on le dit.
+    echo "⚠️  RALLLY_IMAGE n'est pas une image GHCR ($DEPOT)."
+    echo "   Pas d'épinglage au commit : vous déployez ce que ce tag désigne."
+    ;;
+esac
+
 echo "→ pull des images";     docker compose pull
 echo "→ redémarrage";         docker compose up -d --remove-orphans
 
