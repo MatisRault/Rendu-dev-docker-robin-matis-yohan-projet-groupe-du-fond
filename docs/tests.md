@@ -98,7 +98,7 @@ qui court-circuite l'interface. Le sujet autorise le formateur à tester l'API.
 | E7 | #8 — **deux créneaux d'un coup** | **400**, message « un seul créneau » | P1 | |
 | E8 | #8 — messages affichés | en français, sans parler de connexion réseau | P1 | |
 | E9 | #8 — « si nécessaire » absent | le bouton n'alterne qu'entre réservé et non réservé | P1 | |
-| E10 | Libre (#201) champs personnalisés | réponses enregistrées, visibles de l'organisateur seul | P3 || ❌ 16/11 (stack locale, image `sha-b0db423`) : API ✅ (réponses enregistrées, `participants.list` vide pour un votant, complet pour l'organisatrice). **Écart UI** : un champ laissé vide (même facultatif) bloquait le vote avec « Invalid input » en anglais, aussi sous l'e-mail. Corrigé dans la PR `p3/tests-d-e`, à revérifier après merge |
+| E10 | Libre (#201) champs personnalisés | réponses enregistrées, visibles de l'organisateur seul | ✅ 16/11, revérifié après merge de la PR #24 (image `sha-f25de16`, navigateur) : champ facultatif vide → vote enregistré ; champ requis vide → « Ce champ est obligatoire. » ; champ rendu requis après ouverture de la page → « Les informations demandées par ce sondage ont changé… ». Écart initial : un champ vide bloquait le vote avec « Invalid input » (corrigé PR #24) |
 | E11 | Libre — **champ requis contourné par l'API** | refus serveur | P3 || ✅ 16/11 : vote forgé sans le champ requis (ou avec des espaces) → **400** ; choix hors liste → 400. Message UI si seul le serveur refuse (champs modifiés après ouverture de la page) : « vérifiez votre connexion » → corrigé dans la même PR (« Les informations demandées par ce sondage ont changé… ») |
 
 ⚠️ **E8 existe parce que le défaut a été réel.** La règle refusait correctement,
@@ -156,7 +156,7 @@ durcissement dont on connaît les trous.
 | B — réseau et durcissement | | | |
 | C — SSO et policies | | | |
 | D — CI/CD et déploiement | P3 (D1-D4, D8) | 16/11/2026 | aucun ; D5-D7 restent à P1 (VM) |
-| E — fonctionnalités | P3 (E10, E11) | 16/11/2026 | E10 : champ vide bloquant + messages d'erreur (corrigé, PR `p3/tests-d-e`) |
+| E — fonctionnalités | P3 (E10, E11) | 16/11/2026 | E10 : champ vide bloquant + messages d'erreur (corrigé PR #24, revérifié) |
 | F — résilience | | | |
 | G — accès extérieur | | | |
 | H — soutenance | | | |
