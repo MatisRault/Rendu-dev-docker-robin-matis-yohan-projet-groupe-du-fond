@@ -22,11 +22,11 @@ n'a jamais ouvert le projet**, ou au minimum après un `reset` complet.
 
 | # | Test | Comment | Attendu | Porteur | Résultat |
 |---|---|---|---|---|---|
-| A1 | Clone et démarrage | `git clone` puis `./stack.sh env && ./stack.sh up` | Les 9 services montent sans intervention | P1 | |
-| A2 | Délai de disponibilité | chronométrer jusqu'à ce que `auth` et `rallly` répondent | **< 3 min** (Authentik met 1 à 2 min) | P1 | |
-| A3 | État des services | `./stack.sh ps` | 8 `healthy`, `ca-export` `Exited (0)` | P1 | |
-| A4 | Config valide | `docker compose config -q` | code 0, aucune sortie | P1 | |
-| A5 | Après `reset` | `./stack.sh reset` (à taper par un humain) puis `up` | tout remonte, démo rejouable | P1 | |
+| A1 | Clone et démarrage | `git clone` puis `./stack.sh env && ./stack.sh up` | Les 9 services montent sans intervention | P1 |  16/11 — ✅ (partiel) 9 services montent |
+| A2 | Délai de disponibilité | chronométrer jusqu'à ce que `auth` et `rallly` répondent | **< 3 min** (Authentik met 1 à 2 min) | P1 |  16/11 — ⚠️ **20 s** à chaud, non mesuré à froid |
+| A3 | État des services | `./stack.sh ps` | 8 `healthy`, `ca-export` `Exited (0)` | P1 |  16/11 — ✅ 8 healthy + ca-export Exited(0) |
+| A4 | Config valide | `docker compose config -q` | code 0, aucune sortie | P1 |  16/11 — ✅ code 0 |
+| A5 | Après `reset` | `./stack.sh reset` (à taper par un humain) puis `up` | tout remonte, démo rejouable | P1 |  16/11 — ⏭️ à faire par un humain (`reset` interactif) |
 
 ⚠️ A5 efface les données : à faire **en local**, jamais sur la VM.
 
@@ -34,16 +34,16 @@ n'a jamais ouvert le projet**, ou au minimum après un `reset` complet.
 
 | # | Test | Comment | Attendu | Porteur | Résultat |
 |---|---|---|---|---|---|
-| B1 | Ports publiés | `docker compose ps` | **seul** `caddy` publie, et uniquement 80 et 443 | P1 | |
-| B2 | Liaison de l'écoute | `grep HTTP_BIND .env` | `127.0.0.1` en local, `0.0.0.0` sur la VM | P1 | |
-| B3 | Base inaccessible | `psql -h <hôte> -p 5432` depuis l'extérieur | connexion refusée | P1 | |
-| B4 | Réseaux internes | `docker compose config \| grep -A1 internal` | `mail`, `authentik_backend`, `rallly_backend` à `true` | P1 | |
-| B5 | Pas d'egress interne | `docker compose exec rallly-db ping -c1 1.1.1.1` | **échec** (réseau `internal`) | P1 | |
-| B6 | Utilisateurs effectifs | `docker top <conteneur>` sur les 9 | conforme au tableau de `securite.md` §1 | P1 | |
-| B7 | `read_only` | `docker inspect -f '{{.HostConfig.ReadonlyRootfs}}'` | `true` sur les 9 | P1 | |
-| B8 | Capabilities | `docker inspect -f '{{.HostConfig.CapDrop}}'` | `[ALL]` partout | P1 | |
-| B9 | Redirection HTTP | `curl -s -o /dev/null -w '%{http_code}' http://rallly.<domaine>/` | **308** | P1 | |
-| B10 | Émetteur du certificat | `openssl s_client -connect rallly.<domaine>:443` | `Caddy Local Authority` | P1 | |
+| B1 | Ports publiés | `docker compose ps` | **seul** `caddy` publie, et uniquement 80 et 443 | P1 |  16/11 — ✅ seul caddy, 80+443 |
+| B2 | Liaison de l'écoute | `grep HTTP_BIND .env` | `127.0.0.1` en local, `0.0.0.0` sur la VM | P1 |  16/11 — ✅ 127.0.0.1 local / 0.0.0.0 VM |
+| B3 | Base inaccessible | `psql -h <hôte> -p 5432` depuis l'extérieur | connexion refusée | P1 |  16/11 — ✅ 5432 fermé |
+| B4 | Réseaux internes | `docker compose config \| grep -A1 internal` | `mail`, `authentik_backend`, `rallly_backend` à `true` | P1 |  16/11 — ✅ les 3 à `internal: true` |
+| B5 | Pas d'egress interne | `docker compose exec rallly-db ping -c1 1.1.1.1` | **échec** (réseau `internal`) | P1 |  16/11 — ✅ ping sortant impossible |
+| B6 | Utilisateurs effectifs | `docker top <conteneur>` sur les 9 | conforme au tableau de `securite.md` §1 | P1 |  16/11 — ✅ conforme à securite.md §1 |
+| B7 | `read_only` | `docker inspect -f '{{.HostConfig.ReadonlyRootfs}}'` | `true` sur les 9 | P1 |  16/11 — ✅ `true` sur les 9 |
+| B8 | Capabilities | `docker inspect -f '{{.HostConfig.CapDrop}}'` | `[ALL]` partout | P1 |  16/11 — ✅ `[ALL]` partout |
+| B9 | Redirection HTTP | `curl -s -o /dev/null -w '%{http_code}' http://rallly.<domaine>/` | **308** | P1 |  16/11 — ✅ 308 local et VM |
+| B10 | Émetteur du certificat | `openssl s_client -connect rallly.<domaine>:443` | `Caddy Local Authority` | P1 |  16/11 — ✅ Caddy Local Authority |
 
 ⚠️ **B6 : ne pas utiliser `docker compose exec … id`**, qui renvoie un faux `root`
 pour Postgres. Seul `docker top` montre le processus réel (cf. `securite.md` §2).
@@ -109,11 +109,11 @@ sans fin. Aucun test automatique ne l'a vu. **À vérifier pour les trois featur
 
 | # | Test | Comment | Attendu | Porteur | Résultat |
 |---|---|---|---|---|---|
-| F1 | Reboot de la VM | `systemctl reboot` (avec l'accord de l'équipe) | tout remonte seul en ~40 s | P1 | |
-| F2 | Swap réactivé | `swapon --show` après reboot | 2 Go actifs | P1 | |
-| F3 | DNS conservé | `getent hosts github.com` après reboot | résolution OK | P1 | |
-| F4 | Pare-feu actif | `ufw status` | 22, 80, 443 seulement | P1 | |
-| F5 | Config montée à jour | après `git pull`, recréer caddy | la règle `forward_auth` est bien chargée | P1 | |
+| F1 | Reboot de la VM | `systemctl reboot` (avec l'accord de l'équipe) | tout remonte seul en ~40 s | P1 |  16/11 — ✅ fait le 16/11, cf. vm-enov.md §9 |
+| F2 | Swap réactivé | `swapon --show` après reboot | 2 Go actifs | P1 |  16/11 — ✅ 2 Go, swappiness=10 |
+| F3 | DNS conservé | `getent hosts github.com` après reboot | résolution OK | P1 |  16/11 — ✅ github.com résolu |
+| F4 | Pare-feu actif | `ufw status` | 22, 80, 443 seulement | P1 |  16/11 — ✅ 22, 80, 443 seulement |
+| F5 | Config montée à jour | après `git pull`, recréer caddy | la règle `forward_auth` est bien chargée | P1 |  16/11 — ✅ forward_auth chargé dans le conteneur |
 
 ⚠️ **F5** : un bind mount de fichier suit l'inode. Après un `git pull`, le conteneur
 garde l'ancien fichier et ni `up -d` ni `caddy reload` ne le voient. C'est ainsi que
@@ -148,15 +148,27 @@ durcissement dont on connaît les trous.
 
 ---
 
+## Deux écarts relevés au balayage P1 du 16/11
+
+**A2 — le délai de 20 s n'est pas le chiffre de référence.** Il a été mesuré sur des
+volumes **déjà initialisés** : Authentik n'avait ni base à créer ni migration à
+jouer. Un vrai démarrage à froid (`gen-env.sh` + volumes neufs) sera sensiblement
+plus long, le plan annonçant 1 à 2 min pour Authentik seul. **La ligne reste à
+mesurer dans les conditions du sujet**, sur un poste qui n'a jamais ouvert le projet.
+
+**A5 — non fait.** `./stack.sh reset` pose une question interactive à laquelle
+l'assistant ne peut pas répondre, et la commande efface toutes les données. Elle doit
+être tapée par un humain, **en local uniquement**.
+
 ## Suivi du balayage
 
 | Section | Porteur | Date | Écarts trouvés |
 |---|---|---|---|
-| A — démarrage à froid | | | |
-| B — réseau et durcissement | | | |
+| A — démarrage à froid | P1 | 16/11 | A2 non mesuré à froid, A5 à faire |
+| B — réseau et durcissement | P1 | 16/11 | aucun |
 | C — SSO et policies | | | |
 | D — CI/CD et déploiement | | | |
 | E — fonctionnalités | | | |
-| F — résilience | | | |
+| F — résilience | P1 | 16/11 | aucun |
 | G — accès extérieur | | | |
 | H — soutenance | | | |
