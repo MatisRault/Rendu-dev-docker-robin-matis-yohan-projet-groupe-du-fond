@@ -63,6 +63,18 @@ export function validateBookingVotes(
   return null;
 }
 
+/**
+ * Code applicatif associé à la violation. Il suit le mécanisme déjà utilisé
+ * par `POLL_FULL` : le client le lit dans `error.data.appError` et affiche
+ * un message traduit, au lieu du texte anglais du serveur ou d'un message
+ * générique parlant de connexion réseau.
+ */
+export function bookingViolationAppCode(
+  violation: BookingRuleViolation,
+): "SLOT_TAKEN" | "BOOKING_LIMIT" {
+  return violation.code === "slot_taken" ? "SLOT_TAKEN" : "BOOKING_LIMIT";
+}
+
 /** Message rendu à l'appelant de l'API. Volontairement explicite. */
 export function bookingViolationMessage(
   violation: BookingRuleViolation,
