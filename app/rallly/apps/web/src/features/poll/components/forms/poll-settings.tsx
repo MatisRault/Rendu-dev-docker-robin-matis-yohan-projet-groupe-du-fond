@@ -17,6 +17,7 @@ import {
   HourglassIcon,
   MailIcon,
   MessageCircleIcon,
+  TicketIcon,
   VenetianMaskIcon,
 } from "lucide-react";
 import { useFormContext } from "react-hook-form";
@@ -215,6 +216,34 @@ export const PollSettingsForm = ({ children }: React.PropsWithChildren) => {
                   className="w-auto"
                   value={field.value ?? ""}
                   onChange={(e) => field.onChange(e.target.value)}
+                />
+              </Field>
+            )}
+          />
+          {/* [projet] Réservation (#139) */}
+          <FormField
+            control={form.control}
+            name="bookingMode"
+            render={({ field }) => (
+              <Field orientation="horizontal">
+                <SettingIcon>
+                  <TicketIcon />
+                </SettingIcon>
+                <FieldContent>
+                  <FieldLabel htmlFor="booking-mode">
+                    <Trans i18nKey="bookingModeTitle" defaults="Booking mode" />
+                  </FieldLabel>
+                  <FieldDescription>
+                    <Trans
+                      i18nKey="bookingModeDescription"
+                      defaults="Each slot can be booked by one person only, and each person books a single slot."
+                    />
+                  </FieldDescription>
+                </FieldContent>
+                <Switch
+                  id="booking-mode"
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
                 />
               </Field>
             )}

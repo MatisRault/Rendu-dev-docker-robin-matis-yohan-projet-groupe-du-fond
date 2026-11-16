@@ -8,6 +8,8 @@ import VoteIcon from "./vote-icon";
 
 export interface VoteSelectorProps {
   value?: VoteType;
+  /** [projet] Réservation (#139) : restreint le cycle à réservé / non réservé. */
+  bookingMode?: boolean;
   /**
    * Accessible description of the option being voted on (e.g. "Tue 30 Jun
    * 2026, 1:00 PM – 2:00 PM") so screen readers can tie the vote to its
@@ -23,18 +25,41 @@ export interface VoteSelectorProps {
 
 const orderedVoteTypes: VoteType[] = ["yes", "ifNeedBe", "no"];
 
-export const toggleVote = (value?: VoteType) => {
-  if (!value) return orderedVoteTypes[0];
-  return orderedVoteTypes[
-    (orderedVoteTypes.indexOf(value) + 1) % orderedVoteTypes.length
-  ];
+/**
+ * [projet] Réservation (#139) : « si nécessaire » n'a pas de sens quand un
+ * créneau est attribué à une seule personne, et l'API le refuse. Le bouton
+ * n'alterne donc qu'entre réservé et non réservé, pour que l'interface ne
+ * propose jamais un choix que le serveur rejettera.
+ */
+const bookingVoteTypes: VoteType[] = ["yes", "no"];
+
+const voteTypesFor = (bookingMode?: boolean) =>
+  bookingMode ? bookingVoteTypes : orderedVoteTypes;
+
+export const toggleVote = (value?: VoteType, bookingMode?: boolean) => {
+  const types = voteTypesFor(bookingMode);
+  if (!value) return types[0];
+  const index = types.indexOf(value);
+  // Une valeur hors du cycle (un ifNeedBe hérité d'avant l'activation du mode
+  // réservation) repart proprement au début plutôt que de rester bloquée.
+  if (index === -1) return types[0];
+  return types[(index + 1) % types.length];
 };
 
 export const VoteSelector = React.forwardRef<
   HTMLButtonElement,
   VoteSelectorProps
 >(function VoteSelector(
-  { value, optionLabel, onChange, onFocus, onBlur, onKeyDown, className },
+  {
+    value,
+    bookingMode,
+    optionLabel,
+    onChange,
+    onFocus,
+    onBlur,
+    onKeyDown,
+    className,
+  },
   ref,
 ) {
   const { t } = useTranslation();
@@ -74,7 +99,9 @@ export const VoteSelector = React.forwardRef<
         className,
       )}
       onClick={() => {
-        onChange?.(value ? toggleVote(value) : orderedVoteTypes[0]);
+        onChange?.(
+          value ? toggleVote(value, bookingMode) : voteTypesFor(bookingMode)[0],
+        );
       }}
       ref={ref}
     >

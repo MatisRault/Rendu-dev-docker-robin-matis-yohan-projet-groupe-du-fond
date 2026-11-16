@@ -15,6 +15,8 @@ export type GetPollApiResponse = {
   timeZone: string | null;
   canManage: boolean;
   status: PollStatus;
+  /** [projet] Réservation (#139) */
+  bookingMode: boolean;
   createdAt: Date;
   deleted: boolean;
   event: {

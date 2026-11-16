@@ -115,6 +115,8 @@ export const polls = router({
         customFields: customFieldsSchema.optional(),
         // [projet] Expiration (#134): null removes the deadline
         deadline: z.date().nullable().optional(),
+        // [projet] Réservation (#139) : un créneau par personne, une personne par créneau
+        bookingMode: z.boolean().optional(),
         options: z
           .object({
             startDate: z.string(),
@@ -233,6 +235,7 @@ export const polls = router({
             requireParticipantEmail: input.requireParticipantEmail,
             customFields: input.customFields ?? [],
             deadline: input.deadline ?? null,
+            bookingMode: input.bookingMode ?? false,
             spaceId,
           },
         });
@@ -340,6 +343,8 @@ export const polls = router({
         customFields: customFieldsSchema.optional(),
         // [projet] Expiration (#134): null removes the deadline
         deadline: z.date().nullable().optional(),
+        // [projet] Réservation (#139) : un créneau par personne, une personne par créneau
+        bookingMode: z.boolean().optional(),
       }),
     )
     .use(requireUserMiddleware)
@@ -430,6 +435,7 @@ export const polls = router({
             disableComments: true,
             requireParticipantEmail: true,
             deadline: true,
+            bookingMode: true,
           },
         });
 
@@ -537,6 +543,7 @@ export const polls = router({
             requireParticipantEmail: input.requireParticipantEmail,
             customFields: input.customFields,
             deadline: input.deadline,
+            bookingMode: input.bookingMode,
             kind,
           },
         });
@@ -778,6 +785,8 @@ export const polls = router({
           hideScores: true,
           requireParticipantEmail: true,
           customFields: true,
+          // [projet] Réservation (#139)
+          bookingMode: true,
           options: {
             select: {
               id: true,
