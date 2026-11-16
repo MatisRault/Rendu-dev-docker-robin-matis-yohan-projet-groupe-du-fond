@@ -12,6 +12,8 @@ export type AppErrorCode =
   | "BOOKING_LIMIT"
   // [projet] Expiration (#134)
   | "POLL_EXPIRED"
+  // [projet] Champs personnalisés (#201)
+  | "CUSTOM_FIELDS_CHANGED"
   | "SERVICE_UNAVAILABLE"
   | "SETUP_REQUIRED"
   | "TOO_MANY_REQUESTS";

@@ -391,6 +391,10 @@ export const participants = router({
           throw new TRPCError({
             code: "BAD_REQUEST",
             message: "A valid email is required to respond to this poll",
+            cause: new AppError({
+              code: "CUSTOM_FIELDS_CHANGED",
+              message: "Email required by the poll",
+            }),
           });
         }
 
@@ -403,6 +407,10 @@ export const participants = router({
           throw new TRPCError({
             code: "BAD_REQUEST",
             message: `Invalid answer to custom field "${answersCheck.error.fieldId}": ${answersCheck.error.reason}`,
+            cause: new AppError({
+              code: "CUSTOM_FIELDS_CHANGED",
+              message: "Invalid answer to a custom field",
+            }),
           });
         }
 

@@ -220,6 +220,7 @@
   "customFieldLabelPlaceholder": "e.g. Company",
   "customFieldRemove": "Remove field",
   "customFieldRequired": "Required",
+  "customFieldsChangedError": "The information requested by this poll has changed. Reload the page and try again.",
   "customFieldsDescription": "Ask participants for extra information. Only you can see their answers.",
   "customFieldSelectPlaceholder": "Select an option",
   "customFieldsTitle": "Custom fields",

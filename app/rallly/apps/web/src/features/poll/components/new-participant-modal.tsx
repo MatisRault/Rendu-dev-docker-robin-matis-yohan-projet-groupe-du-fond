@@ -55,7 +55,9 @@ const requiredEmailSchema = z.object({
   email: z.email(),
   note: z.string().max(MAX_RESPONSE_NOTE_LENGTH).optional(),
   // [projet] answers to the poll's custom fields, checked in onSubmit
-  customAnswers: z.record(z.string(), z.string()).optional(),
+  // [projet] Un champ jamais touché vaut undefined : il est vérifié ensuite par
+  // validateCustomAnswers, qui affiche le bon message (requis / facultatif).
+  customAnswers: z.record(z.string(), z.string().optional()).optional(),
 });
 
 const optionalEmailSchema = z.object({
@@ -64,7 +66,9 @@ const optionalEmailSchema = z.object({
   email: z.email().or(z.literal("")),
   note: z.string().max(MAX_RESPONSE_NOTE_LENGTH).optional(),
   // [projet] answers to the poll's custom fields, checked in onSubmit
-  customAnswers: z.record(z.string(), z.string()).optional(),
+  // [projet] Un champ jamais touché vaut undefined : il est vérifié ensuite par
+  // validateCustomAnswers, qui affiche le bon message (requis / facultatif).
+  customAnswers: z.record(z.string(), z.string().optional()).optional(),
 });
 
 const schema = z.union([requiredEmailSchema, optionalEmailSchema]);
@@ -173,6 +177,15 @@ export const NewParticipantForm = (props: NewParticipantModalProps) => {
       // [projet] Réservation (#139) : sans ces deux cas, un refus de règle
       // métier tombait dans le message générique « vérifiez votre connexion »,
       // qui est faux et pousse l'utilisateur à réessayer indéfiniment.
+      // [projet] Champs personnalisés : le navigateur vérifie déjà les réponses ;
+      // si le serveur refuse quand même, c'est que l'organisateur a changé les
+      // champs depuis l'ouverture de la page.
+      if (error.data.appError === "CUSTOM_FIELDS_CHANGED") {
+        return t("customFieldsChangedError", {
+          defaultValue:
+            "The information requested by this poll has changed. Reload the page and try again.",
+        });
+      }
       if (error.data.appError === "SLOT_TAKEN") {
         return t("bookingSlotTakenError", {
           defaultValue:
