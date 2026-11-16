@@ -206,7 +206,11 @@ contournée**.
   1. Créer un sondage, ajouter les champs « Société » (texte, obligatoire) et « Repas » (liste : Végétarien, Standard) ;
   2. Ouvrir le lien d'invitation en navigation privée, voter sans remplir « Société » → refusé ; le remplir → accepté ;
   3. Revenir en organisateur : bouton « réponses » à côté d'Alice, puis export CSV avec les colonnes Société et Repas.
-  <!-- TODO P3 : captures -->
+- **Captures** (stack locale complète, image `rallly:main`, organisatrice `alice` connectée par le SSO Authentik) :
+
+  | Éditeur (réglages du sondage) | Formulaire de vote | Réponses (vue organisatrice) |
+  |---|---|---|
+  | ![Éditeur des champs personnalisés](captures/champs-perso-editeur.png) | ![Formulaire de vote avec les champs](captures/champs-perso-vote.png) | ![Réponses visibles par l'organisatrice](captures/champs-perso-reponses.png) |
 - **Limites** :
   - les réponses sont stockées en JSON : pas de requête SQL ou de statistique par champ ;
   - supprimer un champ masque ses réponses (elles restent en base) ;
