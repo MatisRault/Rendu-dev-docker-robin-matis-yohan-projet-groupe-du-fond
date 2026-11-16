@@ -162,6 +162,7 @@ export const CreatePoll = ({ nav }: { nav?: React.ReactNode }) => {
       enableComments: false,
       customFields: [],
       deadline: "",
+      bookingMode: false,
       duration: 60,
       lockTimeZone: false,
       allDay: false,
@@ -231,6 +232,7 @@ export const CreatePoll = ({ nav }: { nav?: React.ReactNode }) => {
               requireParticipantEmail: formData?.requireParticipantEmail,
               customFields: cleanCustomFields(formData?.customFields ?? []),
               deadline: fromDateTimeLocalValue(formData?.deadline ?? ""),
+              bookingMode: formData?.bookingMode ?? false,
               options: required(formData?.options).map((option) => ({
                 startDate: option.type === "date" ? option.date : option.start,
                 endDate: option.type === "timeSlot" ? option.end : undefined,

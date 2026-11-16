@@ -61,6 +61,11 @@ jobs:
         run: pnpm db:generate
       - name: Types TypeScript
         run: pnpm type-check
+      # [projet] Le script test:unit existait mais n'etait appele nulle part :
+      # les tests de l'expiration (#134) et de la reservation (#139) ne
+      # tournaient donc jamais en CI.
+      - name: Tests unitaires
+        run: pnpm test:unit
 
   image:
     needs: lint

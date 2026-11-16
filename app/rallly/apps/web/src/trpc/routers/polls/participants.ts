@@ -12,6 +12,12 @@ import { env } from "@/env";
 import { getNotificationRecipient } from "@/features/notifications/data";
 import { createUnsubscribeToken } from "@/features/notifications/utils";
 import { recordPollActivities } from "@/features/poll/activity/mutations";
+import { findBookingConflict } from "@/features/poll/booking/mutations";
+import {
+  bookingViolationMessage,
+  claimedOptionIds,
+  validateBookingVotes,
+} from "@/features/poll/booking/utils";
 import { customAnswersInput } from "@/features/poll/custom-fields/schema";
 import {
   parseCustomAnswers,
@@ -337,6 +343,7 @@ export const participants = router({
             deleted: true,
             requireParticipantEmail: true,
             customFields: true,
+            bookingMode: true,
           },
         });
 
@@ -425,6 +432,25 @@ export const participants = router({
 
         const { participant, editToken, viaInvite } = await prisma.$transaction(
           async (tx) => {
+            // [projet] Réservation (#139) : à l'intérieur de la transaction,
+            // pour que le verrou tienne jusqu'à l'écriture des votes.
+            if (poll.bookingMode) {
+              const violation =
+                validateBookingVotes(validVotes) ??
+                (await findBookingConflict(tx, {
+                  optionIds: claimedOptionIds(validVotes),
+                }));
+              if (violation) {
+                throw new TRPCError({
+                  code:
+                    violation.code === "slot_taken"
+                      ? "CONFLICT"
+                      : "BAD_REQUEST",
+                  message: bookingViolationMessage(violation),
+                });
+              }
+            }
+
             // A response answering an emailed invite takes the invite's
             // token, so the link the invitee already holds names it.
             const invite = token
@@ -644,6 +670,25 @@ export const participants = router({
         const validVotes = votes.filter(({ optionId }) =>
           existingOptionIds.has(optionId),
         );
+
+        // [projet] Réservation (#139) : la règle s'applique aussi à la
+        // modification d'une réponse, sinon on contourne le contrôle en
+        // créant une réponse vide puis en la modifiant.
+        if (existingParticipant.poll.bookingMode) {
+          const violation =
+            validateBookingVotes(validVotes) ??
+            (await findBookingConflict(tx, {
+              optionIds: claimedOptionIds(validVotes),
+              excludeParticipantId: participantId,
+            }));
+          if (violation) {
+            throw new TRPCError({
+              code:
+                violation.code === "slot_taken" ? "CONFLICT" : "BAD_REQUEST",
+              message: bookingViolationMessage(violation),
+            });
+          }
+        }
 
         // Create new votes
         await tx.vote.createMany({

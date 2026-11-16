@@ -37,6 +37,7 @@ const Page = () => {
       requireParticipantEmail: poll.requireParticipantEmail,
       customFields: poll.customFields,
       deadline: toDateTimeLocalValue(poll.deadline),
+      bookingMode: poll.bookingMode,
     },
   });
 

@@ -34,7 +34,7 @@ const ParticipantRowForm = ({
 }: ParticipantRowFormProps) => {
   const { t } = useTranslation();
 
-  const { optionIds } = usePoll();
+  const { optionIds, poll } = usePoll();
   const { options } = useOptions();
   const form = useVotingForm();
 
@@ -128,6 +128,7 @@ const ParticipantRowForm = ({
               render={({ field }) => (
                 <div className={cn("flex justify-center gap-2")}>
                   <VoteSelector
+                    bookingMode={poll.bookingMode}
                     className="after:absolute after:inset-0"
                     optionLabel={
                       option ? getOptionDateTimeLabel(option) : undefined

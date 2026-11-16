@@ -24,6 +24,7 @@ export type PollSettingsFormData = {
   enableComments: boolean;
   customFields: CustomField[]; // [projet] champs personnalisés (#201)
   deadline: string; // [projet] expiration (#134), datetime-local, "" = aucune
+  bookingMode: boolean; // [projet] réservation (#139)
 };
 
 export type NewEventData = PollDetailsData &
