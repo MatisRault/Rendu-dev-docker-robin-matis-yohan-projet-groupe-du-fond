@@ -173,6 +173,31 @@ attache un `AppError` (`SLOT_TAKEN` ou `BOOKING_LIMIT`) que le client lit dans
 `error.data.appError` pour afficher un message **traduit**. On n'expose pas le
 texte anglais du serveur, et les autres erreurs gardent leur traitement.
 
+### Validation réelle, dans le navigateur
+
+Faite sur la VM Énov le **16/11/2026**, sondage `knHo3lBR2i1w`
+(« Créneaux de soutenance », 3 créneaux), avec les comptes de démo.
+
+| Étape | Attendu | Observé |
+|---|---|---|
+| Réglage activé à la création | `booking_mode` à `true` en base | ✅ `t` |
+| `alice` réserve le 18/11 | un `yes`, le reste à `no`, aucun `ifNeedBe` | ✅ |
+| `admin` tente **le même** créneau | refus serveur | ✅ `409 CONFLICT` |
+| Double réservation en base | aucune | ✅ seuls les votes d'alice |
+| Message affiché | compréhensible, en français | ✅ « Ce créneau vient d'être réservé par quelqu'un d'autre. Choisissez-en un autre. » |
+| `admin` tente **deux** créneaux | refus serveur | ✅ « Ce sondage est en mode réservation : vous ne pouvez réserver qu'un seul créneau. » |
+
+Preuve côté serveur relevée dans les journaux au moment du refus :
+
+```
+statusCode: 409  errorCode: CONFLICT
+errorMessage: "This slot has already been booked by someone else. Pick another one."
+```
+
+C'est ce test manuel qui a révélé le défaut d'affichage corrigé ci-dessus : **aucun
+test automatique du projet ne l'aurait attrapé**, puisqu'ils vérifient la règle et
+non ce que voit l'utilisateur.
+
 ### Limites assumées
 
 - **La garantie dépend du chemin d'écriture.** Le verrou protège toutes les écritures
