@@ -45,6 +45,17 @@ describe("validateCustomAnswers", () => {
     });
   });
 
+  it("handles fields the voter never touched (undefined values)", () => {
+    expect(validateCustomAnswers([company], { company: undefined })).toEqual({
+      ok: false,
+      error: { fieldId: "company", reason: "required" },
+    });
+    expect(validateCustomAnswers([meal], { meal: undefined })).toEqual({
+      ok: true,
+      answers: {},
+    });
+  });
+
   it("rejects a malformed email", () => {
     expect(
       validateCustomAnswers([contact], { contact: "not-an-email" }),

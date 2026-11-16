@@ -216,6 +216,7 @@
   "customFieldLabelPlaceholder": "ex. Société",
   "customFieldRemove": "Supprimer le champ",
   "customFieldRequired": "Obligatoire",
+  "customFieldsChangedError": "Les informations demandées par ce sondage ont changé. Rechargez la page puis réessayez.",
   "customFieldsDescription": "Demandez des informations supplémentaires aux participants. Vous seul voyez leurs réponses.",
   "customFieldSelectPlaceholder": "Choisissez une option",
   "customFieldsTitle": "Champs personnalisés",

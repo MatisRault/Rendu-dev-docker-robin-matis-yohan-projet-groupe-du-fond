@@ -49,7 +49,7 @@ const emailSchema = z.email();
  */
 export function validateCustomAnswers(
   fields: CustomField[],
-  answers: CustomAnswers = {},
+  answers: Partial<CustomAnswers> = {},
 ):
   | { ok: true; answers: CustomAnswers }
   | { ok: false; error: CustomAnswerError } {

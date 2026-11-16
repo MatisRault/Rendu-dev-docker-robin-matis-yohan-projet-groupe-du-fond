@@ -10,6 +10,8 @@ export type AppErrorCode =
   // [projet] Réservation (#139)
   | "SLOT_TAKEN"
   | "BOOKING_LIMIT"
+  // [projet] Champs personnalisés (#201)
+  | "CUSTOM_FIELDS_CHANGED"
   | "SERVICE_UNAVAILABLE"
   | "SETUP_REQUIRED"
   | "TOO_MANY_REQUESTS";

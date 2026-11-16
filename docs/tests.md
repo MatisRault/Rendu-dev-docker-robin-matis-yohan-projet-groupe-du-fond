@@ -68,14 +68,14 @@ d'admin ne prouve rien : il faut vérifier qu'**un anonyme est bien renvoyé**.
 
 | # | Test | Comment | Attendu | Porteur | Résultat |
 |---|---|---|---|---|---|
-| D1 | CI verte sur `main` | `gh run list --branch main --limit 1` | `success` sur les 5 jobs | P3 | |
-| D2 | Tests unitaires joués | journal du job `app-quality` | l'étape « Tests unitaires » apparaît et passe | P3 | |
-| D3 | Image publique | `docker manifest inspect ghcr.io/…/rallly:main` **sans être authentifié** | manifeste rendu | P3 | |
-| D4 | Tag par commit | `docker manifest inspect …:sha-<commit de main>` | existe | P3 | |
+| D1 | CI verte sur `main` | `gh run list --branch main --limit 1` | `success` sur les 5 jobs | P3 || ✅ 16/11, run 43854533985 (`b0db423`) : `success`. **4 jobs** et non 5 (lint, app-quality, image, scan-stack) : coquille du plan |
+| D2 | Tests unitaires joués | journal du job `app-quality` | l'étape « Tests unitaires » apparaît et passe | P3 || ✅ 16/11 : étape « Tests unitaires » verte, 61 fichiers de tests dont `custom-fields/utils.test.ts` (12 tests) |
+| D3 | Image publique | `docker manifest inspect ghcr.io/…/rallly:main` **sans être authentifié** | manifeste rendu | P3 || ✅ 16/11 : `docker manifest inspect …:main` avec un `DOCKER_CONFIG` vide → manifeste OCI rendu |
+| D4 | Tag par commit | `docker manifest inspect …:sha-<commit de main>` | existe | P3 || ✅ 16/11 : `sha-b0db423` (main) et `sha-d3690c5` existent |
 | D5 | Déploiement | `bash scripts/deploy.sh` sur la VM | smoke test vert de bout en bout | P1 | |
 | D6 | **Image effectivement exécutée** | `docker inspect <conteneur rallly> --format '{{.Config.Image}}'` | le tag **`sha-<commit de main>`**, pas `:main` | P1 | |
 | D7 | Migrations appliquées | `select migration_name from _prisma_migrations order by finished_at desc limit 1` | la dernière migration du dépôt | P1 | |
-| D8 | Secrets hors dépôt | `git log -p \| grep -i 'password='` et job `lint` (gitleaks) | aucun secret, gitleaks vert | P3 | |
+| D8 | Secrets hors dépôt | `git log -p \| grep -i 'password='` et job `lint` (gitleaks) | aucun secret, gitleaks vert | P3 || ✅ 16/11 : gitleaks vert ; le `grep` ne trouve que des exemples de doc Prisma importés avec Rallly (`app/rallly/.agents/skills/prisma-database-setup/…`), aucun secret |
 
 ⚠️ **D6 et D7 sont les plus importants de cette section**, et les plus faciles à
 rater : le 16/11, le smoke test était **entièrement vert** alors que la VM tournait
@@ -98,8 +98,8 @@ qui court-circuite l'interface. Le sujet autorise le formateur à tester l'API.
 | E7 | #8 — **deux créneaux d'un coup** | **400**, message « un seul créneau » | P1 | |
 | E8 | #8 — messages affichés | en français, sans parler de connexion réseau | P1 | |
 | E9 | #8 — « si nécessaire » absent | le bouton n'alterne qu'entre réservé et non réservé | P1 | |
-| E10 | Libre (#201) champs personnalisés | réponses enregistrées, visibles de l'organisateur seul | P3 | |
-| E11 | Libre — **champ requis contourné par l'API** | refus serveur | P3 | |
+| E10 | Libre (#201) champs personnalisés | réponses enregistrées, visibles de l'organisateur seul | P3 || ❌ 16/11 (stack locale, image `sha-b0db423`) : API ✅ (réponses enregistrées, `participants.list` vide pour un votant, complet pour l'organisatrice). **Écart UI** : un champ laissé vide (même facultatif) bloquait le vote avec « Invalid input » en anglais, aussi sous l'e-mail. Corrigé dans la PR `p3/tests-d-e`, à revérifier après merge |
+| E11 | Libre — **champ requis contourné par l'API** | refus serveur | P3 || ✅ 16/11 : vote forgé sans le champ requis (ou avec des espaces) → **400** ; choix hors liste → 400. Message UI si seul le serveur refuse (champs modifiés après ouverture de la page) : « vérifiez votre connexion » → corrigé dans la même PR (« Les informations demandées par ce sondage ont changé… ») |
 
 ⚠️ **E8 existe parce que le défaut a été réel.** La règle refusait correctement,
 mais Rallly affichait « vérifiez votre connexion » — faux, et poussant à réessayer
@@ -155,8 +155,8 @@ durcissement dont on connaît les trous.
 | A — démarrage à froid | | | |
 | B — réseau et durcissement | | | |
 | C — SSO et policies | | | |
-| D — CI/CD et déploiement | | | |
-| E — fonctionnalités | | | |
+| D — CI/CD et déploiement | P3 (D1-D4, D8) | 16/11/2026 | aucun ; D5-D7 restent à P1 (VM) |
+| E — fonctionnalités | P3 (E10, E11) | 16/11/2026 | E10 : champ vide bloquant + messages d'erreur (corrigé, PR `p3/tests-d-e`) |
 | F — résilience | | | |
 | G — accès extérieur | | | |
 | H — soutenance | | | |
