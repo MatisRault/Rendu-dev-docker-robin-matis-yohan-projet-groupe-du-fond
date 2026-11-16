@@ -5,7 +5,11 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 [ -f .env ] || { echo "❌ .env absent : lancer d'abord ./stack.sh env"; exit 1; }
 
-AVANT="$(git rev-parse HEAD)"
+# Dernier commit DÉPLOYÉ avec succès (fichier local dans .git, jamais commité).
+# On ne compare pas au HEAD d'avant le pull : si un premier lancement s'arrête après
+# le pull (image pas encore publiée), le second ne verrait plus aucun changement.
+ETAT="$(git rev-parse --git-path deploy-commit)"
+DEPLOYE="$(cat "$ETAT" 2>/dev/null || true)"
 echo "→ git pull";            git pull --ff-only
 
 # [projet] Déployer CE commit, pas le dernier build vert.
@@ -42,8 +46,10 @@ echo "→ redémarrage";         docker compose up -d --remove-orphans
 # conteneur garde l'ancien et ni `up -d` ni `caddy reload` ne le voient (cf. PR #9).
 # On recrée donc les services dont le fichier de config monté a changé.
 recreer_si_change() { # $1 service, $2 fichier monté
-  if ! git diff --quiet "$AVANT" HEAD -- "$2"; then
-    echo "→ $2 modifié : recréation de $1"
+  # Premier déploiement suivi (ou commit inconnu) : on recrée par précaution
+  if [ -z "$DEPLOYE" ] || ! git cat-file -e "$DEPLOYE^{commit}" 2>/dev/null \
+     || ! git diff --quiet "$DEPLOYE" HEAD -- "$2"; then
+    echo "→ $2 modifié depuis le dernier déploiement : recréation de $1"
     docker compose up -d --force-recreate --no-deps "$1"
   fi
 }
@@ -53,4 +59,5 @@ recreer_si_change garage config/garage.toml
 echo "→ nettoyage";           docker image prune -f
 BASE_DOMAIN="$(grep -E '^BASE_DOMAIN=' .env | cut -d= -f2)"
 bash scripts/smoke-test.sh "$BASE_DOMAIN"
+git rev-parse HEAD > "$ETAT"   # seulement si tout a réussi (set -e)
 docker compose ps

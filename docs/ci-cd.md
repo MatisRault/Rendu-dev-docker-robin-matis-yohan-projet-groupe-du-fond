@@ -94,11 +94,15 @@ livraison continue, pas du déploiement continu.
 
 `scripts/deploy.sh`, sur la VM :
 1. `git pull --ff-only` : récupère les fichiers Compose, Caddy et les blueprints (la VM n'a pas besoin des sources de Rallly) ;
-2. `docker compose pull` puis `up -d --remove-orphans` : tire la nouvelle image `:main` et redémarre ce qui a changé ;
-3. si `proxy/Caddyfile` ou `config/garage.toml` a changé dans ce pull, `up -d --force-recreate` de `caddy` ou `garage`
-   (voir les pièges ci-dessous) ;
-4. `docker image prune -f` ;
-5. `scripts/smoke-test.sh` sur le domaine de la VM, puis `docker compose ps`.
+2. vise l'image **`sha-<commit>`** de ce commit précis, pas `:main` (le « dernier build vert », qui peut
+   être en retard d'un merge, cf. `docs/vm-enov.md` §5.5). Si la CI ne l'a pas encore publiée, le script
+   s'arrête **sans toucher à la stack** : il suffit de le relancer une fois la CI finie ;
+3. `docker compose pull` puis `up -d --remove-orphans` : redémarre ce qui a changé ;
+4. si `proxy/Caddyfile` ou `config/garage.toml` a changé **depuis le dernier déploiement réussi**,
+   `up -d --force-recreate` de `caddy` ou `garage` (voir les pièges ci-dessous) ;
+5. `docker image prune -f` ;
+6. `scripts/smoke-test.sh` sur le domaine de la VM ; s'il passe, le commit déployé est noté dans
+   `.git/deploy-commit` (local à la VM, jamais commité), puis `docker compose ps`.
 
 Pour l'automatiser, une ligne de cron sur la VM suffit, par exemple toutes les 15 minutes :
 ```
@@ -113,9 +117,13 @@ Pour l'automatiser, une ligne de cron sur la VM suffit, par exemple toutes les 1
 - **Config montée en fichier unique jamais rechargée** (trouvé par P1 sur la VM, PR #9) : un bind mount
   de fichier suit l'inode ; `git pull` remplace le fichier, le conteneur garde l'ancien, et ni `up -d` ni
   `caddy reload` ne le voient. Conséquence réelle : Mailpit est resté accessible sans authentification.
-  `deploy.sh` recrée donc `caddy` / `garage` quand leur fichier a changé. Limite : si `deploy.sh` échoue
-  après le `git pull`, le relancer ne voit plus de changement ; dans ce cas,
-  `docker compose up -d --force-recreate caddy garage`.
+  `deploy.sh` recrée donc `caddy` / `garage` quand leur fichier a changé.
+- **Deux lancements de `deploy.sh`** (signalé par P1) : la première version comparait le commit d'avant le
+  `git pull` au commit d'après. Or un premier lancement peut s'arrêter juste après le pull, par exemple
+  parce que l'image du commit n'est pas encore publiée, ce qui est le cas normal juste après un merge.
+  Au second lancement, il n'y avait plus aucun changement à voir : le nouveau Caddyfile n'était jamais
+  appliqué. Le script compare maintenant au **dernier commit déployé avec succès** (`.git/deploy-commit`),
+  quel que soit le nombre de lancements.
 - **Contournement du SSO par code e-mail** : `EMAIL_LOGIN_ENABLED: "false"` (demandé par P2) masque le
   formulaire e-mail et désactive les mots de passe, mais l'API de connexion par code OTP restait ouverte :
   on obtenait une session avec un simple `curl`, sans passer par Authentik ni ses policies. Corrigé dans
