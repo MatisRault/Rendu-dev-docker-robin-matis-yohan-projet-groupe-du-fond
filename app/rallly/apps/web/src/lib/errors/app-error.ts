@@ -10,6 +10,8 @@ export type AppErrorCode =
   // [projet] Réservation (#139)
   | "SLOT_TAKEN"
   | "BOOKING_LIMIT"
+  // [projet] Expiration (#134)
+  | "POLL_EXPIRED"
   // [projet] Champs personnalisés (#201)
   | "CUSTOM_FIELDS_CHANGED"
   | "SERVICE_UNAVAILABLE"

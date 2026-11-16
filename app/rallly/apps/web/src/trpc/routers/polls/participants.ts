@@ -356,6 +356,22 @@ export const participants = router({
           });
         }
 
+        // [projet] Expiration (#134): past the deadline the poll is closed
+        // even if no cron job has flipped its status yet. Checked before the
+        // status so a poll the cron already closed still names its deadline.
+        // The app code lets the client explain the refusal instead of the
+        // generic "check your connection" message.
+        if (isPollExpired(poll)) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: "This poll has expired and no longer accepts responses",
+            cause: new AppError({
+              code: "POLL_EXPIRED",
+              message: "Poll deadline has passed",
+            }),
+          });
+        }
+
         // The voting window is the organizer's control, so it has to hold
         // here and not only in the client, which hides the form via
         // `canAddNewParticipant`.
@@ -363,15 +379,6 @@ export const participants = router({
           throw new TRPCError({
             code: "BAD_REQUEST",
             message: "This poll is no longer accepting responses",
-          });
-        }
-
-        // [projet] Expiration (#134): past the deadline the poll is closed
-        // even if no cron job has flipped its status yet.
-        if (isPollExpired(poll)) {
-          throw new TRPCError({
-            code: "BAD_REQUEST",
-            message: "This poll has expired and no longer accepts responses",
           });
         }
 
