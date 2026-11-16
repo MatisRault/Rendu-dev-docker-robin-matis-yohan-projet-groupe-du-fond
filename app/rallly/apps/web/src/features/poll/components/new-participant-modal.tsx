@@ -170,6 +170,21 @@ export const NewParticipantForm = (props: NewParticipantModalProps) => {
           defaultValue: "This poll is no longer accepting responses.",
         });
       }
+      // [projet] Réservation (#139) : sans ces deux cas, un refus de règle
+      // métier tombait dans le message générique « vérifiez votre connexion »,
+      // qui est faux et pousse l'utilisateur à réessayer indéfiniment.
+      if (error.data.appError === "SLOT_TAKEN") {
+        return t("bookingSlotTakenError", {
+          defaultValue:
+            "This slot has just been booked by someone else. Pick another one.",
+        });
+      }
+      if (error.data.appError === "BOOKING_LIMIT") {
+        return t("bookingLimitError", {
+          defaultValue:
+            "This poll is in booking mode: you can book a single slot.",
+        });
+      }
       switch (error.data.code) {
         case "TOO_MANY_REQUESTS":
           return t("newParticipantFormErrorTooManyRequests", {

@@ -160,6 +160,19 @@ curl -ksS -X POST "https://rallly.<domaine>/api/trpc/polls.participants.add" \
 C'est ce dernier point qui compte : la règle tient **même quand l'interface est
 contournée**.
 
+### Le refus doit être compréhensible
+
+Testé dans le navigateur le 16/11/2026 : la règle refusait bien la double
+réservation, mais Rallly affichait son message générique — « Votre réponse n'a pas
+pu être enregistrée. **Vérifiez votre connexion** et réessayez. » C'est faux et
+contre-productif : la connexion va très bien, et l'utilisateur réessaie
+indéfiniment.
+
+Le code suit désormais le mécanisme déjà utilisé par `POLL_FULL` : le serveur
+attache un `AppError` (`SLOT_TAKEN` ou `BOOKING_LIMIT`) que le client lit dans
+`error.data.appError` pour afficher un message **traduit**. On n'expose pas le
+texte anglais du serveur, et les autres erreurs gardent leur traitement.
+
 ### Limites assumées
 
 - **La garantie dépend du chemin d'écriture.** Le verrou protège toutes les écritures

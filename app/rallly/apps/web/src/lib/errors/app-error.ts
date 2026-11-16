@@ -7,6 +7,9 @@ export type AppErrorCode =
   | "PAYMENT_REQUIRED"
   | "PAYLOAD_TOO_LARGE"
   | "POLL_FULL"
+  // [projet] Réservation (#139)
+  | "SLOT_TAKEN"
+  | "BOOKING_LIMIT"
   | "SERVICE_UNAVAILABLE"
   | "SETUP_REQUIRED"
   | "TOO_MANY_REQUESTS";

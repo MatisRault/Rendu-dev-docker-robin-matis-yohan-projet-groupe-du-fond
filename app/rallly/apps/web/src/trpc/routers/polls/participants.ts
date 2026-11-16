@@ -14,6 +14,7 @@ import { createUnsubscribeToken } from "@/features/notifications/utils";
 import { recordPollActivities } from "@/features/poll/activity/mutations";
 import { findBookingConflict } from "@/features/poll/booking/mutations";
 import {
+  bookingViolationAppCode,
   bookingViolationMessage,
   claimedOptionIds,
   validateBookingVotes,
@@ -441,12 +442,20 @@ export const participants = router({
                   optionIds: claimedOptionIds(validVotes),
                 }));
               if (violation) {
+                const message = bookingViolationMessage(violation);
                 throw new TRPCError({
                   code:
                     violation.code === "slot_taken"
                       ? "CONFLICT"
                       : "BAD_REQUEST",
-                  message: bookingViolationMessage(violation),
+                  message,
+                  // [projet] Le code voyage jusqu'au client via
+                  // error.data.appError, qui affiche alors un message traduit
+                  // au lieu du texte générique sur la connexion réseau.
+                  cause: new AppError({
+                    code: bookingViolationAppCode(violation),
+                    message,
+                  }),
                 });
               }
             }
@@ -682,10 +691,15 @@ export const participants = router({
               excludeParticipantId: participantId,
             }));
           if (violation) {
+            const message = bookingViolationMessage(violation);
             throw new TRPCError({
               code:
                 violation.code === "slot_taken" ? "CONFLICT" : "BAD_REQUEST",
-              message: bookingViolationMessage(violation),
+              message,
+              cause: new AppError({
+                code: bookingViolationAppCode(violation),
+                message,
+              }),
             });
           }
         }
