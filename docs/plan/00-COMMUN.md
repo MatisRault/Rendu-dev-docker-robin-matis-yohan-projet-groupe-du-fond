@@ -490,7 +490,7 @@ git status               # .env et certs/ NE doivent PAS apparaître
 
 | Feature | Numéro catalogue | Porteur | Branche | Statut |
 |---|---|---|---|---|
-| Catalogue A | # | P1 | `feat/…` | |
+| Catalogue A : réservation de créneaux, un seul participant par créneau ([discussion #139](https://github.com/lukevella/rallly/discussions/139)) | #8 | P1 | `feat/reservation` | en cours |
 | Catalogue B : expiration des sondages ([discussion #134](https://github.com/lukevella/rallly/discussions/134)) | #4 | P2 | `feat/expiration-sondage` | en cours |
 | Libre : champs personnalisés pour les votants ([discussion #201](https://github.com/lukevella/rallly/discussions/201)) | — | P3 | `feat/champs-personnalises` | en cours |
 

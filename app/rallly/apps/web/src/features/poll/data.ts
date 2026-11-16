@@ -483,7 +483,16 @@ export async function getParticipant({
       id: true,
       pollId: true,
       userId: true,
-      poll: { select: { status: true, deadline: true, deleted: true } },
+      // [projet] `bookingMode` sert à la règle de réservation (#139) appliquée
+      // dans la mutation `participants.update`.
+      poll: {
+        select: {
+          status: true,
+          deadline: true,
+          deleted: true,
+          bookingMode: true,
+        },
+      },
     },
   });
 }

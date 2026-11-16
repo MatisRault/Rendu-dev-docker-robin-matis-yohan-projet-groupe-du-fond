@@ -52,6 +52,8 @@ model Poll {
   requireParticipantEmail Boolean           @default(false) @map("require_participant_email")
   /// [projet] Champs personnalisés demandés aux votants (discussion #201). Liste courte (≤ 5) toujours lue avec le sondage : validée par zod dans features/poll/custom-fields, pas par un modèle relationnel
   customFields            Json              @default("[]") @map("custom_fields")
+  /// [projet] Mode réservation (discussion #139) : chaque créneau n'est pris que par un seul participant, et chaque participant n'en réserve qu'un. Drapeau et non PollKind, parce que PollKind décrit la nature des options (date / heure), pas les règles de vote
+  bookingMode             Boolean           @default(false) @map("booking_mode")
   muted                   Boolean           @default(false)
 
   user           User?           @relation(fields: [userId], references: [id], onDelete: Cascade)
