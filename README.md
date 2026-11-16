@@ -171,7 +171,14 @@ analyse commentée des CVE — et les limites assumées, écrites noir sur blanc
 
 ---
 
-## 9. Pièges rencontrés
+## 9. Plan de tests
+
+Avant la soutenance, chacun rejoue les tests de son périmètre dans
+**[`docs/tests.md`](docs/tests.md)** : 56 points répartis en 8 sections, du
+démarrage à froid à la répétition chronométrée. Les tests sont rejoués **par
+quelqu'un d'autre que celui qui a écrit le code**.
+
+## 10. Pièges rencontrés
 
 Chacun a coûté du temps ; ils sont documentés pour que personne ne les repaye.
 
