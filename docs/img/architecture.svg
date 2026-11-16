@@ -1,0 +1,126 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 800" width="1000" height="800" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#334155"/>
+    </marker>
+    <marker id="av" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#7c3aed"/>
+    </marker>
+  </defs>
+  <rect width="1000" height="800" fill="#f8fafc"/>
+
+  <text x="500" y="30" text-anchor="middle" font-size="17" font-weight="700" fill="#0f172a">Architecture de la stack — Rallly + Authentik</text>
+  <text x="500" y="50" text-anchor="middle" font-size="12" fill="#475569">Un seul point d'entrée. Aucune base de données publiée. Trois réseaux sans accès Internet.</text>
+
+  <!-- Navigateur -->
+  <rect x="380" y="70" width="240" height="46" rx="8" fill="#fff" stroke="#334155" stroke-width="1.5"/>
+  <text x="500" y="90" text-anchor="middle" font-size="13" font-weight="600" fill="#0f172a">Navigateur</text>
+  <text x="500" y="106" text-anchor="middle" font-size="10.5" fill="#475569">en local, ou via le VPN NetBird pour la VM</text>
+
+  <line x1="500" y1="116" x2="500" y2="152" stroke="#334155" stroke-width="1.5" marker-end="url(#a)"/>
+  <text x="512" y="138" font-size="10.5" fill="#334155">443 — le port 80 renvoie un 308</text>
+
+  <!-- Frontiere hote -->
+  <rect x="40" y="152" width="920" height="30" rx="6" fill="#fef3c7" stroke="#d97706" stroke-width="1" stroke-dasharray="5 3"/>
+  <text x="500" y="172" text-anchor="middle" font-size="11" fill="#92400e">Hôte : seuls 80 et 443 sont publiés, liés à ${HTTP_BIND} — 127.0.0.1 en local, 0.0.0.0 sur la VM</text>
+
+  <!-- Caddy -->
+  <rect x="330" y="200" width="340" height="86" rx="8" fill="#fff" stroke="#0ea5e9" stroke-width="2.5"/>
+  <text x="500" y="222" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">Caddy</text>
+  <text x="500" y="239" text-anchor="middle" font-size="10.5" fill="#475569">TLS par CA interne (local_certs) · en-têtes de sécurité</text>
+  <text x="500" y="256" text-anchor="middle" font-size="10" fill="#0369a1">alias réseau sur edge : auth. / rallly. / mail.${BASE_DOMAIN}</text>
+  <text x="500" y="274" text-anchor="middle" font-size="9.5" fill="#64748b">read_only · cap_drop ALL + NET_BIND_SERVICE · root</text>
+
+  <!-- Fleches vers les 3 services -->
+  <path d="M400,286 L205,330" stroke="#334155" stroke-width="1.5" fill="none" marker-end="url(#a)"/>
+  <text x="250" y="302" font-size="10" fill="#334155">auth.*</text>
+  <line x1="500" y1="286" x2="500" y2="330" stroke="#334155" stroke-width="1.5" marker-end="url(#a)"/>
+  <text x="508" y="312" font-size="10" fill="#334155">rallly.*</text>
+  <path d="M600,286 L795,330" stroke="#334155" stroke-width="1.5" fill="none" marker-end="url(#a)"/>
+  <text x="700" y="302" font-size="10" fill="#334155">mail.*</text>
+
+  <!-- authentik-server -->
+  <rect x="80" y="330" width="250" height="74" rx="8" fill="#fff" stroke="#334155" stroke-width="1.5"/>
+  <text x="205" y="351" text-anchor="middle" font-size="13" font-weight="600" fill="#0f172a">authentik-server</text>
+  <text x="205" y="367" text-anchor="middle" font-size="10" fill="#475569">IdP · OIDC · :9000 interne</text>
+  <text x="205" y="383" text-anchor="middle" font-size="9.5" fill="#64748b">uid 1000 · read_only · cap_drop ALL</text>
+  <rect x="104" y="389" width="48" height="12" rx="3" fill="#0ea5e9"/><text x="128" y="398" text-anchor="middle" font-size="8" fill="#fff">edge</text>
+  <rect x="156" y="389" width="48" height="12" rx="3" fill="#7c3aed"/><text x="180" y="398" text-anchor="middle" font-size="8" fill="#fff">mail</text>
+  <rect x="208" y="389" width="98" height="12" rx="3" fill="#0f766e"/><text x="257" y="398" text-anchor="middle" font-size="8" fill="#fff">authentik_backend</text>
+
+  <!-- rallly -->
+  <rect x="375" y="330" width="250" height="74" rx="8" fill="#fff" stroke="#334155" stroke-width="1.5"/>
+  <text x="500" y="351" text-anchor="middle" font-size="13" font-weight="600" fill="#0f172a">rallly</text>
+  <text x="500" y="367" text-anchor="middle" font-size="10" fill="#475569">image GHCR construite par la CI · :3000</text>
+  <text x="500" y="383" text-anchor="middle" font-size="9.5" fill="#64748b">uid 100 · read_only · cap_drop ALL</text>
+  <rect x="399" y="389" width="48" height="12" rx="3" fill="#0ea5e9"/><text x="423" y="398" text-anchor="middle" font-size="8" fill="#fff">edge</text>
+  <rect x="451" y="389" width="48" height="12" rx="3" fill="#7c3aed"/><text x="475" y="398" text-anchor="middle" font-size="8" fill="#fff">mail</text>
+  <rect x="503" y="389" width="86" height="12" rx="3" fill="#b45309"/><text x="546" y="398" text-anchor="middle" font-size="8" fill="#fff">rallly_backend</text>
+
+  <!-- mailpit -->
+  <rect x="670" y="330" width="250" height="74" rx="8" fill="#fff" stroke="#334155" stroke-width="1.5"/>
+  <text x="795" y="351" text-anchor="middle" font-size="13" font-weight="600" fill="#0f172a">mailpit</text>
+  <text x="795" y="367" text-anchor="middle" font-size="10" fill="#475569">SMTP de lab :1025 · UI :8025</text>
+  <text x="795" y="383" text-anchor="middle" font-size="9.5" fill="#64748b">uid 65534 · read_only · cap_drop ALL</text>
+  <rect x="718" y="389" width="48" height="12" rx="3" fill="#0ea5e9"/><text x="742" y="398" text-anchor="middle" font-size="8" fill="#fff">edge</text>
+  <rect x="770" y="389" width="48" height="12" rx="3" fill="#7c3aed"/><text x="794" y="398" text-anchor="middle" font-size="8" fill="#fff">mail</text>
+
+  <text x="795" y="420" text-anchor="middle" font-size="9.5" fill="#92400e">UI protégée par forward-auth Authentik</text>
+
+  <!-- SMTP vers mailpit -->
+  <path d="M625,360 Q650,440 718,375" stroke="#7c3aed" stroke-width="1.2" fill="none" stroke-dasharray="4 3" marker-end="url(#av)"/>
+  <text x="640" y="455" font-size="9.5" fill="#7c3aed">SMTP 1025 (réseau mail)</text>
+
+  <!-- authentik backend -->
+  <rect x="80" y="470" width="250" height="60" rx="8" fill="#fff" stroke="#0f766e" stroke-width="1.5"/>
+  <text x="205" y="491" text-anchor="middle" font-size="12" font-weight="600" fill="#0f172a">authentik-db</text>
+  <text x="205" y="506" text-anchor="middle" font-size="9.5" fill="#475569">postgres:16-alpine · uid 70 · aucun port</text>
+  <text x="205" y="521" text-anchor="middle" font-size="9" fill="#64748b">cap_add : CHOWN SETUID SETGID FOWNER DAC_OVERRIDE</text>
+
+  <rect x="80" y="545" width="250" height="52" rx="8" fill="#fff" stroke="#0f766e" stroke-width="1.5"/>
+  <text x="205" y="566" text-anchor="middle" font-size="12" font-weight="600" fill="#0f172a">authentik-worker</text>
+  <text x="205" y="581" text-anchor="middle" font-size="9.5" fill="#475569">blueprints · uid 1000 · sans socket Docker</text>
+
+  <line x1="205" y1="404" x2="205" y2="470" stroke="#0f766e" stroke-width="1.5" marker-end="url(#a)"/>
+  <line x1="150" y1="530" x2="150" y2="545" stroke="#0f766e" stroke-width="1.5" marker-end="url(#a)"/>
+
+  <!-- rallly backend -->
+  <rect x="375" y="470" width="250" height="52" rx="8" fill="#fff" stroke="#b45309" stroke-width="1.5"/>
+  <text x="500" y="491" text-anchor="middle" font-size="12" font-weight="600" fill="#0f172a">rallly-db</text>
+  <text x="500" y="506" text-anchor="middle" font-size="9.5" fill="#475569">postgres:18-alpine · uid 70 · aucun port</text>
+
+  <rect x="375" y="537" width="250" height="52" rx="8" fill="#fff" stroke="#b45309" stroke-width="1.5"/>
+  <text x="500" y="558" text-anchor="middle" font-size="12" font-weight="600" fill="#0f172a">garage</text>
+  <text x="500" y="573" text-anchor="middle" font-size="9.5" fill="#475569">stockage S3 interne :3900 · root (limite assumée)</text>
+
+  <line x1="500" y1="404" x2="500" y2="470" stroke="#b45309" stroke-width="1.5" marker-end="url(#a)"/>
+  <line x1="440" y1="522" x2="440" y2="537" stroke="#b45309" stroke-width="1.5" marker-end="url(#a)"/>
+
+  <!-- ca-export -->
+  <rect x="670" y="470" width="250" height="74" rx="8" fill="#fff" stroke="#64748b" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <text x="795" y="491" text-anchor="middle" font-size="12" font-weight="600" fill="#0f172a">ca-export</text>
+  <text x="795" y="506" text-anchor="middle" font-size="9.5" fill="#475569">one-shot · network_mode: none</text>
+  <text x="795" y="522" text-anchor="middle" font-size="9" fill="#64748b">copie le certificat PUBLIC de la CA</text>
+  <text x="795" y="536" text-anchor="middle" font-size="9" fill="#64748b">jamais la clé privée</text>
+
+  <!-- OIDC : le piege n1 -->
+  <path d="M375,345 Q352,300 330,345" stroke="#dc2626" stroke-width="1.8" fill="none" marker-end="url(#a)"/>
+  <text x="352" y="294" text-anchor="middle" font-size="9" font-weight="600" fill="#dc2626">OIDC</text>
+  <rect x="236" y="604" width="528" height="52" rx="8" fill="#fef2f2" stroke="#dc2626" stroke-width="1.2"/>
+  <text x="500" y="622" text-anchor="middle" font-size="10.5" font-weight="600" fill="#991b1b">Le piège n°1, résolu : Rallly joint Authentik par son URL PUBLIQUE</text>
+  <text x="500" y="637" text-anchor="middle" font-size="9.5" fill="#7f1d1d">depuis le conteneur, https://auth.${BASE_DOMAIN} résout vers Caddy grâce aux alias réseau sur edge,</text>
+  <text x="500" y="650" text-anchor="middle" font-size="9.5" fill="#7f1d1d">et NODE_EXTRA_CA_CERTS=/ca/root.crt lui fait accepter la CA interne. Mesuré : HTTP 200.</text>
+
+  <!-- Legende -->
+  <rect x="40" y="676" width="920" height="104" rx="8" fill="#fff" stroke="#cbd5e1" stroke-width="1"/>
+  <text x="58" y="696" font-size="11" font-weight="700" fill="#0f172a">Réseaux</text>
+  <rect x="58" y="706" width="14" height="14" rx="3" fill="#0ea5e9"/>
+  <text x="80" y="717" font-size="10" fill="#334155"><tspan font-weight="600">edge</tspan> — non internal. Caddy et les trois services qu'il expose. C'est le seul réseau avec un accès sortant.</text>
+  <rect x="58" y="726" width="14" height="14" rx="3" fill="#7c3aed"/>
+  <text x="80" y="737" font-size="10" fill="#334155"><tspan font-weight="600">mail</tspan> — internal. mailpit, authentik-server, authentik-worker, rallly.</text>
+  <rect x="58" y="746" width="14" height="14" rx="3" fill="#0f766e"/>
+  <text x="80" y="757" font-size="10" fill="#334155"><tspan font-weight="600">authentik_backend</tspan> — internal. authentik-db, authentik-server, authentik-worker.</text>
+  <rect x="528" y="746" width="14" height="14" rx="3" fill="#b45309"/>
+  <text x="550" y="757" font-size="10" fill="#334155"><tspan font-weight="600">rallly_backend</tspan> — internal. rallly-db, garage, rallly.</text>
+  <text x="58" y="773" font-size="9.5" fill="#64748b">internal: true signifie aucune route vers Internet : une base compromise ne peut pas exfiltrer de données.</text>
+</svg>

@@ -3,6 +3,7 @@ import { useParams, usePathname } from "next/navigation";
 import React from "react";
 
 import { useParticipants } from "@/features/poll/components/participants-provider";
+import { isPollAcceptingResponses } from "@/features/poll/utils";
 import { useUser } from "@/features/user/client";
 import { trpc } from "@/trpc/client";
 
@@ -50,10 +51,12 @@ export const usePermissions = () => {
   const { user } = useUser();
   const role = useRole();
   const { participants } = useParticipants();
+  // [projet] Same rule as the server: open and not past the deadline (#134)
+  const acceptsResponses = isPollAcceptingResponses(poll);
   return {
-    canAddNewParticipant: poll.status === "open",
+    canAddNewParticipant: acceptsResponses,
     canEditParticipant: (participantId: string) => {
-      if (poll.status !== "open") {
+      if (!acceptsResponses) {
         return false;
       }
 

@@ -10,6 +10,10 @@ import { usePoll } from "@/features/poll/client";
 import { PollSettingsForm } from "@/features/poll/components/forms/poll-settings";
 import { useUpdatePollMutation } from "@/features/poll/components/mutations";
 import { cleanCustomFields } from "@/features/poll/custom-fields/utils";
+import {
+  fromDateTimeLocalValue,
+  toDateTimeLocalValue,
+} from "@/features/poll/utils";
 import { Trans } from "@/i18n/client";
 
 const Page = () => {
@@ -32,6 +36,7 @@ const Page = () => {
       enableComments: !poll.disableComments,
       requireParticipantEmail: poll.requireParticipantEmail,
       customFields: poll.customFields,
+      deadline: toDateTimeLocalValue(poll.deadline),
     },
   });
 
@@ -39,12 +44,13 @@ const Page = () => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(
-          async ({ enableComments, customFields, ...data }) => {
+          async ({ enableComments, customFields, deadline, ...data }) => {
             const res = await update.mutateAsync({
               pollId: poll.id,
               ...data,
               disableComments: !enableComments,
               customFields: cleanCustomFields(customFields),
+              deadline: fromDateTimeLocalValue(deadline),
             });
             if (res.ok) {
               redirectBackToPoll();

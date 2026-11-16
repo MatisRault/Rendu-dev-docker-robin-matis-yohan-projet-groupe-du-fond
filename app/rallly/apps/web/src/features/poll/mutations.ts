@@ -310,8 +310,9 @@ export async function deleteInactivePolls() {
 /**
  * Closes polls whose options have all ended — i.e. no option ends in the
  * future, where an option ends at start_time + duration (all-day options, with
- * duration 0, are treated as ending 24h after their start). Closing is
- * non-destructive: the poll becomes read-only but is preserved.
+ * duration 0, are treated as ending 24h after their start) — and, [projet]
+ * #134, polls whose deadline has passed. Closing is non-destructive: the poll
+ * becomes read-only but is preserved.
  *
  * Raw SQL because the option-end comparison (start_time + duration) can't be
  * expressed in a Prisma `where`. It also deliberately does not touch
@@ -327,14 +328,18 @@ export async function autoClosePolls() {
       SET status = 'closed', closed_reason = 'auto'
       WHERE p.status = 'open'
         AND p.deleted = false
-        AND EXISTS (SELECT 1 FROM options o WHERE o.poll_id = p.id)
-        AND NOT EXISTS (
-          SELECT 1 FROM options o
-          WHERE o.poll_id = p.id
-            AND o.start_time + (CASE WHEN o.duration_minutes = 0
-                  THEN interval '24 hours'
-                  ELSE make_interval(mins => o.duration_minutes) END) > (now() AT TIME ZONE 'UTC')
+        AND ((
+          EXISTS (SELECT 1 FROM options o WHERE o.poll_id = p.id)
+          AND NOT EXISTS (
+            SELECT 1 FROM options o
+            WHERE o.poll_id = p.id
+              AND o.start_time + (CASE WHEN o.duration_minutes = 0
+                    THEN interval '24 hours'
+                    ELSE make_interval(mins => o.duration_minutes) END) > (now() AT TIME ZONE 'UTC')
+          )
         )
+        -- [projet] Expiration (#134): the organizer's deadline has passed
+        OR (p.deadline IS NOT NULL AND p.deadline <= (now() AT TIME ZONE 'UTC')))
       RETURNING p.id
     `;
 

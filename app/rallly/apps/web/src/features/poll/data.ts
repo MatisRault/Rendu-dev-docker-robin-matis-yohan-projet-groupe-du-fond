@@ -483,7 +483,7 @@ export async function getParticipant({
       id: true,
       pollId: true,
       userId: true,
-      poll: { select: { status: true, deleted: true } },
+      poll: { select: { status: true, deadline: true, deleted: true } },
     },
   });
 }
